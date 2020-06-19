@@ -1,0 +1,23 @@
+{
+  "name": "investments",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "fs-extra": "^9.0.1",
+    "ganache-cli": "^6.3.0",
+    "mocha": "^6.0.0",
+    "solc": "^0.4.22",
+    "web3": "^1.0.0-beta.35"
+  },
+  "devDependencies": {
+    "any-promise": "^1.3.0",
+    "bindings": "^1.5.0",
+    "truffle-hdwallet-provider": "^1.0.0-web3one.5"
+  }
+}
