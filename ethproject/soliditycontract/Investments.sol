@@ -1,5 +1,19 @@
 pragma solidity ~0.4.17;
 
+contract Investments {
+    address[] public listOfCreatedProjects;
+
+    function createProject (uint minMoneyContribution) public {
+        address newProject = new Project(minMoneyContribution,msg.sender);
+        listOfCreatedProjects.push(newProject);
+
+    }
+
+    function getListOfCreatedProjects() public view returns (address[]){
+        return listOfCreatedProjects;
+    }
+}
+
 contract Project {
     address public researcher;
     uint public minMoneyContribution;
@@ -26,9 +40,11 @@ contract Project {
         _;
     }
 
-    function Project(uint min) public {
+    function Project(uint min, address addresearcher) public {
         researcher = msg.sender;
         minMoneyContribution = min;
+        researcher = addresearcher;
+
     }
 
     function investment() public payable {
