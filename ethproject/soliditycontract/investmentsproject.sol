@@ -75,7 +75,7 @@ contract Investments {
     }
 
     function AddInvestors (address _investors) public requireToBeMaster {
-        require(!researchers[_investors] == true);
+        require(!investors[_investors] == true);
         require(nowInvestorsAdded < numInvestors);
         investors[_investors] = true;
         nowInvestorsAdded ++ ;
@@ -166,7 +166,7 @@ contract Investments {
         require(msg.value == Contribution);
     }
 
-    function returnMoneyInToInvestors () public requireToBeMaster returns (bool){
+    function returnMoneyInToInvestors () public requireToBeMaster returns(bool){
         for (uint _activityNumber=0; _activityNumber <= activitiesTable.length-1; _activityNumber++)
             if(checkStatusOfActivity(_activityNumber) == StateActivity.Cancelled){
                 return statusOfProject = false;
