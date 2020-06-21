@@ -20,6 +20,7 @@ contract Investments {
     address[] public researchersaddresses;
 
     mapping(address => bool) public investors;
+    address[] public investorsaddresses;
 
     uint public timeOfCreateInvestment = now;
     uint public _now;
@@ -77,6 +78,7 @@ contract Investments {
     function AddInvestors (address _investors) public requireToBeMaster {
         require(!investors[_investors] == true);
         require(nowInvestorsAdded < numInvestors);
+        investorsaddresses.push(_investors);
         investors[_investors] = true;
         nowInvestorsAdded ++ ;
     }
@@ -172,6 +174,10 @@ contract Investments {
         return address(this).balance;
     }
 
-    function returnMoneyInToInvestors () public requireToBeMaster returns(bool){
+    function returnMoneyInToInvestors () public requireToBeMaster{
+        require(statusOfProject == false);
+        for (uint i=0; i<investorsaddresses.length-1; i++){
+            investorsaddresses[i].transfer((address(this).balance / investorsaddresses.length));
+        }
     }
 }
