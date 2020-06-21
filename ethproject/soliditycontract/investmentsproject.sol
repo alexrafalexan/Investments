@@ -3,6 +3,8 @@ pragma solidity ~0.4.17;
 contract Investments {
     address public master;
 
+
+
     uint public numResearchers;
     uint public numInvestors;
     uint public Contribution;
@@ -147,17 +149,17 @@ contract Investments {
 
     function checkStatusOfActivity (uint _activityNumber) public returns(StateActivity){
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
-        if (_activityNumber == 0 && detailActivity.timeStartActivity < now // Case 1 Activity[0]
+        if (statusOfProject== true && _activityNumber == 0 && detailActivity.timeStartActivity < now // Case 1 Activity[0]
         && detailActivity.timeOffActivity > now){
             detailActivity.statusActivity = StateActivity.Active;
-        }else if (_activityNumber == 0 && detailActivity.timeStartActivity < now // Case 2 Activity[0]
+        }else if (statusOfProject== true && _activityNumber == 0 && detailActivity.timeStartActivity < now // Case 2 Activity[0]
         && detailActivity.timeOffActivity < now && detailActivity.leftvalue > 0){
             detailActivity.statusActivity = StateActivity.Cancelled;
             statusOfProject = false;
-        }else if ( _activityNumber > 0 && (_activityNumber + 1) <= activitiesTable.length && detailActivity.timeStartActivity < now  // Case 1 Activity[i]
-        && detailActivity.timeOffActivity > now && activitiesTable[_activityNumber-1].statusActivity == StateActivity.Completed){
+        }else if (statusOfProject== true &&  _activityNumber > 0 && (_activityNumber + 1) <= activitiesTable.length && detailActivity.timeStartActivity < now  // Case 1 Activity[i]
+        && detailActivity.timeOffActivity > now && (activitiesTable[_activityNumber-1].statusActivity != StateActivity.Cancelled)){
             detailActivity.statusActivity = StateActivity.Active;
-        }else if (_activityNumber > 0 && (_activityNumber + 1) <= activitiesTable.length && detailActivity.timeStartActivity  < now  // Case 2 Activity[i]
+        }else if (statusOfProject== true && _activityNumber > 0 && (_activityNumber + 1) <= activitiesTable.length && detailActivity.timeStartActivity  < now  // Case 2 Activity[i]
         && detailActivity.timeOffActivity < now && detailActivity.leftvalue > 0){
             detailActivity.statusActivity = StateActivity.Cancelled;
             statusOfProject = false;
