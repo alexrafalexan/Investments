@@ -145,18 +145,20 @@ contract Investments {
 
     function checkStatusOfActivity (uint _activityNumber) public returns(StateActivity){
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
-        if (_activityNumber == 0 && detailActivity.timeStartActivity + timeOfCreateInvestment < now // Case 1 Activity[0]
-        && detailActivity.timeOffActivity + timeOfCreateInvestment > now){
+        if (_activityNumber == 0 && detailActivity.timeStartActivity < now // Case 1 Activity[0]
+        && detailActivity.timeOffActivity > now){
             detailActivity.statusActivity = StateActivity.Active;
-        }else if (_activityNumber == 0 && detailActivity.timeStartActivity + timeOfCreateInvestment < now // Case 2 Activity[0]
-        && detailActivity.timeOffActivity + timeOfCreateInvestment < now && detailActivity.leftvalue > 0){
+        }else if (_activityNumber == 0 && detailActivity.timeStartActivity < now // Case 2 Activity[0]
+        && detailActivity.timeOffActivity < now && detailActivity.leftvalue > 0){
             detailActivity.statusActivity = StateActivity.Cancelled;
-        }else if ( _activityNumber > 0 && (_activityNumber + 1) <= activitiesTable.length && detailActivity.timeStartActivity + timeOfCreateInvestment < now  // Case 1 Activity[i]
-        && detailActivity.timeOffActivity + timeOfCreateInvestment > now && activitiesTable[_activityNumber-1].statusActivity == StateActivity.Completed){
+            statusOfProject = false;
+        }else if ( _activityNumber > 0 && (_activityNumber + 1) <= activitiesTable.length && detailActivity.timeStartActivity < now  // Case 1 Activity[i]
+        && detailActivity.timeOffActivity > now && activitiesTable[_activityNumber-1].statusActivity == StateActivity.Completed){
             detailActivity.statusActivity = StateActivity.Active;
-        }else if (_activityNumber > 0 && (_activityNumber + 1) <= activitiesTable.length && detailActivity.timeStartActivity + timeOfCreateInvestment < now  // Case 2 Activity[i]
-        && detailActivity.timeOffActivity + timeOfCreateInvestment < now && detailActivity.leftvalue > 0){
+        }else if (_activityNumber > 0 && (_activityNumber + 1) <= activitiesTable.length && detailActivity.timeStartActivity  < now  // Case 2 Activity[i]
+        && detailActivity.timeOffActivity < now && detailActivity.leftvalue > 0){
             detailActivity.statusActivity = StateActivity.Cancelled;
+            statusOfProject = false;
         }
         return detailActivity.statusActivity;
     }
@@ -166,12 +168,10 @@ contract Investments {
         require(msg.value == Contribution);
     }
 
+    function getBalance() view public returns (uint) { // Take Balance off the Contract
+        return address(this).balance;
+    }
+
     function returnMoneyInToInvestors () public requireToBeMaster returns(bool){
-        for (uint _activityNumber=0; _activityNumber <= activitiesTable.length-1; _activityNumber++)
-            if(checkStatusOfActivity(_activityNumber) == StateActivity.Cancelled){
-                return statusOfProject = false;
-            }else{
-                return true;
-            }
     }
 }
