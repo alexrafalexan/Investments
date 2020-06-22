@@ -1,9 +1,22 @@
 pragma solidity ~0.4.17;
 
-contract Investments {
+contract Application {
+    address[] public listOfCreatedInvestments;
+
+    function createInvestment (uint _numResearchers, uint _numInvestors, uint _maxTimesOfProject,uint _Contribution, uint _activities) public {
+        address newInvestments = new Investment (_numResearchers, _numInvestors, _maxTimesOfProject, _Contribution, _activities , msg.sender);
+        listOfCreatedInvestments.push(newInvestments);
+
+    }
+
+    function getListOfCreatedInvestments() public view returns (address[]){
+        return listOfCreatedInvestments;
+    }
+}
+
+
+contract Investment {
     address public master;
-
-
 
     uint public numResearchers;
     uint public numInvestors;
@@ -69,9 +82,9 @@ contract Investments {
         _;
     }
 
-    function Investments (uint _numResearchers, uint _numInvestors, uint _maxTimesOfProject,uint _Contribution, uint _activities) public {
+    function Investment (uint _numResearchers, uint _numInvestors, uint _maxTimesOfProject,uint _Contribution, uint _activities, address _master) public {
         // _maxTimesOfProject --> Time In seconds reference where project started. Project start after all Investors pay ether
-        master = msg.sender;
+        master = _master;
         numResearchers = _numResearchers;
         numInvestors = _numInvestors;
         Contribution = _Contribution;
