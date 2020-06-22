@@ -80,7 +80,7 @@ contract Investments {
         statusOfProject = true;
     }
 
-    function AddInvestors (address _investors) public requireToBeMaster {
+    function A_AddInvestors (address _investors) public requireToBeMaster {
         require(!investors[_investors] == true);
         require(nowInvestorsAdded < numInvestors);
         investorsaddresses.push(_investors);
@@ -88,7 +88,7 @@ contract Investments {
         nowInvestorsAdded ++ ;
     }
 
-    function AddResearchers (address _researchers) public requireToBeMaster{
+    function B_AddResearchers (address _researchers) public requireToBeMaster{
         require(!researchers[_researchers] == true);
         require(nowResearchersAdded < numResearchers);
         researchers[_researchers] = true;
@@ -96,7 +96,7 @@ contract Investments {
         nowResearchersAdded ++ ;
     }
 
-    function AddActivity (uint _value, uint _timeStartActivity, uint _timeOffActivity, string _detail) public requireToBeMaster{
+    function C_AddActivity (uint _value, uint _timeStartActivity, uint _timeOffActivity, string _detail) public requireToBeMaster{
         require(nowResearchersAdded == numResearchers);
         require(nowInvestorsAdded == numInvestors);
         require(activitiesTable.length < activities);
@@ -116,7 +116,7 @@ contract Investments {
         activitiesTable.push(newDetailActivities);
     }
 
-    function AddPercentageInActivity (uint _activityNumber, uint _researchersaddresses, uint _perscentage) public requireToBeMaster{
+    function D_AddPercentageInActivity (uint _activityNumber, uint _researchersaddresses, uint _perscentage) public requireToBeMaster{
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
         require(activitiesTable.length == activities);
         require(nowResearchersAdded == numResearchers);
@@ -126,12 +126,14 @@ contract Investments {
         detailActivity.perscentagecoverage = activitiesTable[_activityNumber].perscentagecoverage + _perscentage;
     }
 
-    function getPercentageInActivity (uint _activityNumber, address _researchersaddresses) view public returns(uint) {
-        DetailActivities storage detailActivity = activitiesTable[_activityNumber];
-        return detailActivity.researcherpercentageactivity[_researchersaddresses];
+    function E_InvestrorPay() public payable requireToBeInvestors{
+        require(activitiesTable.length == activities);
+        require(msg.value == Contribution);
+        maxTimesOfProject = now + maxTimesOfProjectTemp;
     }
 
-    function paySeller (uint _activityNumber, uint _value, string _detail, address _seller) public requireToBeResearchers requireToBeContractHasAllContribution returns(bool){
+
+    function F_paySeller (uint _activityNumber, uint _value, string _detail, address _seller) public requireToBeResearchers requireToBeContractHasAllContribution returns(bool){
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
         require(_value <= detailActivity.researcherpercentageactivity[msg.sender]);
         if (checkStatusOfActivity(_activityNumber) == StateActivity.Active ) {
@@ -149,6 +151,11 @@ contract Investments {
         }else {
             return false;
         }
+    }
+
+    function getPercentageInActivity (uint _activityNumber, address _researchersaddresses) view public returns(uint) {
+        DetailActivities storage detailActivity = activitiesTable[_activityNumber];
+        return detailActivity.researcherpercentageactivity[_researchersaddresses];
     }
 
     function checkStatusOfActivities () public { // check status of All Activities
@@ -175,13 +182,6 @@ contract Investments {
             detailActivity.statusActivity = StateActivity.Inactive;
         }
         return detailActivity.statusActivity;
-    }
-
-
-    function InvestrorPay() public payable requireToBeInvestors{
-        require(activitiesTable.length == activities);
-        require(msg.value == Contribution);
-        maxTimesOfProject = now + maxTimesOfProjectTemp;
     }
 
     function getBalance() view public returns (uint) { // Take Balance off the Contract
