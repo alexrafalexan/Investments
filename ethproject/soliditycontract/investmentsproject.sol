@@ -175,17 +175,22 @@ contract Investments {
 
 
     function InvestrorPay() public payable requireToBeInvestors{
-        require(msg.value == Contribution);
+        require(msg.value > Contribution);
     }
 
     function getBalance() view public returns (uint) { // Take Balance off the Contract
         return address(this).balance;
     }
 
+    function getBalanceDevided() view public returns (uint) { // Take Balance off the Contract
+        return (address(this).balance)/investorsaddresses.length;
+    }
+
     function returnMoneyInToInvestors () public requireToBeMaster{
         require(statusOfProject == false);
+        uint _valueReturn = address(this).balance / investorsaddresses.length;
         for (uint i=0; i<=investorsaddresses.length-1; i++){
-            investorsaddresses[i].transfer((address(this).balance / investorsaddresses.length));
+            investorsaddresses[i].transfer(_valueReturn);
         }
     }
 }
