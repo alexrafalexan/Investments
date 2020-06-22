@@ -201,10 +201,6 @@ contract Investment {
         return address(this).balance;
     }
 
-    function getBalanceDevided() view public returns (uint) { // Take Balance off the Contract
-        return (address(this).balance)/investorsaddresses.length;
-    }
-
     function returnMoneyInToInvestors () public requireToBeMaster{
         require(statusOfProject == false);
         uint _valueReturn = address(this).balance / investorsaddresses.length;
