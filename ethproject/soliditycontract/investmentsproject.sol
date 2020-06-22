@@ -147,22 +147,28 @@ contract Investments {
         }
     }
 
+    function checkStatusOfActivities () public {
+        for(uint i=0; i<=(activitiesTable.length-1); i++){
+            checkStatusOfActivity(i);
+        }
+    }
+
     function checkStatusOfActivity (uint _activityNumber) public returns(StateActivity){
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
-        if (statusOfProject== true && _activityNumber == 0 && detailActivity.timeStartActivity < now // Case 1 Activity[0]
+        if (statusOfProject == true && detailActivity.timeStartActivity < now // Case 1 Activity
         && detailActivity.timeOffActivity > now){
             detailActivity.statusActivity = StateActivity.Active;
-        }else if (statusOfProject== true && _activityNumber == 0 && detailActivity.timeStartActivity < now // Case 2 Activity[0]
+        }else if (statusOfProject == true && detailActivity.timeStartActivity < now // Case 2 Activity
+        && detailActivity.timeOffActivity < now && detailActivity.leftvalue == 0){
+            detailActivity.statusActivity = StateActivity.Completed;
+        }else if (statusOfProject == true && detailActivity.timeStartActivity < now // Case 3 Activity
         && detailActivity.timeOffActivity < now && detailActivity.leftvalue > 0){
             detailActivity.statusActivity = StateActivity.Cancelled;
             statusOfProject = false;
-        }else if (statusOfProject== true &&  _activityNumber > 0 && (_activityNumber + 1) <= activitiesTable.length && detailActivity.timeStartActivity < now  // Case 1 Activity[i]
-        && detailActivity.timeOffActivity > now && (activitiesTable[_activityNumber-1].statusActivity != StateActivity.Cancelled)){
-            detailActivity.statusActivity = StateActivity.Active;
-        }else if (statusOfProject== true && _activityNumber > 0 && (_activityNumber + 1) <= activitiesTable.length && detailActivity.timeStartActivity  < now  // Case 2 Activity[i]
-        && detailActivity.timeOffActivity < now && detailActivity.leftvalue > 0){
+        }else if (statusOfProject == false){ // In case project status change to false, canceled the Activity
             detailActivity.statusActivity = StateActivity.Cancelled;
-            statusOfProject = false;
+        }else{
+            detailActivity.statusActivity = StateActivity.Inactive;
         }
         return detailActivity.statusActivity;
     }
