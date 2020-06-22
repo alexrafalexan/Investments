@@ -1,5 +1,5 @@
 import React from 'react';
 
-export  default  () => {
+export  default () => {
     return <h1>My page</h1>;
-}
+};
