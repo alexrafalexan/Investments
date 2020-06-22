@@ -15,7 +15,8 @@ contract Investments {
 
     uint public activities;
 
-    uint public maxTimesOfProject;
+    uint public maxTimesOfProject = 0;
+    uint public maxTimesOfProjectTemp;
     bool public statusOfProject;
 
     mapping(address => bool) public researchers;
@@ -23,9 +24,6 @@ contract Investments {
 
     mapping(address => bool) public investors;
     address[] public investorsaddresses;
-
-    uint public timeOfCreateInvestment = now;
-    uint public _now;
 
     enum StateActivity {Active, Inactive, Cancelled, Completed}
     bool _status;
@@ -51,6 +49,11 @@ contract Investments {
         address seller;
     }
 
+    modifier requireToBeContractHasAllContribution{
+        require(address(this).balance == (numInvestors*Contribution));
+        _;
+    }
+
     modifier requireToBeMaster(){
         require(master == msg.sender);
         _;
@@ -67,13 +70,13 @@ contract Investments {
     }
 
     function Investments (uint _numResearchers, uint _numInvestors, uint _maxTimesOfProject,uint _Contribution, uint _activities) public {
-        // _maxTimesOfProject --> Time In seconds reference where project started
+        // _maxTimesOfProject --> Time In seconds reference where project started. Project start after all Investors pay ether
         master = msg.sender;
         numResearchers = _numResearchers;
         numInvestors = _numInvestors;
-        maxTimesOfProject = timeOfCreateInvestment + _maxTimesOfProject;
         Contribution = _Contribution;
         activities = _activities;
+        maxTimesOfProjectTemp = _maxTimesOfProject;
         statusOfProject = true;
     }
 
@@ -103,8 +106,8 @@ contract Investments {
         DetailActivities memory newDetailActivities = DetailActivities({
             value : _value,
             leftvalue : _value,
-            timeStartActivity : timeOfCreateInvestment + _timeStartActivity,
-            timeOffActivity: timeOfCreateInvestment + _timeStartActivity +_timeOffActivity,
+            timeStartActivity : now + _timeStartActivity,
+            timeOffActivity: now + _timeStartActivity +_timeOffActivity,
             detail : _detail,
             perscentagecoverage: 0,
             statusActivity: StateActivity.Inactive
@@ -127,7 +130,7 @@ contract Investments {
         return detailActivity.researcherpercentageactivity[_researchersaddresses];
     }
 
-    function paySeller (uint _activityNumber, uint _value, string _detail, address _seller) public requireToBeResearchers returns(bool){
+    function paySeller (uint _activityNumber, uint _value, string _detail, address _seller) public requireToBeResearchers requireToBeContractHasAllContribution returns(bool){
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
         require(_value <= detailActivity.researcherpercentageactivity[msg.sender]);
         if (checkStatusOfActivity(_activityNumber) == StateActivity.Active ) {
@@ -153,7 +156,7 @@ contract Investments {
         }
     }
 
-    function checkStatusOfActivity (uint _activityNumber) public returns(StateActivity){
+    function checkStatusOfActivity (uint _activityNumber) public requireToBeContractHasAllContribution returns(StateActivity){
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
         if (statusOfProject == true && detailActivity.timeStartActivity < now // Case 1 Activity
         && detailActivity.timeOffActivity > now){
@@ -175,7 +178,8 @@ contract Investments {
 
 
     function InvestrorPay() public payable requireToBeInvestors{
-        require(msg.value > Contribution);
+        require(msg.value == Contribution);
+        maxTimesOfProject = now + maxTimesOfProjectTemp;
     }
 
     function getBalance() view public returns (uint) { // Take Balance off the Contract
@@ -193,5 +197,4 @@ contract Investments {
             investorsaddresses[i].transfer(_valueReturn);
         }
     }
-
 }
