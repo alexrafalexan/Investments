@@ -118,6 +118,7 @@ contract Investments {
 
     function AddPercentageInActivity (uint _activityNumber, uint _researchersaddresses, uint _perscentage) public requireToBeMaster{
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
+        require(activitiesTable.length == activities);
         require(nowResearchersAdded == numResearchers);
         require(nowInvestorsAdded == numInvestors);
         require(detailActivity.perscentagecoverage < 100 && detailActivity.perscentagecoverage + _perscentage <= 100);
@@ -178,6 +179,7 @@ contract Investments {
 
 
     function InvestrorPay() public payable requireToBeInvestors{
+        require(activitiesTable.length == activities);
         require(msg.value == Contribution);
         maxTimesOfProject = now + maxTimesOfProjectTemp;
     }
