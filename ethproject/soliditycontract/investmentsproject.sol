@@ -184,7 +184,7 @@ contract Investments {
 
     function returnMoneyInToInvestors () public requireToBeMaster{
         require(statusOfProject == false);
-        for (uint i=0; i<investorsaddresses.length-1; i++){
+        for (uint i=0; i<=investorsaddresses.length-1; i++){
             investorsaddresses[i].transfer((address(this).balance / investorsaddresses.length));
         }
     }
