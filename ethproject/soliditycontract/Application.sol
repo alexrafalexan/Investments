@@ -44,7 +44,7 @@ contract Investment {
 
 
 
-    enum State {Inactive, Active, Approved, Pending, Cancelled, Completed}
+    enum State {Inactive, Active, Pending, Cancelled, Completed}
 
 
     DetailActivities[] public activitiesTable;
@@ -197,22 +197,14 @@ contract Investment {
         && detailActivity.timeOffActivity < now){
             statusOfResearch == State.Pending;
             detailActivity.statusActivity = State.Pending;
-        }else if (statusOfResearch == State.Pending && detailActivity.statusActivity == State.Approved){
-            statusOfResearch == State.Active;
-            detailActivity.statusActivity = State.Active;
         }
     }
 
     function changeStatusOfActivity(uint _activityNumber, State _state) public{
-        require(_state == State.Approved || _state ==  State.Cancelled);
+        require(_state == State.Active || _state ==  State.Cancelled);
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
-        if(_state ==  State.Cancelled){
-            statusOfResearch == State.Cancelled;
-        }else{
-            statusOfResearch == State.Active;
-            detailActivity.statusActivity = State.Active;
-        }
-
+        detailActivity.statusActivity = _state;
+        statusOfResearch == _state;
     }
 
     function getPercentageInActivity (uint _activityNumber, address _researcheraddresses) view public returns(uint) {
