@@ -35,6 +35,7 @@ contract Investment {
     uint public maxTimesOfProjectTemp;
     bool public statusOfResearchDel;
     State public statusOfResearch;
+    uint public numberOfCompletedActivities;
 
     mapping(address => bool) public organizations;
     address[] public organizationsaddresses;
@@ -201,11 +202,21 @@ contract Investment {
     }
 
     function changeStatusOfActivity(uint _activityNumber, State _state) public{
-        require(_state == State.Active || _state ==  State.Cancelled);
+        require(_state == State.Completed || _state ==  State.Cancelled);
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
-        detailActivity.statusActivity = _state;
-        statusOfResearch == _state;
+        if (_state == State.Completed && numberOfCompletedActivities == activitiesTable.length){
+            detailActivity.statusActivity = _state;
+            numberOfCompletedActivities++;
+        }else if(_state == State.Completed){
+            detailActivity.statusActivity = _state;
+            numberOfCompletedActivities++;
+            statusOfResearch == State.Active;
+        }else {
+            detailActivity.statusActivity = _state;
+            statusOfResearch == _state;
+        }
     }
+
 
     function getPercentageInActivity (uint _activityNumber, address _researcheraddresses) view public returns(uint) {
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
