@@ -204,8 +204,15 @@ contract Investment {
     }
 
     function changeStatusOfActivity(uint _activityNumber, State _state) public{
+        require(_state == State.Approved || _state ==  State.Cancelled);
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
-        detailActivity.statusActivity = _state;
+        if(_state ==  State.Cancelled){
+            statusOfResearch == State.Cancelled;
+        }else{
+            statusOfResearch == State.Active;
+            detailActivity.statusActivity = State.Active;
+        }
+
     }
 
     function getPercentageInActivity (uint _activityNumber, address _researcheraddresses) view public returns(uint) {
