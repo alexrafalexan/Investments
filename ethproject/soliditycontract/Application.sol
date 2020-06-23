@@ -212,10 +212,10 @@ contract Investment {
         }else if(_state == State.Completed){ // Mark this Activity as Completed
             detailActivity.statusActivity = _state;
             numberOfCompletedActivities++;
-            statusOfResearch == State.Active;
+            statusOfResearch = State.Active;
         }else {                             // Mark as Cancelled
             detailActivity.statusActivity = _state;
-            statusOfResearch == _state;
+            statusOfResearch = _state;
         }
     }
 
