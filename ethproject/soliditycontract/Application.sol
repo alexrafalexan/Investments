@@ -33,8 +33,8 @@ contract Investment {
 
     uint public maxTimesOfProject = 0;
     uint public maxTimesOfProjectTemp;
-    //  bool public statusOfResearch;
-    StateActivity public statusOfResearch2;
+    bool public statusOfResearchDel;
+    StateActivity public statusOfResearch;
 
     mapping(address => bool) public organizations;
     address[] public organizationsaddresses;
@@ -98,7 +98,7 @@ contract Investment {
         availableetherforactivities = (_contribution*_numInvestors);
         activities = _activities;
         maxTimesOfProjectTemp = _maxTimesOfProject;
-        statusOfResearch2 = StateActivity.Inactive;
+        statusOfResearch = StateActivity.Inactive;
     }
 
     function B_AddOrganizations (address _organizations) public requireToBeMaster{
@@ -190,17 +190,17 @@ contract Investment {
 
     function checkStatusOfActivity (uint _activityNumber) public requireToBeContractHasAllContribution returns(StateActivity){
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
-        if (statusOfResearch == true && detailActivity.timeStartActivity < now // Case 1 Activity
+        if (statusOfResearchDel == true && detailActivity.timeStartActivity < now // Case 1 Activity
             && detailActivity.timeOffActivity > now){
             detailActivity.statusActivity = StateActivity.Active;
-        }else if (statusOfResearch == true && detailActivity.timeStartActivity < now // Case 2 Activity
+        }else if (statusOfResearchDel == true && detailActivity.timeStartActivity < now // Case 2 Activity
         && detailActivity.timeOffActivity < now && detailActivity.leftvalue == 0){
             detailActivity.statusActivity = StateActivity.Completed;
-        }else if (statusOfResearch == true && detailActivity.timeStartActivity < now // Case 3 Activity
+        }else if (statusOfResearchDel == true && detailActivity.timeStartActivity < now // Case 3 Activity
         && detailActivity.timeOffActivity < now && detailActivity.leftvalue > 0){
             detailActivity.statusActivity = StateActivity.Inactive;
-            statusOfResearch = false;
-        }else if (statusOfResearch == false){   // In case project status change to false, canceled the Activity
+            statusOfResearchDel = false;
+        }else if (statusOfResearchDel == false){   // In case project status change to false, canceled the Activity
             detailActivity.statusActivity = StateActivity.Inactive;
         }
         return detailActivity.statusActivity;
@@ -216,16 +216,16 @@ contract Investment {
     }
 
     function returnMoney() public requireToBeMaster{
-        require (!(statusOfResearch2 == StateActivity.Active));
+        require (!(statusOfResearch == StateActivity.Active));
         uint _valueReturnOrganization;
         uint _valueReturnInvestors;
 
-        if (statusOfResearch2 == StateActivity.Cancelled){
+        if (statusOfResearch == StateActivity.Cancelled){
             _valueReturnInvestors = address(this).balance / numInvestors;
             for (uint i=0; i<=investorsaddresses.length-1; i++){
                 investorsaddresses[i].transfer(_valueReturnInvestors);
             }
-        }else if (statusOfResearch2 == StateActivity.Inactive || statusOfResearch2 == StateActivity.Completed){
+        }else if (statusOfResearch == StateActivity.Inactive || statusOfResearch == StateActivity.Completed){
             _valueReturnOrganization = (contributionorganization/organizationsaddresses.length);
             for (uint k=0; k<=organizationsaddresses.length-1; k++){
                 organizationsaddresses[k].transfer(_valueReturnOrganization);
