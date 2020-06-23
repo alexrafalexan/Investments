@@ -204,14 +204,14 @@ contract Investment {
     function changeStatusOfActivity(uint _activityNumber, State _state) public{
         require(_state == State.Completed || _state ==  State.Cancelled);
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
-        if (_state == State.Completed && numberOfCompletedActivities == activitiesTable.length){
+        if (_state == State.Completed && numberOfCompletedActivities == (activitiesTable.length-1)){ // Mark this Activity now as Completed and all the Other has been Marked as Completed
             detailActivity.statusActivity = _state;
             numberOfCompletedActivities++;
-        }else if(_state == State.Completed){
+        }else if(_state == State.Completed){ // Mark this Activity as Completed
             detailActivity.statusActivity = _state;
             numberOfCompletedActivities++;
             statusOfResearch == State.Active;
-        }else {
+        }else {                             // Mark as Cancelled
             detailActivity.statusActivity = _state;
             statusOfResearch == _state;
         }
