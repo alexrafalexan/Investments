@@ -34,6 +34,7 @@ contract Investment {
     uint public maxTimesOfProject = 0;
     uint public maxTimesOfProjectTemp;
     bool public statusOfResearch;
+    StateActivity public statusOfResearch2;
 
     mapping(address => bool) public organizations;
     address[] public organizationsaddresses;
@@ -197,11 +198,9 @@ contract Investment {
             detailActivity.statusActivity = StateActivity.Completed;
         }else if (statusOfResearch == true && detailActivity.timeStartActivity < now // Case 3 Activity
         && detailActivity.timeOffActivity < now && detailActivity.leftvalue > 0){
-            detailActivity.statusActivity = StateActivity.Cancelled;
+            detailActivity.statusActivity = StateActivity.Inactive;
             statusOfResearch = false;
-        }else if (statusOfResearch == false){ // In case project status change to false, canceled the Activity
-            detailActivity.statusActivity = StateActivity.Cancelled;
-        }else{
+        }else if (statusOfResearch == false){   // In case project status change to false, canceled the Activity
             detailActivity.statusActivity = StateActivity.Inactive;
         }
         return detailActivity.statusActivity;
@@ -216,11 +215,25 @@ contract Investment {
         return address(this).balance;
     }
 
-    function returnMoneyInToInvestors () public requireToBeMaster{
-        require(statusOfResearch == false);
-        uint _valueReturn = address(this).balance / investorsaddresses.length;
-        for (uint i=0; i<=investorsaddresses.length-1; i++){
-            investorsaddresses[i].transfer(_valueReturn);
+    function returnMoney() public requireToBeMaster{
+        require (!(statusOfResearch2 == StateActivity.Active));
+        uint _valueReturnOrganization;
+        uint _valueReturnInvestors;
+
+        if (statusOfResearch2 == StateActivity.Cancelled){
+            _valueReturnInvestors = address(this).balance / numInvestors;
+            for (uint i=0; i<=investorsaddresses.length-1; i++){
+                investorsaddresses[i].transfer(_valueReturnInvestors);
+            }
+        }else if (statusOfResearch2 == StateActivity.Inactive || statusOfResearch2 == StateActivity.Completed){
+            _valueReturnOrganization = (contributionorganization/organizationsaddresses.length);
+            for (uint k=0; k<=organizationsaddresses.length-1; k++){
+                organizationsaddresses[k].transfer(_valueReturnOrganization);
+            }
+            _valueReturnInvestors = (contribution/investorsaddresses.length);
+            for (uint j=0; j<=investorsaddresses.length-1; i++){
+                investorsaddresses[j].transfer(_valueReturnInvestors);
+            }
         }
     }
 }
