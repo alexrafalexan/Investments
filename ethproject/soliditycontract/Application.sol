@@ -44,7 +44,7 @@ contract Investment {
 
 
 
-    enum State {Active, Inactive, Cancelled, Completed}
+    enum State {Inactive, Active, Approved, Pending, Cancelled, Completed}
 
 
     DetailActivities[] public activitiesTable;
@@ -124,7 +124,6 @@ contract Investment {
             detail : _detail,
             perscentagecoverage: 0,
             statusActivity: State.Inactive
-            //statusActivity : State.Inactive
             });
         activitiesTable.push(newDetailActivities);
         availableetherforactivities = availableetherforactivities - _value;
@@ -165,7 +164,7 @@ contract Investment {
     function PaySeller (uint _activityNumber, uint _value, string _detail, address _seller) public requireToBeOrganization requireToBeContractHasAllContribution returns(bool){
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
         require(_value <= detailActivity.organizationpercentageactivity[msg.sender]);
-        if (checkStatusOfActivity(_activityNumber) == State.Active ) {
+        if (statusOfResearch == State.Active && detailActivity.statusActivity == State.Active ) {
             DetailPurchase memory newDetailPurchase = DetailPurchase({
                 activityNumber: _activityNumber,
                 value: _value,
@@ -188,22 +187,25 @@ contract Investment {
         }
     }
 
-    function checkStatusOfActivity (uint _activityNumber) public requireToBeContractHasAllContribution returns(State){
+    function checkStatusOfActivity (uint _activityNumber) public requireToBeContractHasAllContribution{
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
-        if (statusOfResearchDel == true && detailActivity.timeStartActivity < now // Case 1 Activity
+        if ((statusOfResearch == State.Inactive) && detailActivity.timeStartActivity < now // Case 1 Initial Start
             && detailActivity.timeOffActivity > now){
             detailActivity.statusActivity = State.Active;
-        }else if (statusOfResearchDel == true && detailActivity.timeStartActivity < now // Case 2 Activity
-        && detailActivity.timeOffActivity < now && detailActivity.leftvalue == 0){
-            detailActivity.statusActivity = State.Completed;
-        }else if (statusOfResearchDel == true && detailActivity.timeStartActivity < now // Case 3 Activity
-        && detailActivity.timeOffActivity < now && detailActivity.leftvalue > 0){
-            detailActivity.statusActivity = State.Inactive;
-            statusOfResearchDel = false;
-        }else if (statusOfResearchDel == false){   // In case project status change to false, canceled the Activity
-            detailActivity.statusActivity = State.Inactive;
+            statusOfResearch == State.Active;
+        }else if (statusOfResearch == State.Active && detailActivity.timeStartActivity < now // Case 2 But time is over
+        && detailActivity.timeOffActivity < now){
+            statusOfResearch == State.Pending;
+            detailActivity.statusActivity = State.Pending;
+        }else if (statusOfResearch == State.Pending && detailActivity.statusActivity == State.Approved){
+            statusOfResearch == State.Active;
+            detailActivity.statusActivity = State.Active;
         }
-        return detailActivity.statusActivity;
+    }
+
+    function changeStatusOfActivity(uint _activityNumber, State _state) public{
+        DetailActivities storage detailActivity = activitiesTable[_activityNumber];
+        detailActivity.statusActivity = _state;
     }
 
     function getPercentageInActivity (uint _activityNumber, address _researcheraddresses) view public returns(uint) {
