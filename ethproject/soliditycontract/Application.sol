@@ -188,16 +188,18 @@ contract Investment {
         }
     }
 
-    function checkStatusOfActivity (uint _activityNumber) public requireToBeContractHasAllContribution{
+    function checkStatusOfActivity (uint _activityNumber) public requireToBeContractHasAllContribution returns (State){
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
         if ((statusOfResearch == State.Inactive) && detailActivity.timeStartActivity < now // Case 1 Initial Start
             && detailActivity.timeOffActivity > now){
-            detailActivity.statusActivity = State.Active;
             statusOfResearch == State.Active;
+            detailActivity.statusActivity = State.Active;
+            return detailActivity.statusActivity;
         }else if (statusOfResearch == State.Active && detailActivity.timeStartActivity < now // Case 2 But time is over
         && detailActivity.timeOffActivity < now){
             statusOfResearch == State.Pending;
             detailActivity.statusActivity = State.Pending;
+            return detailActivity.statusActivity;
         }
     }
 
@@ -218,7 +220,7 @@ contract Investment {
     }
 
 
-    function getPercentageInActivity (uint _activityNumber, address _researcheraddresses) view public returns(uint) {
+    function getPercentageInActivity (uint _activityNumber, address _researcheraddresses) public view returns(uint) {
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
         return detailActivity.organizationpercentageactivity[_researcheraddresses];
     }
