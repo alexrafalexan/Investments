@@ -230,7 +230,7 @@ contract Investment {
             for (uint k=0; k<=organizationsaddresses.length-1; k++){
                 organizationsaddresses[k].transfer(_valueReturnOrganization);
             }
-            _valueReturnInvestors = (contribution/investorsaddresses.length);
+            _valueReturnInvestors = (availableetherforactivities/investorsaddresses.length);
             for (uint j=0; j<=investorsaddresses.length-1; i++){
                 investorsaddresses[j].transfer(_valueReturnInvestors);
             }
