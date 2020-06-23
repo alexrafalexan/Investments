@@ -22,7 +22,7 @@ contract Investment {
     uint public numInvestors;
 
     uint public contribution;
-    uint public contributionorganization;
+    uint public contributionorganizationpercentage;
     uint public availableetherforactivities;
 
 
@@ -53,7 +53,7 @@ contract Investment {
         uint value;
         uint leftvalue;
         uint timeStartActivity;
-        uint timeOffActivity;
+        uint duration;
         string detail;
         uint perscentagecoverage;
         State statusActivity;
@@ -89,13 +89,13 @@ contract Investment {
         _;
     }
 
-    function Investment (uint _numOrganizations, uint _numInvestors, uint _maxTimesOfProject,uint _contribution,uint _contributionorganization, uint _activities, address _master) public {
+    function Investment (uint _numOrganizations, uint _numInvestors, uint _maxTimesOfProject,uint _contribution,uint _contributionorganizationpercentage, uint _activities, address _master) public {
         // _maxTimesOfProject --> Time In seconds reference where project started. Project start after all Investors pay ether
         master = _master;
         numOrganizations = _numOrganizations;
         numInvestors = _numInvestors;
         contribution = _contribution;
-        contributionorganization = ((_contributionorganization*contribution)/100);
+        contributionorganizationpercentage = ((_contributionorganizationpercentage*contribution)/100);
         availableetherforactivities = (_contribution*_numInvestors);
         activities = _activities;
         maxTimesOfProjectTemp = _maxTimesOfProject;
@@ -109,7 +109,7 @@ contract Investment {
         nowOrganizationsAdded ++ ;
     }
 
-    function C_AddActivity (uint _value, uint _timeStartActivity, uint _timeOffActivity, string _detail) public requireToBeMaster{
+    function C_AddActivity (uint _value, uint _timeStartActivity, uint _duration, string _detail) public requireToBeMaster{
         require(nowOrganizationsAdded == numOrganizations);
         require(nowInvestorsAdded == numInvestors);
         require(_value >= availableetherforactivities);
@@ -121,7 +121,7 @@ contract Investment {
             value : _value,
             leftvalue : _value,
             timeStartActivity : now + _timeStartActivity,
-            timeOffActivity: now + _timeStartActivity +_timeOffActivity,
+            duration: now + _timeStartActivity + _duration,
             detail : _detail,
             perscentagecoverage: 0,
             statusActivity: State.Inactive
@@ -143,7 +143,7 @@ contract Investment {
     function E_OrganizationsPayment () public payable requireToBeOrganization{
         require(activitiesTable.length == activities);  // Require activities create by master
         require(!organizations[msg.sender] == true);
-        require(msg.value == contributionorganization);
+        require(msg.value == contributionorganizationpercentage);
         require(nowOrganizationsAdded < numOrganizations);
         organizationsaddresses.push(msg.sender);
     }
@@ -191,13 +191,13 @@ contract Investment {
     function checkStatusOfActivity (uint _activityNumber) public requireToBeContractHasAllContribution returns (State){
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
         if ((statusOfResearch == State.Inactive) && detailActivity.timeStartActivity < now // Case 1 Initial Start
-            && detailActivity.timeOffActivity > now){
-            statusOfResearch == State.Active;
+            && (detailActivity.timeStartActivity+detailActivity.duration) > now){
+            statusOfResearch = State.Active;
             detailActivity.statusActivity = State.Active;
             return detailActivity.statusActivity;
         }else if (statusOfResearch == State.Active && detailActivity.timeStartActivity < now // Case 2 But time is over
-        && detailActivity.timeOffActivity < now){
-            statusOfResearch == State.Pending;
+        && detailActivity.timeStartActivity+detailActivity.duration < now){
+            statusOfResearch = State.Pending;
             detailActivity.statusActivity = State.Pending;
             return detailActivity.statusActivity;
         }
@@ -240,7 +240,7 @@ contract Investment {
                 investorsaddresses[i].transfer(_valueReturnInvestors);
             }
         }else if (statusOfResearch == State.Inactive || statusOfResearch == State.Completed){
-            _valueReturnOrganization = (contributionorganization/organizationsaddresses.length);
+            _valueReturnOrganization = (contributionorganizationpercentage/organizationsaddresses.length);
             for (uint k=0; k<=organizationsaddresses.length-1; k++){
                 organizationsaddresses[k].transfer(_valueReturnOrganization);
             }
