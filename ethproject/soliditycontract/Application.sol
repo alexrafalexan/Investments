@@ -42,7 +42,7 @@ contract Investment {
     address[] public investorsaddresses;
 
 
-    enum StatusOfResearch {Running, Pending, Failed, Completed}
+    enum StateOfResearch {Running, Pending, Failed, Completed}
     enum StateActivity {Active, Inactive, Cancelled, Completed}
 
 
@@ -99,7 +99,6 @@ contract Investment {
         maxTimesOfProjectTemp = _maxTimesOfProject;
         statusOfResearch = true;
     }
-
 
     function B_AddOrganizations (address _organizations) public requireToBeMaster{
         require(!organizations[_organizations] == true);
@@ -162,7 +161,6 @@ contract Investment {
         }
     }
 
-
     function PaySeller (uint _activityNumber, uint _value, string _detail, address _seller) public requireToBeOrganization requireToBeContractHasAllContribution returns(bool){
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
         require(_value <= detailActivity.organizationpercentageactivity[msg.sender]);
@@ -181,11 +179,6 @@ contract Investment {
         }else {
             return false;
         }
-    }
-
-    function getPercentageInActivity (uint _activityNumber, address _researchersaddresses) view public returns(uint) {
-        DetailActivities storage detailActivity = activitiesTable[_activityNumber];
-        return detailActivity.organizationpercentageactivity[_researchersaddresses];
     }
 
     function checkStatusOfActivities () public { // check status of All Activities
@@ -212,6 +205,11 @@ contract Investment {
             detailActivity.statusActivity = StateActivity.Inactive;
         }
         return detailActivity.statusActivity;
+    }
+
+    function getPercentageInActivity (uint _activityNumber, address _researcheraddresses) view public returns(uint) {
+        DetailActivities storage detailActivity = activitiesTable[_activityNumber];
+        return detailActivity.organizationpercentageactivity[_researcheraddresses];
     }
 
     function getBalance() view public returns (uint) { // Take Balance off the Contract
