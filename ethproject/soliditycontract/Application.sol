@@ -42,7 +42,7 @@ contract Investment {
     address[] public investorsaddresses;
 
 
-    enum StateOfResearch {Running, Pending, Failed, Completed}
+
     enum StateActivity {Active, Inactive, Cancelled, Completed}
 
 
