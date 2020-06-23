@@ -3,8 +3,8 @@ pragma solidity ~0.4.17;
 contract Application {
     address[] public listOfCreatedInvestments;
 
-    function createInvestment (uint _numResearchers, uint _numInvestors, uint _maxTimesOfProject,uint _Contribution, uint _activities) public {
-        address newInvestments = new Investment (_numResearchers, _numInvestors, _maxTimesOfProject, _Contribution, _activities , msg.sender);
+    function createInvestment (uint _numResearchers, uint _numInvestors, uint _maxTimesOfProject,uint _contribution, uint _contributionorganization, uint _activities) public {
+        address newInvestments = new Investment (_numResearchers, _numInvestors, _maxTimesOfProject, _contribution, _contributionorganization, _activities , msg.sender);
         listOfCreatedInvestments.push(newInvestments);
 
     }
@@ -18,28 +18,33 @@ contract Application {
 contract Investment {
     address public master;
 
-    uint public numResearchers;
+    uint public numOrganizations;
     uint public numInvestors;
-    uint public Contribution;
+
+    uint public contribution;
+    uint public contributionorganization;
+    uint public availableetherforactivities;
 
 
-    uint public nowResearchersAdded;
+    uint public nowOrganizationsAdded;
     uint public nowInvestorsAdded;
 
     uint public activities;
 
     uint public maxTimesOfProject = 0;
     uint public maxTimesOfProjectTemp;
-    bool public statusOfProject;
+    bool public statusOfResearch;
 
-    mapping(address => bool) public researchers;
-    address[] public researchersaddresses;
+    mapping(address => bool) public organizations;
+    address[] public organizationsaddresses;
 
     mapping(address => bool) public investors;
     address[] public investorsaddresses;
 
+
+    enum StatusOfResearch {Running, Pending, Failed, Completed}
     enum StateActivity {Active, Inactive, Cancelled, Completed}
-    bool _status;
+
 
     DetailActivities[] public activitiesTable;
     struct DetailActivities {
@@ -50,7 +55,7 @@ contract Investment {
         string detail;
         uint perscentagecoverage;
         StateActivity statusActivity;
-        mapping(address => uint) researcherpercentageactivity; // perscentage of money can use every researcher
+        mapping(address => uint) organizationpercentageactivity; // perscentage of money can use every researcher
 
     }
 
@@ -63,7 +68,7 @@ contract Investment {
     }
 
     modifier requireToBeContractHasAllContribution{
-        require(address(this).balance == (numInvestors*Contribution));
+        require(address(this).balance == (numInvestors*contribution));
         _;
     }
 
@@ -72,8 +77,8 @@ contract Investment {
         _;
     }
 
-    modifier requireToBeResearchers(){
-        require(researchers[msg.sender] = true);
+    modifier requireToBeOrganization(){
+        require(organizations[msg.sender] = true);
         _;
     }
 
@@ -82,36 +87,31 @@ contract Investment {
         _;
     }
 
-    function Investment (uint _numResearchers, uint _numInvestors, uint _maxTimesOfProject,uint _Contribution, uint _activities, address _master) public {
+    function Investment (uint _numOrganizations, uint _numInvestors, uint _maxTimesOfProject,uint _contribution,uint _contributionorganization, uint _activities, address _master) public {
         // _maxTimesOfProject --> Time In seconds reference where project started. Project start after all Investors pay ether
         master = _master;
-        numResearchers = _numResearchers;
+        numOrganizations = _numOrganizations;
         numInvestors = _numInvestors;
-        Contribution = _Contribution;
+        contribution = _contribution;
+        contributionorganization = ((_contributionorganization*300)/100);
+        availableetherforactivities = (_contribution*_numInvestors);
         activities = _activities;
         maxTimesOfProjectTemp = _maxTimesOfProject;
-        statusOfProject = true;
+        statusOfResearch = true;
     }
 
-    function A_AddInvestors (address _investors) public requireToBeMaster {
-        require(!investors[_investors] == true);
-        require(nowInvestorsAdded < numInvestors);
-        investorsaddresses.push(_investors);
-        investors[_investors] = true;
-        nowInvestorsAdded ++ ;
-    }
 
-    function B_AddResearchers (address _researchers) public requireToBeMaster{
-        require(!researchers[_researchers] == true);
-        require(nowResearchersAdded < numResearchers);
-        researchers[_researchers] = true;
-        researchersaddresses.push(_researchers);
-        nowResearchersAdded ++ ;
+    function B_AddOrganizations (address _organizations) public requireToBeMaster{
+        require(!organizations[_organizations] == true);
+        require(nowOrganizationsAdded < numOrganizations);
+        organizations[_organizations] = true;
+        nowOrganizationsAdded ++ ;
     }
 
     function C_AddActivity (uint _value, uint _timeStartActivity, uint _timeOffActivity, string _detail) public requireToBeMaster{
-        require(nowResearchersAdded == numResearchers);
+        require(nowOrganizationsAdded == numOrganizations);
         require(nowInvestorsAdded == numInvestors);
+        require(_value >= availableetherforactivities);
         require(activitiesTable.length < activities);
         // _timeStartActivity --> Time In seconds reference where project started
         // _timeOffActivity --> Time In seconds reference where activity started
@@ -127,28 +127,45 @@ contract Investment {
             //statusActivity : StateActivity.Inactive
             });
         activitiesTable.push(newDetailActivities);
+        availableetherforactivities = availableetherforactivities - _value;
     }
 
-    function D_AddPercentageInActivity (uint _activityNumber, uint _researchersaddresses, uint _perscentage) public requireToBeMaster{
+    function D_AddPercentageInActivity (uint _activityNumber, uint _organizationsaddresses, uint _perscentage) public requireToBeMaster{
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
         require(activitiesTable.length == activities);
-        require(nowResearchersAdded == numResearchers);
+        require(nowOrganizationsAdded == numOrganizations);
         require(nowInvestorsAdded == numInvestors);
         require(detailActivity.perscentagecoverage < 100 && detailActivity.perscentagecoverage + _perscentage <= 100);
-        detailActivity.researcherpercentageactivity[researchersaddresses[_researchersaddresses]] = (_perscentage*detailActivity.value) / 100;
+        detailActivity.organizationpercentageactivity[organizationsaddresses[_organizationsaddresses]] = (_perscentage*detailActivity.value) / 100;
         detailActivity.perscentagecoverage = activitiesTable[_activityNumber].perscentagecoverage + _perscentage;
     }
 
-    function E_InvestrorPay() public payable requireToBeInvestors{
-        require(activitiesTable.length == activities);
-        require(msg.value == Contribution);
-        maxTimesOfProject = now + maxTimesOfProjectTemp;
+    function E_OrganizationsPayment () public payable requireToBeOrganization{
+        require(activitiesTable.length == activities);  // Require activities create by master
+        require(!organizations[msg.sender] == true);
+        require(msg.value == contributionorganization);
+        require(nowOrganizationsAdded < numOrganizations);
+        organizationsaddresses.push(msg.sender);
+    }
+
+    function F_MakeAppanage () public payable{
+        require(activitiesTable.length == activities);  // Require activities create by master
+        require(!investors[msg.sender] == true);        // Require Investors not MakeAppanage before in this contract
+        require(msg.value == contribution);             // Require Appanage equal Contribution which set master before
+        require(nowInvestorsAdded < numInvestors);      // Require not to make all count of investors Appanage
+        require(organizationsaddresses.length == numOrganizations); // Require to OrganizationPayment
+        investorsaddresses.push(msg.sender);
+        investors[msg.sender] = true;
+        nowInvestorsAdded ++ ;
+        if (nowInvestorsAdded == numInvestors) {
+            maxTimesOfProject = now + maxTimesOfProjectTemp;
+        }
     }
 
 
-    function F_paySeller (uint _activityNumber, uint _value, string _detail, address _seller) public requireToBeResearchers requireToBeContractHasAllContribution returns(bool){
+    function PaySeller (uint _activityNumber, uint _value, string _detail, address _seller) public requireToBeOrganization requireToBeContractHasAllContribution returns(bool){
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
-        require(_value <= detailActivity.researcherpercentageactivity[msg.sender]);
+        require(_value <= detailActivity.organizationpercentageactivity[msg.sender]);
         if (checkStatusOfActivity(_activityNumber) == StateActivity.Active ) {
             DetailPurchase memory newDetailPurchase = DetailPurchase({
                 activityNumber: _activityNumber,
@@ -159,7 +176,7 @@ contract Investment {
             detailPurchase.push(newDetailPurchase);
             _seller.transfer(_value);
             detailActivity.leftvalue = detailActivity.leftvalue - _value;
-            detailActivity.researcherpercentageactivity[msg.sender] = (detailActivity.researcherpercentageactivity[msg.sender] - _value);
+            detailActivity.organizationpercentageactivity[msg.sender] = (detailActivity.organizationpercentageactivity[msg.sender] - _value);
             return true;
         }else {
             return false;
@@ -168,7 +185,7 @@ contract Investment {
 
     function getPercentageInActivity (uint _activityNumber, address _researchersaddresses) view public returns(uint) {
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
-        return detailActivity.researcherpercentageactivity[_researchersaddresses];
+        return detailActivity.organizationpercentageactivity[_researchersaddresses];
     }
 
     function checkStatusOfActivities () public { // check status of All Activities
@@ -179,17 +196,17 @@ contract Investment {
 
     function checkStatusOfActivity (uint _activityNumber) public requireToBeContractHasAllContribution returns(StateActivity){
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
-        if (statusOfProject == true && detailActivity.timeStartActivity < now // Case 1 Activity
+        if (statusOfResearch == true && detailActivity.timeStartActivity < now // Case 1 Activity
         && detailActivity.timeOffActivity > now){
             detailActivity.statusActivity = StateActivity.Active;
-        }else if (statusOfProject == true && detailActivity.timeStartActivity < now // Case 2 Activity
+        }else if (statusOfResearch == true && detailActivity.timeStartActivity < now // Case 2 Activity
         && detailActivity.timeOffActivity < now && detailActivity.leftvalue == 0){
             detailActivity.statusActivity = StateActivity.Completed;
-        }else if (statusOfProject == true && detailActivity.timeStartActivity < now // Case 3 Activity
+        }else if (statusOfResearch == true && detailActivity.timeStartActivity < now // Case 3 Activity
         && detailActivity.timeOffActivity < now && detailActivity.leftvalue > 0){
             detailActivity.statusActivity = StateActivity.Cancelled;
-            statusOfProject = false;
-        }else if (statusOfProject == false){ // In case project status change to false, canceled the Activity
+            statusOfResearch = false;
+        }else if (statusOfResearch == false){ // In case project status change to false, canceled the Activity
             detailActivity.statusActivity = StateActivity.Cancelled;
         }else{
             detailActivity.statusActivity = StateActivity.Inactive;
@@ -202,7 +219,7 @@ contract Investment {
     }
 
     function returnMoneyInToInvestors () public requireToBeMaster{
-        require(statusOfProject == false);
+        require(statusOfResearch == false);
         uint _valueReturn = address(this).balance / investorsaddresses.length;
         for (uint i=0; i<=investorsaddresses.length-1; i++){
             investorsaddresses[i].transfer(_valueReturn);

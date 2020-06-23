@@ -5,7 +5,16 @@ const fs = require('fs-extra');
 const buildPath = path.resolve(__dirname, 'build');
 fs.removeSync(buildPath);
 
-const investmentsPath = path.resolve(__dirname,'soliditycontract','Investments.sol');
-const source = fs.readFileSync(investmentsPath, 'utf8');
-const deployfiles = solc.compile(source,1)
+const applicationPath = path.resolve(__dirname,'soliditycontract','Application.sol');
+const source = fs.readFileSync(applicationPath, 'utf8');
+const output = solc.compile(source,1).contracts;
+
+fs.ensureDirSync(buildPath);
+
+for (let contract in output){
+    fs.outputJsonSync(
+        path.resolve(buildPath, contract + '.json'),
+        output[contract]
+    );
+}
 
