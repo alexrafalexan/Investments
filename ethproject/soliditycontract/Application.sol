@@ -33,7 +33,7 @@ contract Investment {
 
     uint public maxTimesOfProject = 0;
     uint public maxTimesOfProjectTemp;
-    bool public statusOfResearch;
+    //  bool public statusOfResearch;
     StateActivity public statusOfResearch2;
 
     mapping(address => bool) public organizations;
@@ -98,7 +98,7 @@ contract Investment {
         availableetherforactivities = (_contribution*_numInvestors);
         activities = _activities;
         maxTimesOfProjectTemp = _maxTimesOfProject;
-        statusOfResearch = true;
+        statusOfResearch2 = StateActivity.Inactive;
     }
 
     function B_AddOrganizations (address _organizations) public requireToBeMaster{
@@ -191,7 +191,7 @@ contract Investment {
     function checkStatusOfActivity (uint _activityNumber) public requireToBeContractHasAllContribution returns(StateActivity){
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
         if (statusOfResearch == true && detailActivity.timeStartActivity < now // Case 1 Activity
-        && detailActivity.timeOffActivity > now){
+            && detailActivity.timeOffActivity > now){
             detailActivity.statusActivity = StateActivity.Active;
         }else if (statusOfResearch == true && detailActivity.timeStartActivity < now // Case 2 Activity
         && detailActivity.timeOffActivity < now && detailActivity.leftvalue == 0){
