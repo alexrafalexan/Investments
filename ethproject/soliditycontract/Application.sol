@@ -95,7 +95,7 @@ contract Investment {
         numOrganizations = _numOrganizations;
         numInvestors = _numInvestors;
         contribution = _contribution;
-        contributionorganization = ((_contributionorganization*300)/100);
+        contributionorganization = ((_contributionorganization*contribution)/100);
         availableetherforactivities = (_contribution*_numInvestors);
         activities = _activities;
         maxTimesOfProjectTemp = _maxTimesOfProject;
