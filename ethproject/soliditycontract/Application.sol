@@ -182,7 +182,7 @@ contract Investment {
         }
     }
 
-    function checkStatusOfActivities () public { // check status of All Activities
+    function checkStatusOfActivities () public{ // check status of All Activities
         for(uint i=0; i<=(activitiesTable.length-1); i++){
             checkStatusOfActivity(i);
         }
