@@ -1,4 +1,4 @@
-pragma solidity ~0.4.17;
+pragma solidity ~0.4.22;
 
 contract Application {
     address[] public listOfCreatedInvestments;
@@ -89,7 +89,7 @@ contract Investment {
         _;
     }
 
-    function Investment (uint _numOrganizations, uint _numInvestors, uint _maxTimesOfProject,uint _contribution,uint _contributionorganizationpercentage, uint _activities, address _master) public {
+    constructor (uint _numOrganizations, uint _numInvestors, uint _maxTimesOfProject,uint _contribution,uint _contributionorganizationpercentage, uint _activities, address _master) public {
         // _maxTimesOfProject --> Time In seconds reference where project started. Project start after all Investors pay ether
         master = _master;
         numOrganizations = _numOrganizations;
