@@ -80,12 +80,12 @@ contract Investment {
     }
 
     modifier requireToBeOrganization(){
-        require(organizations[msg.sender] = true);
+        require(organizations[msg.sender] == true);
         _;
     }
 
     modifier requireToBeInvestors(){
-        require(investors[msg.sender] = true);
+        require(investors[msg.sender] == true);
         _;
     }
 
