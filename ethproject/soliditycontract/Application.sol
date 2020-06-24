@@ -116,7 +116,7 @@ contract Investment {
         require((_timeStartActivity + _duration) == maxTimesOfProject);
         require(activitiesTable.length < activities);
         // _timeStartActivity --> Time In seconds reference where project started
-        // _timeOffActivity --> Time In seconds reference where activity started
+        // _duration --> Time In seconds reference where activity started
 
         DetailActivities memory newDetailActivities = DetailActivities({
             value : _value,
