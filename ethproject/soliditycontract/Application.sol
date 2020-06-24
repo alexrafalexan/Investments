@@ -136,6 +136,8 @@ contract Investment {
         require(nowOrganizationsAdded == numOrganizations);
         require(nowInvestorsAdded == numInvestors);
         require(detailActivity.perscentagecoverage < 100 && detailActivity.perscentagecoverage + _perscentage <= 100);
+        /* Τα ποσοστά που έχουν εισαχθεί να μην ξεπερνούν το 100% ή να είναι μικρότερα
+        ή ίσα με το 100% έπειτα απο το εισαχθέν ποσοστό.*/
         detailActivity.organizationpercentageactivity[organizationsaddresses[_organizationsaddresses]] = (_perscentage*detailActivity.value) / 100;
         detailActivity.perscentagecoverage = activitiesTable[_activityNumber].perscentagecoverage + _perscentage;
     }
@@ -196,7 +198,7 @@ contract Investment {
             detailActivity.statusActivity = State.Active;
             return detailActivity.statusActivity;
         }else if (statusOfResearch == State.Active && detailActivity.timeStartActivity < now // Case 2 But time is over
-        && detailActivity.timeStartActivity+detailActivity.duration < now){
+            && detailActivity.timeStartActivity+detailActivity.duration < now){
             statusOfResearch = State.Pending;
             detailActivity.statusActivity = State.Pending;
             return detailActivity.statusActivity;
