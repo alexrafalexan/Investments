@@ -113,6 +113,7 @@ contract Investment {
         require(nowOrganizationsAdded == numOrganizations);
         require(nowInvestorsAdded == numInvestors);
         require(_value >= availableetherforactivities);
+        require((_timeStartActivity + _duration) == maxTimesOfProject);
         require(activitiesTable.length < activities);
         // _timeStartActivity --> Time In seconds reference where project started
         // _timeOffActivity --> Time In seconds reference where activity started
@@ -120,8 +121,8 @@ contract Investment {
         DetailActivities memory newDetailActivities = DetailActivities({
             value : _value,
             leftvalue : _value,
-            timeStartActivity : now + _timeStartActivity,
-            duration: now + _timeStartActivity + _duration,
+            timeStartActivity : block.timestamp + _timeStartActivity,
+            duration: block.timestamp + _timeStartActivity + _duration,
             detail : _detail,
             perscentagecoverage: 0,
             statusActivity: State.Inactive
@@ -160,7 +161,7 @@ contract Investment {
         investors[msg.sender] = true;
         nowInvestorsAdded ++ ;
         if (nowInvestorsAdded == numInvestors) {
-            maxTimesOfProject = now + maxTimesOfProjectTemp;
+            maxTimesOfProject = block.timestamp + maxTimesOfProjectTemp;
         }
     }
 
@@ -192,13 +193,13 @@ contract Investment {
 
     function checkStatusOfActivity (uint _activityNumber) public requireToBeContractHasAllContribution returns (State){
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
-        if ((statusOfResearch == State.Inactive) && detailActivity.timeStartActivity < now // Case 1 Initial Start
-            && (detailActivity.timeStartActivity+detailActivity.duration) > now){
+        if ((statusOfResearch == State.Inactive) && detailActivity.timeStartActivity < block.timestamp // Case 1 Initial Start
+            && (detailActivity.timeStartActivity+detailActivity.duration) > block.timestamp ){
             statusOfResearch = State.Active;
             detailActivity.statusActivity = State.Active;
             return detailActivity.statusActivity;
-        }else if (statusOfResearch == State.Active && detailActivity.timeStartActivity < now // Case 2 But time is over
-            && detailActivity.timeStartActivity+detailActivity.duration < now){
+        }else if (statusOfResearch == State.Active && detailActivity.timeStartActivity < block.timestamp // Case 2 But time is over
+            && detailActivity.timeStartActivity+detailActivity.duration < block.timestamp ){
             statusOfResearch = State.Pending;
             detailActivity.statusActivity = State.Pending;
             return detailActivity.statusActivity;
@@ -208,7 +209,7 @@ contract Investment {
     function changeStatusOfActivity(uint _activityNumber, State _state) public{
         require(_state == State.Completed || _state ==  State.Cancelled);
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
-        if (_state == State.Completed && numberOfCompletedActivities == (activitiesTable.length-1)){ // Mark this Activity now as Completed and all the Other has been Marked as Completed
+        if (_state == State.Completed && numberOfCompletedActivities == (activitiesTable.length-1)){ // Mark this Activity as Completed and all the Other has been Marked as Completed
             detailActivity.statusActivity = _state;
             numberOfCompletedActivities++;
         }else if(_state == State.Completed){ // Mark this Activity as Completed
