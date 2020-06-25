@@ -25,10 +25,11 @@ class InvestmentIndex extends Component {
         return (
             <div>
                 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css"/>
+                <h3> Ενεργές Έρευνες</h3>
                 {this.renderInvestments()}
                 <Button
                     content="Δημιουργία Έρευνας"
-                    icon="add circle"
+                    icon="add"
                     primary
                 />
             </div>
