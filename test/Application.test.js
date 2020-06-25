@@ -46,4 +46,18 @@ describe('Investment', () =>{
         const isOrganizationAdded = await investment.methods.organizations(accounts[1]).call();
         assert(isOrganizationAdded);
     })
+
+    it('Organization can not contribution else if master create all previous steps', async () => {
+       try {
+           await investment.methods.E_OrganizationsPayment().send({
+               value: '20',
+               from: accounts[1]
+           });
+           console.log(true);
+           assert(true);
+       }catch (e) {
+           console.log("Organization not succeed to contribute");
+           assert(e);
+       }
+    });
 });
