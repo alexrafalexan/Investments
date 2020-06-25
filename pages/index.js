@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
-import factory from '../ethproject/factory';
+import creator from '../ethproject/creator';
 
 class InvestmentIndex extends Component {
-    async componentDidMount() {
-        const investments = await factory.methods.getListOfCreatedInvestments().call();
-
-        console.log(investments);
+    static async getInitialProps(){
+        const investments = await creator.methods.getListOfCreatedInvestments().call();
+        return {investments};
     }
     render() {
-        return <div>Investments</div>
+        return <div>{this.props.investments[0]}</div>
     }
 }
 
