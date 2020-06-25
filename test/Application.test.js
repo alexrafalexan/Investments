@@ -33,4 +33,9 @@ describe('Investment', () =>{
         assert.ok(application.options.address);
         assert.ok(investment.options.address);
     });
+
+    it('Check creator that is investment master', async () => {
+        const master = await investment.methods.master().call();
+        assert.equal(accounts[0], master);
+    })
 });
