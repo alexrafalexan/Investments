@@ -30,7 +30,7 @@ class InvestmentIndex extends Component {
                 <Button
                     content="Δημιουργία Έρευνας"
                     icon="add"
-                    primary
+                    primary = {true}
                 />
             </div>
         );
