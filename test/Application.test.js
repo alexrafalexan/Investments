@@ -34,8 +34,16 @@ describe('Investment', () =>{
         assert.ok(investment.options.address);
     });
 
-    it('Check creator that is investment master', async () => {
+    it('Check creator that is Investment master', async () => {
         const master = await investment.methods.master().call();
         assert.equal(accounts[0], master);
+    })
+
+    it('Check accounts that insert the master for Organization added correctly ', async () => {
+        await investment.methods.B_AddOrganizations(accounts[1]).send({
+            from: accounts[0]
+        });
+        const isOrganizationAdded = await investment.methods.organizations(accounts[1]).call();
+        assert(isOrganizationAdded);
     })
 });
