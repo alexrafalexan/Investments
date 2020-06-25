@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import creator from '../ethproject/creator';
-import {Card} from "semantic-ui-react";
+import {Button, Card} from "semantic-ui-react";
 
 
 class InvestmentIndex extends Component {
@@ -13,7 +13,7 @@ class InvestmentIndex extends Component {
         const items = this.props.investments.map(address => {
             return {
                 header: address,
-                description: <a>Details of Investment</a>,
+                description: <a>Λεπτομέριες Έρευνας</a>,
                 fluid: true
             };
         });
@@ -22,13 +22,18 @@ class InvestmentIndex extends Component {
     }
 
     render() {
-        return <div>
-            <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css" />
-            {this.renderInvestments()}
-        </div>
+        return (
+            <div>
+                <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css"/>
+                {this.renderInvestments()}
+                <Button
+                    content="Δημιουργία Έρευνας"
+                    icon="add circle"
+                    primary
+                />
+            </div>
+        );
     }
 }
-
-
 
 export default InvestmentIndex;
