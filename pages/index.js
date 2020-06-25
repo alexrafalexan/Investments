@@ -1,5 +1,16 @@
-import React from 'react';
+import React, { Component } from 'react';
+import factory from '../ethproject/factory';
 
-export  default () => {
-    return <h1>Αυτή είναι η λίστα με τις τρέχουσες έρευνες.</h1>;
-};
+class InvestmentIndex extends Component {
+    async componentDidMount() {
+        const investments = await factory.methods.getListOfCreatedInvestments().call();
+
+        console.log(investments);
+    }
+    render() {
+        return <div>Investments</div>
+    }
+}
+
+
+export default InvestmentIndex;
