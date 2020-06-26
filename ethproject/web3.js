@@ -3,12 +3,14 @@ import Web3 from 'web3';
 let web3;
 
 if(typeof window !== 'undefined' && typeof window.web3 !=='undefined'){ //code run in the browser and metamask is runninig
+
+    if (window.ethereum) {
+        window.web3 = new Web3(window.ethereum);
+        window.ethereum.enable();
+    }
+
     web3 = new Web3(window.web3.currentProvider);
 
-    /* Note: change to window.web3.currentProvider.enable() As soon as you save the file The Metamask
-     throws you an prompt saying it want to make connection from your account. Click yes. and remove the
-     .enable() from the above code and save your code.
-     */
 
 }else{ // code run on the server OR not use metamask
     const provider = new Web3.providers.HttpProvider(
