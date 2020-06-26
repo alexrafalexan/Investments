@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import Layout from "../../components/Layout";
-import {Form, Input , Button} from 'semantic-ui-react';
+import {Form, Input , Button, Message} from 'semantic-ui-react';
 import web3 from '../../ethproject/web3';
 import creator from '../../ethproject/creator';
 
@@ -11,20 +11,26 @@ class InvestmentCreate extends Component {
         MaxTimesOfProject: '',
         Contribution: '',
         Contributionorganization: '',
-        Activities:''
+        Activities:'',
+        errMesag: ''
     };
 
     onSubmit = async event => {
         event.preventDefault();
 
-        const accounts = await web3.eth.getAccounts();
-        await creator.methods.createInvestment(this.state.NumResearchers,
-                                                this.state.NumInvestors,
-                                                this.state.MaxTimesOfProject,
-                                                this.state.Contribution,
-                                                this.state.Contributionorganization,
-                                                this.state.Activities)
-            .send({from: accounts[0]});
+        try {
+            const accounts = await web3.eth.getAccounts();
+            await creator.methods.createInvestment(this.state.NumResearchers,
+                this.state.NumInvestors,
+                this.state.MaxTimesOfProject,
+                this.state.Contribution,
+                this.state.Contributionorganization,
+                this.state.Activities)
+                .send({from: accounts[0]});
+        }catch (e) {
+            this.setState({errMesag: e.message})
+
+        }
     };
 
     render() {
