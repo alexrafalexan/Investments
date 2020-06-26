@@ -12,12 +12,14 @@ class InvestmentCreate extends Component {
         Contribution: '',
         Contributionorganization: '',
         Activities:'',
-        errMesag: ''
+        errMesag: '',
+        load: false
     };
 
     onSubmit = async event => {
         event.preventDefault();
 
+        this.setState({load: true, errMesag: ''});
         try {
             const accounts = await web3.eth.getAccounts();
             await creator.methods.createInvestment(this.state.NumResearchers,
@@ -27,17 +29,17 @@ class InvestmentCreate extends Component {
                 this.state.Contributionorganization,
                 this.state.Activities)
                 .send({from: accounts[0]});
-        }catch (e) {
-            this.setState({errMesag: e.message})
-
+        }catch (err) {
+            this.setState({errMesag: err.message})
         }
+        this.setState({load: false});
     };
 
     render() {
         return (
             <Layout>
             <h3>Δημιουργία καινούργιας Έρευνας</h3>
-                <Form onSubmit={this.onSubmit}>
+                <Form onSubmit={this.onSubmit} error={!!this.state.errMesag}>    {/* !!-> make string to bool */}
                     <Form.Field>
                         <label>Αριθμός Συμμετεχόντων Οργανισμός</label>
                         <Input
@@ -82,7 +84,8 @@ class InvestmentCreate extends Component {
                             onChange={event =>this.setState({Activities:event.target.value})}
                         />
                     </Form.Field>
-                        <Button primary>Δημιουργία</Button>
+                    <Message error header="Προσοχή!" content={this.state.errMesag}/>
+                        <Button loading={this.state.load} primary>Δημιουργία</Button>
                 </Form>
             </Layout>
     );
