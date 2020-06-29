@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import creator from '../ethproject/creator';
 import {Button, Card} from "semantic-ui-react";
 import Layout from "../components/Layout";
+import {Link} from "../routes";
 
 
 class InvestmentIndex extends Component {
@@ -14,7 +15,9 @@ class InvestmentIndex extends Component {
         const items = this.props.investments.map(address => {
             return {
                 header: address,
-                description: <a>Λεπτομέριες Έρευνας</a>,
+                description: (<Link route={`/investments/${address}`}>
+                        <a>Λεπτομέριες Έρευνας</a>
+                    </Link>),
                 fluid: true
             };
         });
@@ -27,6 +30,8 @@ class InvestmentIndex extends Component {
             <Layout>
                 <div>
                     <h3> Ενεργές Έρευνες</h3>
+                    <Link route="/investments/newinvestment">
+                        <a>
                     <Button
                         floated="right"
                         style={{marginTop: '10px'}}
@@ -34,7 +39,8 @@ class InvestmentIndex extends Component {
                         icon="add"
                         primary
                     />
-
+                        </a>
+                    </Link>
                     {this.renderInvestments()}
                 </div>
             </Layout>
