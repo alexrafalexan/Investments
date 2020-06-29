@@ -3,6 +3,7 @@ import Layout from "../../components/Layout";
 import {Form, Input , Button, Message} from 'semantic-ui-react';
 import web3 from '../../ethproject/web3';
 import creator from '../../ethproject/creator';
+import {Link, Router} from "../../routes";
 
 class InvestmentCreate extends Component {
     state = {
@@ -29,6 +30,8 @@ class InvestmentCreate extends Component {
                 this.state.Contributionorganization,
                 this.state.Activities)
                 .send({from: accounts[0]});
+
+            Router.pushRoute('/');
         }catch (err) {
             this.setState({errMesag: err.message})
         }
