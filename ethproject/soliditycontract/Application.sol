@@ -222,6 +222,19 @@ contract Investment {
         }
     }
 
+    function getInvestmentSummary() public view returns ( address, uint, uint, uint, uint, uint, uint, uint) {
+        return (
+        master,
+        numOrganizations,
+        numInvestors,
+        contribution,
+        contributionorganizationpercentage,
+        activities,
+        nowOrganizationsAdded,
+        nowInvestorsAdded
+        );
+    }
+
 
     function getPercentageInActivity (uint _activityNumber, address _researcheraddresses) public view returns(uint) {
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
