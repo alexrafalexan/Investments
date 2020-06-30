@@ -5,6 +5,7 @@ import Investment from "../../ethproject/investment";
 import {Card, GridColumn, Icon ,Grid} from 'semantic-ui-react';
 import web3 from '../../ethproject/web3';
 import AddOrganizationsForm from "../../components/AddOrganizationsForm";
+import AddActivityForm from "../../components/AddActivityForm";
 
 
 class ShowInvestment extends Component{
@@ -78,6 +79,7 @@ class ShowInvestment extends Component{
 
             return <Card.Group items={items}/>;
 
+
         }
 
         render() {
@@ -85,7 +87,7 @@ class ShowInvestment extends Component{
                 <h3>Λεπτομέρειες</h3>
                 <Grid>
                     <Grid.Column width={10}>{this.renderCards()}</Grid.Column>
-                    <Grid.Column width={5}><AddOrganizationsForm address={this.props.address}/></Grid.Column>
+                    <Grid.Column width={5}><AddOrganizationsForm address={this.props.address} test={this.props.test}/><br></br><AddActivityForm address={this.props.address}/></Grid.Column>
                 </Grid>
             </Layout>);
         }
