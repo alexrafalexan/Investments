@@ -45,28 +45,29 @@ class AddActivityForm extends Component {
         return (
             <Form onSubmit={this.onSubmit} error={!!this.state.errMessage}>
                 <Form.Field>
-                    <label>Προσθήκη Activity</label>
+                    <label><h3>Προσθήκη Activity</h3></label>
+                    <label>Προσθήκη Ποσού</label>
                     <Input
                         value ={this.state.value}
                         onChange={ event => this.setState({value: event.target.value})}
-                        label="address"
+                        label="wei"
                         labelPosition={"right"}
                     />
-                    <label>Μέγιστη Διάρκεια Έρευνας</label>
+                    <label>Χρονική Στιγμή 'Εναρξης Activity</label>
                     <Input
                         value={this.state.timeStartActivity}
                         onChange={event =>this.setState({timeStartActivity:event.target.value})}
                         label = "Δευτερόλεπτα"
                         labelPosition = 'right'
                     />
-                    <label>Μέγιστη Διάρκεια Έρευνας</label>
+                    <label>Μέγιστη Διάρκεια Activity</label>
                     <Input
                         value={this.state.duration}
                         onChange={event =>this.setState({duration:event.target.value})}
                         label = "Δευτερόλεπτα"
                         labelPosition = 'right'
                     />
-                    <label>Μέγιστη Διάρκεια Έρευνας</label>
+                    <label>Λεπτομέριες</label>
                     <Input
                         value={this.state.detail}
                         onChange={event =>this.setState({detail:event.target.value})}

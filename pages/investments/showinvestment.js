@@ -2,10 +2,12 @@ import React, {Component} from 'react';
 import Layout from "../../components/Layout";
 import creator from "../../ethproject/creator";
 import Investment from "../../ethproject/investment";
-import {Card, GridColumn, Icon ,Grid} from 'semantic-ui-react';
+import {Card, GridColumn, Icon, Grid, Button, GridRow} from 'semantic-ui-react';
 import web3 from '../../ethproject/web3';
 import AddOrganizationsForm from "../../components/AddOrganizationsForm";
 import AddActivityForm from "../../components/AddActivityForm";
+import OrganizationsPayment from "../../components/OrganizationsPayment";
+import {Link} from '../../routes';
 
 
 class ShowInvestment extends Component{
@@ -52,7 +54,11 @@ class ShowInvestment extends Component{
                 },
                 {
                     header: '3. Επενδυτές',
-                    meta: nowInvestorsAdded + '/' + numInvestors,
+                    meta:  (<Link route={`/investments/${this.props.address}/requests`}>
+                        <a>
+                            {nowInvestorsAdded + '/' + numInvestors}
+                        </a>
+                    </Link>) ,
                     description: 'O αρθιμός των Επενδυτών που έχουν συμμετάσχει σε σχέση με αυτούς που πρέπει να συμμετάσχουν.'
                 },
                 {
@@ -86,8 +92,37 @@ class ShowInvestment extends Component{
             return (<Layout>
                 <h3>Λεπτομέρειες</h3>
                 <Grid>
-                    <Grid.Column width={10}>{this.renderCards()}</Grid.Column>
-                    <Grid.Column width={5}><AddOrganizationsForm address={this.props.address} test={this.props.test}/><br></br><AddActivityForm address={this.props.address}/></Grid.Column>
+                    <GridRow>
+                        <Grid.Column width={10}>
+                            {this.renderCards()}
+                        </Grid.Column>
+                        <Grid.Column width={5}><AddOrganizationsForm address={this.props.address}
+                                                                     nowOrganizationsAdded={this.props.nowOrganizationsAdded}
+                                                                     numOrganizations={this.props.numOrganizations}/>
+                                                                     <br></br>
+                            <AddActivityForm address={this.props.address}/>
+                        </Grid.Column>
+                    </GridRow>
+                    <GridRow>
+                        <Grid.Column width={10}><OrganizationsPayment address={this.props.address}/>
+                            <br></br>
+                        </Grid.Column>
+                        <Grid.Column width={10}>
+                            <Link route={`/investments/${this.props.address}/requests`}>
+                                <a>
+                                    <Button primary>Προβολή Οργανισμών</Button>
+                                </a>
+                            </Link>
+                        </Grid.Column>
+                        <Grid.Column width={2}>
+                            <Link route={`/investments/${this.props.address}/requests`}>
+                                <a>
+                                    <Button primary>Λεπρομέριες Activity</Button>
+                                </a>
+                            </Link>
+                        </Grid.Column>
+                    </GridRow>
+
                 </Grid>
             </Layout>);
         }

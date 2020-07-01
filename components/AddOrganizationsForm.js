@@ -6,16 +6,28 @@ import {Router} from '../routes';
 
 class AddOrganizationsForm extends Component {
     state ={
-      value: '',
-      errMessage: '',
-      loading: false
+        value: '',
+        errMessage: '',
+        loading: false,
+        buttonenable: false
     };
 
     onSubmit = async event => {
         event.preventDefault();
+
+        console.log(this.props.numOrganizations);
+        console.log(this.props.nowOrganizationsAdded);
+
         const investment = Investment(this.props.address);
 
-            this.setState({loading: true, errMessage: ''});
+        if(this.props.nowOrganizationsAdded <this.props.numOrganizations){
+            this.setState({loading: true, errMessage: '', buttonenable: false});
+            console.log(false)
+        }else {
+            this.setState({loading: true, errMessage: '', buttonenable: false});
+            console.log(true)
+        }
+
 
         try{
             const account = await web3.eth.getAccounts();
@@ -30,9 +42,13 @@ class AddOrganizationsForm extends Component {
             this.setState({errMessage: err.message});
         }
 
-            this.setState({loading: false, value: ''})
-
-
+        if(this.props.nowOrganizationsAdded <this.props.numOrganizations){
+            this.setState({loading: false, value: '', buttonenable: false});
+            console.log(false)
+        }else {
+            this.setState({loading: false, value: '', buttonenable: true});
+            console.log(true)
+        }
     };
 
     render() {
@@ -48,7 +64,7 @@ class AddOrganizationsForm extends Component {
                     />
                 </Form.Field>
                 <Message error header="Opps!" content={this.state.errMessage}/>
-                <Button primary loading={this.state.loading}>
+                <Button primary loading={this.state.loading} disabled={this.state.buttonenable}>
                     Προσθήκη
                 </Button>
             </Form>

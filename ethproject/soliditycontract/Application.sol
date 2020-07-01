@@ -111,9 +111,9 @@ contract Investment {
 
     function C_AddActivity (uint _value, uint _timeStartActivity, uint _duration, string _detail) public requireToBeMaster{
         require(nowOrganizationsAdded == numOrganizations);
-        require(nowInvestorsAdded == numInvestors);
+    //    require(nowInvestorsAdded == numInvestors);
         require(_value >= availableetherforactivities);
-        require((_timeStartActivity + _duration) == maxTimesOfProject);
+    //    require((_timeStartActivity + _duration) == maxTimesOfProject);
         require(activitiesTable.length < activities);
         // _timeStartActivity --> Time In seconds reference where project started
         // _duration --> Time In seconds reference where activity started
