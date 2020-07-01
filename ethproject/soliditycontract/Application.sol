@@ -43,6 +43,7 @@ contract Investment {
     mapping(address => bool) public organizations; // Mapping με τις διευθύνσης των οργανισμών που έχουν συμμετάσχει στην έρευνα καταθέτοντας το ανάλογο ποσό
     address[] public organizationsaddresses; // Λίστα με τις διευθύνσης των οργανισμών που έχουν συμμετάσχει στην έρευνα καταθέτοντας το ανάλογο ποσό
 
+    mapping(uint => bool) public change_status_activity_to_complete;
 
     mapping(address => bool) public investors;
     address[] public investorsaddresses;
@@ -61,7 +62,7 @@ contract Investment {
         string detail;
         uint perscentagecoverage;
         State statusActivity;
-        mapping(address => uint) organizationpercentageactivity; // perscentage of money can use every researcher
+        mapping(address => uint) available_ether_to_spent_per_organization;
 
     }
 
@@ -138,7 +139,7 @@ contract Investment {
             value : _value,
             leftvalue : _value,
             timeStartActivity : block.timestamp + _timeStartActivity,
-            duration: block.timestamp + _timeStartActivity + _duration,
+            timeStopActivity: block.timestamp + _timeStartActivity + _duration,
             detail : _detail,
             perscentagecoverage: 0,
             statusActivity: State.Inactive
@@ -155,7 +156,7 @@ contract Investment {
         require(detailActivity.perscentagecoverage < 100 && detailActivity.perscentagecoverage + _perscentage <= 100);
         /* Τα ποσοστά που έχουν εισαχθεί να μην ξεπερνούν το 100% ή να είναι μικρότερα
         ή ίσα με το 100% έπειτα απο το εισαχθέν ποσοστό.*/
-        detailActivity.organizationpercentageactivity[organizationsaddressesdeclairemaster[_organizationsaddresses]] = (_perscentage*detailActivity.value) / 100;
+        detailActivity.available_ether_to_spent_per_organization[organizationsaddressesdeclairemaster[_organizationsaddresses]] = (_perscentage*detailActivity.value) / 100;
         detailActivity.perscentagecoverage = activitiesTable[_activityNumber].perscentagecoverage + _perscentage;
     }
 
@@ -208,7 +209,7 @@ contract Investment {
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
         require(organizationsaddresses.length == numOrganizations); // Θα πρέπει όλοι οι Οργανισμοί να έχουν πραγματοποιήσει συνεισφορά
         require(investorsaddresses.length == numOrganizations); // Θα πρέπει όλοι οι ερευνητές να έχουν πραγματοποιήσει την επένδηση
-        require(_value <= detailActivity.organizationpercentageactivity[msg.sender]);
+        require(_value <= detailActivity.available_ether_to_spent_per_organization[msg.sender]);
         if (statusOfResearch == State.Active && detailActivity.statusActivity == State.Active ) {
             DetailPurchase memory newDetailPurchase = DetailPurchase({
                 activityNumber: _activityNumber,
@@ -219,23 +220,24 @@ contract Investment {
             detailPurchase.push(newDetailPurchase);
             _seller.transfer(_value);
             detailActivity.leftvalue = detailActivity.leftvalue - _value;
-            detailActivity.organizationpercentageactivity[msg.sender] = (detailActivity.organizationpercentageactivity[msg.sender] - _value);
+            detailActivity.available_ether_to_spent_per_organization[msg.sender] = (detailActivity.available_ether_to_spent_per_organization[msg.sender] - _value);
             return true;
         }else {
             return false;
         }
     }
 
-    function changeStatusOfActivity(uint _activityNumber, State _state) public{
+    function I_changeStatusOfActivity(uint _activityNumber, State _state) public{
+        require(!!(change_status_activity_to_complete[_activityNumber] == true)); // Απαιτείται να μην έχει γίνει ήδη Completed μια Activity
         require(_state == State.Completed || _state ==  State.Cancelled);
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
         if (_state == State.Completed && numberOfCompletedActivities == (activitiesTable.length-1)){ // Mark this Activity as Completed and all the Other has been Marked as Completed
             detailActivity.statusActivity = _state;
             numberOfCompletedActivities++;
+            statusOfResearch = State.Active;
         }else if(_state == State.Completed){ // Mark this Activity as Completed
             detailActivity.statusActivity = _state;
             numberOfCompletedActivities++;
-            statusOfResearch = State.Active;
         }else {                             // Mark as Cancelled
             detailActivity.statusActivity = _state;
             statusOfResearch = _state;
@@ -260,7 +262,7 @@ contract Investment {
 
     function getPercentageInActivity (uint _activityNumber, address _researcheraddresses) public view returns(uint) {
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
-        return detailActivity.organizationpercentageactivity[_researcheraddresses];
+        return detailActivity.available_ether_to_spent_per_organization[_researcheraddresses];
     }
 
     function getBalance() view public returns (uint) { // Take Balance off the Contract
