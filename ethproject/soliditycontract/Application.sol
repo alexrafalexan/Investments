@@ -36,7 +36,7 @@ contract Investment {
     uint public maxTimesOfProjectTemp;
     // bool public statusOfResearchDel;
     State public statusOfResearch;
-    uint public numberOfCompletedActivities;
+    uint public numberOfCompletedActivities = 0;
 
     mapping(address => bool) public organizationsmaster; // Mapping με τις διευθύνσης των οργανισμών όπως έχει δηλωθεί από την master
     address[] public organizationsaddressesdeclairemaster; // Λίστα με τις διευθύνσης των οργανισμών όπως έχει δηλωθεί από την master
@@ -233,10 +233,12 @@ contract Investment {
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
         if (_state == State.Completed && numberOfCompletedActivities == (activitiesTable.length-1)){ // Mark this Activity as Completed and all the Other has been Marked as Completed
             detailActivity.statusActivity = _state;
+            check_complete_activity[_activityNumber] = true;
             numberOfCompletedActivities++;
             statusOfResearch = State.Active;
         }else if(_state == State.Completed){ // Mark this Activity as Completed
             detailActivity.statusActivity = _state;
+            check_complete_activity[_activityNumber] = true;
             numberOfCompletedActivities++;
         }else {                             // Mark as Cancelled
             detailActivity.statusActivity = _state;
