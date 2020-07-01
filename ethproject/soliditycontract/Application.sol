@@ -235,11 +235,12 @@ contract Investment {
             detailActivity.statusActivity = _state;
             check_complete_activity[_activityNumber] = true;
             numberOfCompletedActivities++;
-            statusOfResearch = State.Active;
+            statusOfResearch = State.Completed;
         }else if(_state == State.Completed){ // Mark this Activity as Completed
             detailActivity.statusActivity = _state;
             check_complete_activity[_activityNumber] = true;
             numberOfCompletedActivities++;
+            statusOfResearch = State.Active;
         }else {                             // Mark as Cancelled
             detailActivity.statusActivity = _state;
             statusOfResearch = _state;
