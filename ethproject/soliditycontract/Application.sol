@@ -1,4 +1,4 @@
-pragma solidity ~0.4.22;
+pragma solidity ~0.4.24;
 
 contract Application {
     address[] public listOfCreatedInvestments;
@@ -22,10 +22,11 @@ contract Investment {
     uint public numInvestors;
 
     uint public contribution;
-    uint public contributionorganizationpercentage;
+    uint public contributionorganization;
     uint public availableetherforactivities;
 
 
+    uint public nowOrganizationsAddedDeclaireMaster;
     uint public nowOrganizationsAdded;
     uint public nowInvestorsAdded;
 
@@ -33,12 +34,15 @@ contract Investment {
 
     uint public maxTimesOfProject = 0;
     uint public maxTimesOfProjectTemp;
-    bool public statusOfResearchDel;
+    // bool public statusOfResearchDel;
     State public statusOfResearch;
     uint public numberOfCompletedActivities;
 
-    mapping(address => bool) public organizations;
-    address[] public organizationsaddresses;
+    mapping(address => bool) public organizationsmaster; // Mapping με τις διευθύνσης των οργανισμών όπως έχει δηλωθεί από την master
+    address[] public organizationsaddressesdeclairemaster; // Λίστα με τις διευθύνσης των οργανισμών όπως έχει δηλωθεί από την master
+    mapping(address => bool) public organizations; // Mapping με τις διευθύνσης των οργανισμών που έχουν συμμετάσχει στην έρευνα καταθέτοντας το ανάλογο ποσό
+    address[] public organizationsaddresses; // Λίστα με τις διευθύνσης των οργανισμών που έχουν συμμετάσχει στην έρευνα καταθέτοντας το ανάλογο ποσό
+
 
     mapping(address => bool) public investors;
     address[] public investorsaddresses;
@@ -53,7 +57,7 @@ contract Investment {
         uint value;
         uint leftvalue;
         uint timeStartActivity;
-        uint duration;
+        uint timeStopActivity;
         string detail;
         uint perscentagecoverage;
         State statusActivity;
@@ -70,12 +74,17 @@ contract Investment {
     }
 
     modifier requireToBeContractHasAllContribution{
-        require(address(this).balance == (numInvestors*contribution));
+        require(address(this).balance == ((numInvestors*contribution) + (numOrganizations*contributionorganization)));
         _;
     }
 
     modifier requireToBeMaster(){
         require(master == msg.sender);
+        _;
+    }
+
+    modifier requireToBeOrganizationDeclareMaster(){
+        require(organizationsmaster[msg.sender] == true);
         _;
     }
 
@@ -90,12 +99,18 @@ contract Investment {
     }
 
     constructor (uint _numOrganizations, uint _numInvestors, uint _maxTimesOfProject,uint _contribution,uint _contributionorganizationpercentage, uint _activities, address _master) public {
+        require(_numOrganizations > 0);
+        require(_numInvestors > 0);
+        require(_maxTimesOfProject > 0);
+        require(_contribution > 0);
+        require(_contributionorganizationpercentage > 0);
+        require(_activities > 0);
         // _maxTimesOfProject --> Time In seconds reference where project started. Project start after all Investors pay ether
         master = _master;
         numOrganizations = _numOrganizations;
         numInvestors = _numInvestors;
         contribution = _contribution;
-        contributionorganizationpercentage = ((_contributionorganizationpercentage*contribution)/100);
+        contributionorganization = ((_contributionorganizationpercentage*contribution)/100);
         availableetherforactivities = (_contribution*_numInvestors);
         activities = _activities;
         maxTimesOfProjectTemp = _maxTimesOfProject;
@@ -103,17 +118,18 @@ contract Investment {
     }
 
     function B_AddOrganizations (address _organizations) public requireToBeMaster{
-        require(!organizations[_organizations] == true);
-        require(nowOrganizationsAdded < numOrganizations);
-        organizations[_organizations] = true;
-        nowOrganizationsAdded ++ ;
+        require(!organizationsmaster[_organizations] == true);
+        require(nowOrganizationsAddedDeclaireMaster < numOrganizations);
+        organizationsmaster[_organizations] = true;
+        organizationsaddressesdeclairemaster.push(_organizations);
+        nowOrganizationsAddedDeclaireMaster ++ ;
     }
 
     function C_AddActivity (uint _value, uint _timeStartActivity, uint _duration, string _detail) public requireToBeMaster{
-        require(nowOrganizationsAdded == numOrganizations);
-    //    require(nowInvestorsAdded == numInvestors);
-        require(_value >= availableetherforactivities);
-    //    require((_timeStartActivity + _duration) == maxTimesOfProject);
+        require(nowOrganizationsAddedDeclaireMaster == numOrganizations);
+        //    require(nowInvestorsAdded == numInvestors);
+        require(_value <= availableetherforactivities);
+        //    require((_timeStartActivity + _duration) == maxTimesOfProject);
         require(activitiesTable.length < activities);
         // _timeStartActivity --> Time In seconds reference where project started
         // _duration --> Time In seconds reference where activity started
@@ -134,20 +150,22 @@ contract Investment {
     function D_AddPercentageInActivity (uint _activityNumber, uint _organizationsaddresses, uint _perscentage) public requireToBeMaster{
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
         require(activitiesTable.length == activities);
-        require(nowOrganizationsAdded == numOrganizations);
-        require(nowInvestorsAdded == numInvestors);
+        require(nowOrganizationsAddedDeclaireMaster == numOrganizations);
+        //    require(nowInvestorsAdded == numInvestors);
         require(detailActivity.perscentagecoverage < 100 && detailActivity.perscentagecoverage + _perscentage <= 100);
         /* Τα ποσοστά που έχουν εισαχθεί να μην ξεπερνούν το 100% ή να είναι μικρότερα
         ή ίσα με το 100% έπειτα απο το εισαχθέν ποσοστό.*/
-        detailActivity.organizationpercentageactivity[organizationsaddresses[_organizationsaddresses]] = (_perscentage*detailActivity.value) / 100;
+        detailActivity.organizationpercentageactivity[organizationsaddressesdeclairemaster[_organizationsaddresses]] = (_perscentage*detailActivity.value) / 100;
         detailActivity.perscentagecoverage = activitiesTable[_activityNumber].perscentagecoverage + _perscentage;
     }
 
-    function E_OrganizationsPayment () public payable requireToBeOrganization{
+    function E_OrganizationsPayment () public payable requireToBeOrganizationDeclareMaster{
         require(activitiesTable.length == activities);  // Require activities create by master
         require(!organizations[msg.sender] == true);
-        require(msg.value == contributionorganizationpercentage);
+        require(msg.value == contributionorganization);
         require(nowOrganizationsAdded < numOrganizations);
+        organizations[msg.sender] = true;
+        nowOrganizationsAdded++;
         organizationsaddresses.push(msg.sender);
     }
 
@@ -165,8 +183,31 @@ contract Investment {
         }
     }
 
-    function PaySeller (uint _activityNumber, uint _value, string _detail, address _seller) public requireToBeOrganization requireToBeContractHasAllContribution returns(bool){
+    function G_checkStatusOfActivities () public{ // check status of All Activities
+        for(uint i=0; i<=(activitiesTable.length-1); i++){
+            checkStatusOfActivity(i);
+        }
+    }
+
+    function checkStatusOfActivity (uint _activityNumber) public returns (State){  // Na dw pws na to prosthesw requireToBeContractHasAllContribution
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
+        if ((statusOfResearch == State.Inactive) && detailActivity.timeStartActivity < block.timestamp // Case 1 Initial Start
+            && (detailActivity.timeStartActivity+detailActivity.timeStopActivity) > block.timestamp ){
+            statusOfResearch = State.Active;
+            detailActivity.statusActivity = State.Active;
+            return detailActivity.statusActivity;
+        }else if (statusOfResearch == State.Active && detailActivity.timeStartActivity < block.timestamp // Case 2 But time is over
+            && detailActivity.timeStartActivity+detailActivity.timeStopActivity < block.timestamp ){
+            statusOfResearch = State.Pending;
+            detailActivity.statusActivity = State.Pending;
+            return detailActivity.statusActivity;
+        }
+    }
+
+    function H_PaySeller (uint _activityNumber, uint _value, string _detail, address _seller) public requireToBeOrganization returns(bool){
+        DetailActivities storage detailActivity = activitiesTable[_activityNumber];
+        require(organizationsaddresses.length == numOrganizations); // Θα πρέπει όλοι οι Οργανισμοί να έχουν πραγματοποιήσει συνεισφορά
+        require(investorsaddresses.length == numOrganizations); // Θα πρέπει όλοι οι ερευνητές να έχουν πραγματοποιήσει την επένδηση
         require(_value <= detailActivity.organizationpercentageactivity[msg.sender]);
         if (statusOfResearch == State.Active && detailActivity.statusActivity == State.Active ) {
             DetailPurchase memory newDetailPurchase = DetailPurchase({
@@ -182,27 +223,6 @@ contract Investment {
             return true;
         }else {
             return false;
-        }
-    }
-
-    function checkStatusOfActivities () public{ // check status of All Activities
-        for(uint i=0; i<=(activitiesTable.length-1); i++){
-            checkStatusOfActivity(i);
-        }
-    }
-
-    function checkStatusOfActivity (uint _activityNumber) public requireToBeContractHasAllContribution returns (State){
-        DetailActivities storage detailActivity = activitiesTable[_activityNumber];
-        if ((statusOfResearch == State.Inactive) && detailActivity.timeStartActivity < block.timestamp // Case 1 Initial Start
-            && (detailActivity.timeStartActivity+detailActivity.duration) > block.timestamp ){
-            statusOfResearch = State.Active;
-            detailActivity.statusActivity = State.Active;
-            return detailActivity.statusActivity;
-        }else if (statusOfResearch == State.Active && detailActivity.timeStartActivity < block.timestamp // Case 2 But time is over
-            && detailActivity.timeStartActivity+detailActivity.duration < block.timestamp ){
-            statusOfResearch = State.Pending;
-            detailActivity.statusActivity = State.Pending;
-            return detailActivity.statusActivity;
         }
     }
 
@@ -222,16 +242,18 @@ contract Investment {
         }
     }
 
-    function getInvestmentSummary() public view returns ( address, uint, uint, uint, uint, uint, uint, uint) {
+    function getInvestmentSummary() public view returns ( address, uint, uint, uint, uint, uint, uint, uint, uint, State) {
         return (
         master,
         numOrganizations,
-        numInvestors,
-        contribution,
-        contributionorganizationpercentage,
-        activities,
+        nowOrganizationsAddedDeclaireMaster,
         nowOrganizationsAdded,
-        nowInvestorsAdded
+        contributionorganization,
+        numInvestors,
+        nowInvestorsAdded,
+        contribution,
+        activities,
+        statusOfResearch
         );
     }
 
@@ -256,7 +278,7 @@ contract Investment {
                 investorsaddresses[i].transfer(_valueReturnInvestors);
             }
         }else if (statusOfResearch == State.Inactive || statusOfResearch == State.Completed){
-            _valueReturnOrganization = (contributionorganizationpercentage/organizationsaddresses.length);
+            _valueReturnOrganization = (contributionorganization /organizationsaddresses.length);
             for (uint k=0; k<=organizationsaddresses.length-1; k++){
                 organizationsaddresses[k].transfer(_valueReturnOrganization);
             }
