@@ -43,7 +43,7 @@ contract Investment {
     mapping(address => bool) public organizations; // Mapping με τις διευθύνσης των οργανισμών που έχουν συμμετάσχει στην έρευνα καταθέτοντας το ανάλογο ποσό
     address[] public organizationsaddresses; // Λίστα με τις διευθύνσης των οργανισμών που έχουν συμμετάσχει στην έρευνα καταθέτοντας το ανάλογο ποσό
 
-    mapping(uint => bool) public change_status_activity_to_complete;
+    mapping(uint => bool) public check_complete_activity;
 
     mapping(address => bool) public investors;
     address[] public investorsaddresses;
@@ -228,7 +228,7 @@ contract Investment {
     }
 
     function I_changeStatusOfActivity(uint _activityNumber, State _state) public{
-        require(!!(change_status_activity_to_complete[_activityNumber] == true)); // Απαιτείται να μην έχει γίνει ήδη Completed μια Activity
+        require(!(check_complete_activity[_activityNumber] == true)); // Απαιτείται να μην έχει γίνει ήδη Completed μια Activity
         require(_state == State.Completed || _state ==  State.Cancelled);
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
         if (_state == State.Completed && numberOfCompletedActivities == (activitiesTable.length-1)){ // Mark this Activity as Completed and all the Other has been Marked as Completed
@@ -260,7 +260,7 @@ contract Investment {
     }
 
 
-    function getPercentageInActivity (uint _activityNumber, address _researcheraddresses) public view returns(uint) {
+    function getAvailableEtherPerOrganizationPerActivity (uint _activityNumber, address _researcheraddresses) public view returns(uint) {
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
         return detailActivity.available_ether_to_spent_per_organization[_researcheraddresses];
     }
