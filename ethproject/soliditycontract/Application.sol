@@ -34,7 +34,7 @@ contract Investment {
 
     uint public maxTimesOfProject = 0;
     uint public maxTimesOfProjectTemp;
-    // bool public statusOfResearchDel;
+
     State public statusOfResearch;
     uint public numberOfCompletedActivities = 0;
 
@@ -99,6 +99,11 @@ contract Investment {
         _;
     }
 
+    modifier requireOrganizationAndInvestorsDonate{
+        require(organizationsaddresses.length == numOrganizations); // Θα πρέπει όλοι οι Οργανισμοί να έχουν πραγματοποιήσει συνεισφορά
+        require(investorsaddresses.length == numInvestors); // Θα πρέπει όλοι οι ερευνητές να έχουν πραγματοποιήσει την επένδηση
+        _;
+    }
     constructor (uint _numOrganizations, uint _numInvestors, uint _maxTimesOfProject,uint _contribution,uint _contributionorganizationpercentage, uint _activities, address _master) public {
         require(_numOrganizations > 0);
         require(_numInvestors > 0);
@@ -174,8 +179,8 @@ contract Investment {
         require(activitiesTable.length == activities);  // Require activities create by master
         require(!investors[msg.sender] == true);        // Require Investors not MakeAppanage before in this contract
         require(msg.value == contribution);             // Require Appanage equal Contribution which set master before
-        require(nowInvestorsAdded < numInvestors);      // Require not to make all count of investors Appanage
         require(organizationsaddresses.length == numOrganizations); // Require to OrganizationPayment
+        require(nowInvestorsAdded < numInvestors);      // Require not to make all count of investors Appanage
         investorsaddresses.push(msg.sender);
         investors[msg.sender] = true;
         nowInvestorsAdded ++ ;
@@ -190,7 +195,7 @@ contract Investment {
         }
     }
 
-    function checkStatusOfActivity (uint _activityNumber) public returns (State){  // Na dw pws na to prosthesw requireToBeContractHasAllContribution
+    function checkStatusOfActivity (uint _activityNumber) public requireOrganizationAndInvestorsDonate returns (State){
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
         if ((statusOfResearch == State.Inactive) && detailActivity.timeStartActivity < block.timestamp // Case 1 Initial Start
             && (detailActivity.timeStartActivity+detailActivity.timeStopActivity) > block.timestamp ){
@@ -205,10 +210,8 @@ contract Investment {
         }
     }
 
-    function H_PaySeller (uint _activityNumber, uint _value, string _detail, address _seller) public requireToBeOrganization returns(bool){
+    function H_PaySeller (uint _activityNumber, uint _value, string _detail, address _seller) public requireToBeOrganization requireOrganizationAndInvestorsDonate returns(bool){
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
-        require(organizationsaddresses.length == numOrganizations); // Θα πρέπει όλοι οι Οργανισμοί να έχουν πραγματοποιήσει συνεισφορά
-        require(investorsaddresses.length == numOrganizations); // Θα πρέπει όλοι οι ερευνητές να έχουν πραγματοποιήσει την επένδηση
         require(_value <= detailActivity.available_ether_to_spent_per_organization[msg.sender]);
         if (statusOfResearch == State.Active && detailActivity.statusActivity == State.Active ) {
             DetailPurchase memory newDetailPurchase = DetailPurchase({
