@@ -57,6 +57,8 @@ contract Investment {
     struct DetailActivities {
         uint value;
         uint leftvalue;
+        uint timeSecStartActivity;
+        uint timeSecStopActivity;
         uint timeStartActivity;
         uint timeStopActivity;
         string detail;
@@ -111,7 +113,7 @@ contract Investment {
         require(_contribution > 0);
         require(_contributionorganizationpercentage > 0);
         require(_activities > 0);
-        // _maxTimesOfProject --> Time In seconds reference where project started. Project start after all Investors pay ether
+        // _maxTimesOfProject --> Χρονική Διάρκεια σε sec της Έρευνας . Η έρευνα ξεκινάει αφού επενδύσουν ο απαραίτητος αριθμός των επενδυτών
         master = _master;
         numOrganizations = _numOrganizations;
         numInvestors = _numInvestors;
@@ -143,8 +145,10 @@ contract Investment {
         DetailActivities memory newDetailActivities = DetailActivities({
             value : _value,
             leftvalue : _value,
-            timeStartActivity : block.timestamp + _timeStartActivity,
-            timeStopActivity: block.timestamp + _timeStartActivity + _duration,
+            timeSecStartActivity: _timeStartActivity,
+            timeSecStopActivity: _duration, //Χρονική Διάρκεια σε sec της Activity. Activity ξεκινάει αφού επενδύσουν ο απαραίτητος αριθμός των επενδυτών
+            timeStartActivity : 0,
+            timeStopActivity: 0,
             detail : _detail,
             perscentagecoverage: 0,
             statusActivity: State.Inactive
@@ -186,6 +190,17 @@ contract Investment {
         nowInvestorsAdded ++ ;
         if (nowInvestorsAdded == numInvestors) {
             maxTimesOfProject = block.timestamp + maxTimesOfProjectTemp;
+            for(uint n=0; n<=activitiesTable.length-1; n++){
+                activitiesTable[n].timeStartActivity = block.timestamp + activitiesTable[n].timeSecStartActivity;
+                activitiesTable[n].timeStopActivity = block.timestamp + activitiesTable[n].timeSecStopActivity;
+            }
+        }
+    }
+
+    function StartInvestment () public {
+        for(uint n=0; n<=activitiesTable.length-1; n++){
+            activitiesTable[n].timeStartActivity = block.timestamp + activitiesTable[n].timeSecStartActivity;
+            activitiesTable[n].timeStopActivity = block.timestamp + activitiesTable[n].timeSecStopActivity;
         }
     }
 
