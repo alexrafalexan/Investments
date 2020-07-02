@@ -9,13 +9,13 @@ class DetailIndex extends Component {
         const { address } = props.query;
         const investment = Investment(address)
         const activitiesTableCount = await investment.methods.getActivitiesTableCount().call();
-        const requests = await Promise.all(
+        const activitiesTable = await Promise.all(
           Array(activitiesTableCount).fill().map((element,index)=>{
-              return investment.methods.request(index).call()
+              return investment.methods.activitiesTable(index).call()
           })
         );
 
-        console.log(requests);
+        console.log(activitiesTable);
 
         return {address};
     }
