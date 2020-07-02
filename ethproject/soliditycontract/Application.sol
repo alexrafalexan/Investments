@@ -197,13 +197,6 @@ contract Investment {
         }
     }
 
-    function StartInvestment () public {
-        for(uint n=0; n<=activitiesTable.length-1; n++){
-            activitiesTable[n].timeStartActivity = block.timestamp + activitiesTable[n].timeSecStartActivity;
-            activitiesTable[n].timeStopActivity = block.timestamp + activitiesTable[n].timeSecStopActivity;
-        }
-    }
-
     function G_checkStatusOfActivities () public{ // check status of All Activities
         for(uint i=0; i<=(activitiesTable.length-1); i++){
             checkStatusOfActivity(i);
