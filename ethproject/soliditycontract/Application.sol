@@ -282,7 +282,7 @@ contract Investment {
 
 
     function getActivitiesTableCount() public view returns (uint){
-        return activities.length;
+        return activitiesTable.length;
     }
 
     function getDetailPurchaseCount() public view returns (uint){
