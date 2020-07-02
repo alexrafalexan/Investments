@@ -19,12 +19,15 @@ class ShowInvestment extends Component{
                 address: props.query.address,
                 master: investmentsummary[0],
                 numOrganizations: investmentsummary[1],
-                numInvestors: investmentsummary[2],
-                contribution: investmentsummary[3],
-                contributionorganizationpercentage: investmentsummary[4],
-                activities: investmentsummary[5],
-                nowOrganizationsAdded: investmentsummary[6],
-                nowInvestorsAdded: investmentsummary[7]
+                nowOrganizationsAddedDeclaireMaster: investmentsummary[2],
+                nowOrganizationsAdded: investmentsummary[3],
+                contributionorganization: investmentsummary[4],
+                numInvestors: investmentsummary[5],
+                nowInvestorsAdded: investmentsummary[6],
+                contribution: investmentsummary[7],
+                activities: investmentsummary[8],
+                activitiesTable_length: investmentsummary[9],
+                statusOfResearch: investmentsummary[10],
             };
         }
 
@@ -32,13 +35,22 @@ class ShowInvestment extends Component{
             const {
                 master,
                 numOrganizations,
-                numInvestors,
-                contribution,
-                contributionorganizationpercentage,
-                activities,
+                nowOrganizationsAddedDeclaireMaster,
                 nowOrganizationsAdded,
-                nowInvestorsAdded
+                contributionorganization,
+                numInvestors,
+                nowInvestorsAdded,
+                contribution,
+                activities,
+                activitiesTable_length,
+                statusOfResearch
             } = this.props;
+
+            let statusOfResearchPrev = this.props;
+
+            if (statusOfResearch == 0){
+                statusOfResearchPrev = 'Inactive';
+            }
 
             const items = [
                 {
@@ -49,14 +61,14 @@ class ShowInvestment extends Component{
                 },
                 {
                     header: '2. Οργανισμοί' ,
-                    meta: nowOrganizationsAdded + '/' + numOrganizations,
+                    meta: nowOrganizationsAdded + '/' + nowOrganizationsAddedDeclaireMaster + '/' + numOrganizations,
                     description: 'O αρθιμός των Οργανισμών που έχουν συμμετάσχει σε σχέση με αυτούς που πρέπει να συμμετάσχουν.'
                 },
                 {
                     header: '3. Επενδυτές',
                     meta:  (<Link route={`/investments/${this.props.address}/requests`}>
                         <a>
-                            {nowInvestorsAdded + '/' + numInvestors}
+                            {nowInvestorsAdded + '/' + numInvestors }
                         </a>
                     </Link>) ,
                     description: 'O αρθιμός των Επενδυτών που έχουν συμμετάσχει σε σχέση με αυτούς που πρέπει να συμμετάσχουν.'
@@ -68,17 +80,21 @@ class ShowInvestment extends Component{
                 },
                 {
                     header: '5. Συνεισφορά ανά Οργανισμών',
-                    meta: web3.utils.fromWei(contributionorganizationpercentage,'ether'),
+                    meta: web3.utils.fromWei(contributionorganization,'ether'),
                     description: 'Το ποσό σε ether που πρέπει να καταθέσει ο κάθε Οργανισμός σαν εγγύηση'
                 },
                 {
                     header: '6. Αριθμός Activities',
-                    meta: activities,
+                    meta: (<Link route={`/investments/${this.props.address}/details/detailsactivities`}>
+                        <a>
+                            {activitiesTable_length + '/' + activities + ' Λεπτομέρειες Activity'}
+                        </a>
+                    </Link>),
                     description: 'Ο αριθμός των Activities που θα αποτελείται η έρευνα'
                 },
                 {
-                    header: '7. Συνολικό Ποσό Contract',
-                    meta: activities,
+                    header: '7. Κατάσταση Έρευνας',
+                    meta: statusOfResearchPrev,
                     description: ''
                 }
             ];

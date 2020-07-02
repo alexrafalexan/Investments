@@ -258,7 +258,7 @@ contract Investment {
         }
     }
 
-    function getInvestmentSummary() public view returns ( address, uint, uint, uint, uint, uint, uint, uint, uint, State) {
+    function getInvestmentSummary() public view returns ( address, uint, uint, uint, uint, uint, uint, uint, uint, uint, State) {
         return (
         master,
         numOrganizations,
@@ -269,6 +269,7 @@ contract Investment {
         nowInvestorsAdded,
         contribution,
         activities,
+        activitiesTable.length,
         statusOfResearch
         );
     }
@@ -278,6 +279,16 @@ contract Investment {
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
         return detailActivity.available_ether_to_spent_per_organization[_researcheraddresses];
     }
+
+
+    function getActivitiesTableCount() public view returns (uint){
+        return activities.length;
+    }
+
+    function getDetailPurchaseCount() public view returns (uint){
+        return detailPurchase.length;
+    }
+
 
     function getBalance() view public returns (uint) { // Take Balance off the Contract
         return address(this).balance;

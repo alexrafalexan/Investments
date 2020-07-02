@@ -162,7 +162,7 @@ var OrganizationsPayment = function (_Component) {
                 onChange: function onChange(event) {
                     return _this3.setState({ value: event.target.value });
                 },
-                label: 'wei',
+                label: 'ether',
                 labelPosition: "right",
                 __source: {
                     fileName: _jsxFileName,

@@ -43,7 +43,7 @@ class OrganizationsPayment extends Component {
                     <Input
                         value ={this.state.value}
                         onChange={ event => this.setState({value: event.target.value})}
-                        label="wei"
+                        label="ether"
                         labelPosition={"right"}
                     />
                 </Form.Field>
