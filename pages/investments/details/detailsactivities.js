@@ -17,7 +17,7 @@ class DetailIndex extends Component {
 
         console.log(activitiesTable);
 
-        return {address};
+        return {address, activitiesTable, activitiesTableCount };
     }
 
     render(){
