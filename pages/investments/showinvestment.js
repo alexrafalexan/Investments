@@ -46,10 +46,12 @@ class ShowInvestment extends Component{
                 statusOfResearch
             } = this.props;
 
+
             let statusOfResearchPrev = this.props;
 
+
             if (statusOfResearch == 0){
-                statusOfResearchPrev = 'Inactive';
+                statusOfResearchPrev = 'Inactive';  //Προσθήκη Συνθηκών σε δεύτερο χρόνο
             }
 
             const items = [
@@ -61,7 +63,11 @@ class ShowInvestment extends Component{
                 },
                 {
                     header: '2. Οργανισμοί' ,
-                    meta: nowOrganizationsAdded + '/' + nowOrganizationsAddedDeclaireMaster + '/' + numOrganizations,
+                    meta: (<Link route={`/investments/${this.props.address}/details/detailsorganizations`}>
+                        <a>
+                            {nowOrganizationsAdded + '/' + nowOrganizationsAddedDeclaireMaster + '/' + numOrganizations + '  -- Λεπτομέρειες'}
+                        </a>
+                    </Link>),
                     description: 'O αρθιμός των Οργανισμών που έχουν συμμετάσχει σε σχέση με αυτούς που πρέπει να συμμετάσχουν.'
                 },
                 {
@@ -87,7 +93,7 @@ class ShowInvestment extends Component{
                     header: '6. Αριθμός Activities',
                     meta: (<Link route={`/investments/${this.props.address}/details/detailsactivities`}>
                         <a>
-                            {activitiesTable_length + '/' + activities + ' Λεπτομέρειες Activity'}
+                            {activitiesTable_length + '/' + activities + '  -- Λεπτομέρειες Activity'}
                         </a>
                     </Link>),
                     description: 'Ο αριθμός των Activities που θα αποτελείται η έρευνα'
