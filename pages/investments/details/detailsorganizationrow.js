@@ -9,25 +9,24 @@ class DetailsOrganizationRow extends Component {
 
 
     onInsert = async () => {
+        const sdfsdf = this.props.organizationsaddressesbypaymentmapping.then(function (val) {
+            // console.log(val)
+            const temp = val;
+            // console.log(temp);
+            return {temp};
+        });
+
+
         const investment = Investment (this.props.address);
         const accounts = await web3.eth.getAccounts();
         await investment.methods. E_OrganizationsPayment().send({
             from: accounts[0],
             value: web3.utils.toWei(this.props.contributionorganization, 'wei')
         });
-
     };
 
 
-
     render() {
-
-        this.props.organizationsaddressesbypaymentmapping.then(function(val) {
-            console.log(val)
-            const temp = val;
-            console.log(temp);
-            return {temp};
-        });
 
         const { Row, Cell } = Table;
         const {id, details} = this.props; //209 -- 4:38
@@ -36,7 +35,7 @@ class DetailsOrganizationRow extends Component {
             <Row>
                 <Cell>{id}</Cell>
                 <Cell>{details}</Cell>
-                                <Cell>{details}</Cell>
+                <Cell>{details}</Cell>
                 <Cell>
                     <Button color="green" basic onClick={this.onInsert}>Συμμετοχή</Button>
                 </Cell>

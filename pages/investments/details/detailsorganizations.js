@@ -28,7 +28,7 @@ class DetailsOrganizations extends Component {
         const investment = Investment(this.props.address);
         const organizationsaddressesbypaymentmappingTemp = await investment.methods.getOrganizationsAddressesByPaymentMapping(address).call();
         console.log(organizationsaddressesbypaymentmappingTemp);
-        return organizationsaddressesbypaymentmappingTemp
+        return {organizationsaddressesbypaymentmappingTemp}
     }
 
     renderRows() {
