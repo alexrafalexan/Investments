@@ -3,7 +3,7 @@ import {Button, Table} from 'semantic-ui-react';
 import {Link} from '../../../routes';
 import Layout from "../../../components/Layout";
 import Investment from "../../../ethproject/investment";
-// import DetailsOrganizationRow from "./detailsorganizationrow";
+import DetailsOrganizationRow from "./detailsorganizationrow";
 
 class DetailsOrganizations extends Component {
     static async getInitialProps(props){
@@ -16,21 +16,19 @@ class DetailsOrganizations extends Component {
           })
         );
 
-        console.log(investorsΑddresses);
-
-        return {address};
+        return {address, investorsΑddresses ,investorsΑddressesCount};
     }
 
-    // renderRows() {
-    //     return this.props.activitiesTable.map((details, index) => {
-    //         return <DetailsOrganizationRow
-    //         key={index}
-    //         id = {index}
-    //         details={details}
-    //         address={this.props.address}
-    //         />;
-    //     })
-    // }
+    renderRows() {
+        return this.props.investorsΑddresses.map((details, index) => {
+            return <DetailsOrganizationRow
+            key={index}
+            id = {index}
+            details={details}
+            address={this.props.address}
+            />;
+        })
+    }
 
     render(){
         const {Header, Row, HeaderCell, Body} = Table;
@@ -38,32 +36,22 @@ class DetailsOrganizations extends Component {
         return (
             <Layout>
                 <h3>Requests</h3>
-                {/*<Link route={`/investments/${this.props.address}/requests/new`}>*/}
-                {/*    <a>*/}
-                {/*        <Button primary>Add Request</Button>*/}
-                {/*    </a>*/}
-                {/*</Link>*/}
-                {/*<Table>*/}
-                {/*    <Header>*/}
-                {/*        <Row>*/}
-                {/*            <HeaderCell>ID</HeaderCell>*/}
-                {/*            <HeaderCell>Λεπτομέριες</HeaderCell>*/}
-                {/*            <HeaderCell>Ποσοστό Κάληψης Activity</HeaderCell>*/}
-                {/*            <HeaderCell>Συνολικό Ποσό Activity</HeaderCell>*/}
-                {/*            <HeaderCell>Διαθέσιμο Ποσό Activity</HeaderCell>*/}
-                {/*            <HeaderCell>Κατάσταση</HeaderCell>*/}
-                {/*            <HeaderCell>Έναρξη Activity (Χρον. Διάκεια)</HeaderCell>*/}
-                {/*            <HeaderCell>Λήξη Activity (Χρον. Διάκεια)</HeaderCell>*/}
-                {/*            <HeaderCell>Έναρξη Activity</HeaderCell>*/}
-                {/*            <HeaderCell>Λήξη Activity</HeaderCell>*/}
-
-
-                {/*        </Row>*/}
-                {/*    </Header>*/}
-                {/*    <Body>*/}
-                {/*        {this.renderRows()}*/}
-                {/*    </Body>*/}
-                {/*</Table>*/}
+                <Link route={`/investments/${this.props.address}/requests/new`}>
+                    <a>
+                        <Button primary>Add Request</Button>
+                    </a>
+                </Link>
+                <Table>
+                    <Header>
+                        <Row>
+                            <HeaderCell>ID</HeaderCell>
+                            <HeaderCell>Δηλωμένος Οργανισμός από τον Master</HeaderCell>
+                        </Row>
+                    </Header>
+                    <Body>
+                        {this.renderRows()}
+                    </Body>
+                </Table>
             </Layout>
         );
     }
