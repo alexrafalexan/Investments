@@ -289,6 +289,14 @@ contract Investment {
         return detailPurchase.length;
     }
 
+    function getInvestorsAddressesByMaster() public view returns (uint256){
+        return organizationsaddressesdeclairemaster.length;
+    }
+
+    function getInvestorsAddressesByPayment () public view returns (uint256){
+        return organizationsaddresses.length;
+    }
+
 
     function getBalance() view public returns (uint) { // Take Balance off the Contract
         return address(this).balance;

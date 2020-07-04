@@ -9,16 +9,16 @@ class DetailsOrganizations extends Component {
     static async getInitialProps(props){
         const { address } = props.query;
         const investment = Investment(address)
-        const investorsΑddressesCount = await investment.methods.investorsaddresses().call();
+        const investorsΑddressesCount = await investment.methods.getInvestorsAddressesByMaster().call();
         const investorsΑddresses = await Promise.all(
           Array(parseInt(investorsΑddressesCount)).fill().map((element,index)=>{
-              return investment.methods.investorsΑddresses(index).call()
+              return investment.methods.organizationsaddressesdeclairemaster(index).call()
           })
         );
 
         console.log(investorsΑddresses);
 
-        // return {address, activitiesTable, activitiesTableCount };
+        return {address};
     }
 
     // renderRows() {

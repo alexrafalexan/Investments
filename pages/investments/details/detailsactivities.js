@@ -16,7 +16,7 @@ class DetailsActivities extends Component {
           })
         );
 
-        console.log(activitiesTable);
+        console.log(activitiesTableCount);
 
         return {address, activitiesTable, activitiesTableCount };
     }
