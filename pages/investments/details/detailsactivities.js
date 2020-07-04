@@ -1,10 +1,10 @@
 import React, {Component} from "react";
-import {Button} from 'semantic-ui-react';
+import {Button, Table} from 'semantic-ui-react';
 import {Link} from '../../../routes';
 import Layout from "../../../components/Layout";
 import Investment from "../../../ethproject/investment";
 
-class DetailIndex extends Component {
+class DetailsActivities extends Component {
     static async getInitialProps(props){
         const { address } = props.query;
         const investment = Investment(address)
@@ -21,6 +21,8 @@ class DetailIndex extends Component {
     }
 
     render(){
+        const {Header, Row, HeaderCell, Body} = Table;
+
         return (
             <Layout>
                 <h3>Requests</h3>
@@ -29,9 +31,20 @@ class DetailIndex extends Component {
                         <Button primary>Add Request</Button>
                     </a>
                 </Link>
+                <Table>
+                    <Header>
+                        <Row>
+                            <HeaderCell>ID</HeaderCell>
+                            <HeaderCell>Κατάσταση</HeaderCell>
+                            <HeaderCell>Έναρξη Activity</HeaderCell>
+                            <HeaderCell>Λήξη Activity</HeaderCell>
+                            <HeaderCell>Λεπτομέριες</HeaderCell>
+                        </Row>
+                    </Header>
+                </Table>
             </Layout>
         );
     }
 }
 
-export default DetailIndex;
+export default DetailsActivities;
