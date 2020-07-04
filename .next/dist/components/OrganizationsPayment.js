@@ -94,7 +94,7 @@ var OrganizationsPayment = function (_Component) {
                                 _context.next = 9;
                                 return investment.methods.E_OrganizationsPayment().send({
                                     from: account[0],
-                                    value: _web2.default.utils.toWei(_this.state.value, 'ether')
+                                    value: _web2.default.utils.toWei(_this.props.value, 'ether')
                                 });
 
                             case 9:

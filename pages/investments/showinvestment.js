@@ -8,6 +8,7 @@ import AddOrganizationsForm from "../../components/AddOrganizationsForm";
 import AddActivityForm from "../../components/AddActivityForm";
 import OrganizationsPayment from "../../components/OrganizationsPayment";
 import {Link} from '../../routes';
+import DetailsOrganizations from "./details/detailsorganizations";
 
 
 class ShowInvestment extends Component{
@@ -48,7 +49,6 @@ class ShowInvestment extends Component{
 
 
             let statusOfResearchPrev = this.props;
-
 
             if (statusOfResearch == 0){
                 statusOfResearchPrev = 'Inactive';  //Προσθήκη Συνθηκών σε δεύτερο χρόνο

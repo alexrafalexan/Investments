@@ -22,7 +22,7 @@ class OrganizationsPayment extends Component {
             const account = await web3.eth.getAccounts();
             await investment.methods. E_OrganizationsPayment().send({
                 from: account[0],
-                value: web3.utils.toWei(this.state.value, 'ether')
+                value: web3.utils.toWei(this.props.value, 'ether')
             });
 
             Router.replaceRoute(`/investments/${this.props.address}`)

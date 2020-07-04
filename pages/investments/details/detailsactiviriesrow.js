@@ -1,5 +1,6 @@
 import React , { Component } from 'react';
 import {Table} from 'semantic-ui-react';
+import Button from "semantic-ui-react/dist/commonjs/elements/Button";
 
 class DetailsActivitiesRow extends Component {
  render() {

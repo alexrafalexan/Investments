@@ -38,8 +38,8 @@ contract Investment {
     State public statusOfResearch;
     uint public numberOfCompletedActivities = 0;
 
-    mapping(address => bool) public organizationsmaster; // Mapping με τις διευθύνσης των οργανισμών όπως έχει δηλωθεί από την master
-    address[] public organizationsaddressesdeclairemaster; // Λίστα με τις διευθύνσης των οργανισμών όπως έχει δηλωθεί από την master
+    mapping(address => bool) public organizationsmaster; // Mapping με τις διευθύνσης των οργανισμών όπως έχει δηλωθεί από τoν master
+    address[] public organizationsaddressesdeclairemaster; // Λίστα με τις διευθύνσης των οργανισμών όπως έχει δηλωθεί από τoν master
     mapping(address => bool) public organizations; // Mapping με τις διευθύνσης των οργανισμών που έχουν συμμετάσχει στην έρευνα καταθέτοντας το ανάλογο ποσό
     address[] public organizationsaddresses; // Λίστα με τις διευθύνσης των οργανισμών που έχουν συμμετάσχει στην έρευνα καταθέτοντας το ανάλογο ποσό
 
@@ -289,12 +289,12 @@ contract Investment {
         return detailPurchase.length;
     }
 
-    function getInvestorsAddressesByMaster() public view returns (uint256){
+    function getOrganizationsAddressesByMaster() public view returns (uint256){
         return organizationsaddressesdeclairemaster.length;
     }
 
-    function getInvestorsAddressesByPayment () public view returns (uint256){
-        return organizationsaddresses.length;
+    function getOrganizationsAddressesByPaymentMapping (address _organizations) public view returns (bool){
+        return organizations[_organizations];
     }
 
 

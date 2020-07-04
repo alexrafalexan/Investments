@@ -8,7 +8,8 @@ import DetailsOrganizationRow from "./detailsorganizationrow";
 class DetailsOrganizations extends Component {
     static async getInitialProps(props){
         const { address } = props.query;
-        const investment = Investment(address)
+        const investment = Investment(address);
+        const investmentsummaryTemp = await investment.methods.getInvestmentSummary().call();
         const investorsΑddressesCount = await investment.methods.getInvestorsAddressesByMaster().call();
         const investorsΑddresses = await Promise.all(
           Array(parseInt(investorsΑddressesCount)).fill().map((element,index)=>{
@@ -16,7 +17,11 @@ class DetailsOrganizations extends Component {
           })
         );
 
-        return {address, investorsΑddresses ,investorsΑddressesCount};
+        return {address,
+            investorsΑddresses,
+            investorsΑddressesCount,
+            contributionorganization: investmentsummaryTemp[4]
+        };
     }
 
     renderRows() {
@@ -26,6 +31,7 @@ class DetailsOrganizations extends Component {
             id = {index}
             details={details}
             address={this.props.address}
+            contributionorganization = {this.props.contributionorganization}
             />;
         })
     }
@@ -46,6 +52,7 @@ class DetailsOrganizations extends Component {
                         <Row>
                             <HeaderCell>ID</HeaderCell>
                             <HeaderCell>Δηλωμένος Οργανισμός από τον Master</HeaderCell>
+                            <HeaderCell>Κουμπί συμμετοχής για τον Οργανισμό</HeaderCell>
                         </Row>
                     </Header>
                     <Body>
