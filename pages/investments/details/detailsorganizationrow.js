@@ -7,11 +7,10 @@ import web3 from "../../../ethproject/web3";
 
 class DetailsOrganizationRow extends Component {
 
-    onInsert = async () => {
 
+    onInsert = async () => {
         const investment = Investment (this.props.address);
         const accounts = await web3.eth.getAccounts();
-        console.log(this.props.contributionorganization);
         await investment.methods. E_OrganizationsPayment().send({
             from: accounts[0],
             value: web3.utils.toWei(this.props.contributionorganization, 'wei')
@@ -19,7 +18,16 @@ class DetailsOrganizationRow extends Component {
 
     };
 
+
+
     render() {
+
+        this.props.organizationsaddressesbypaymentmapping.then(function(val) {
+            console.log(val)
+            const temp = val;
+            console.log(temp);
+            return {temp};
+        });
 
         const { Row, Cell } = Table;
         const {id, details} = this.props; //209 -- 4:38
@@ -28,6 +36,7 @@ class DetailsOrganizationRow extends Component {
             <Row>
                 <Cell>{id}</Cell>
                 <Cell>{details}</Cell>
+                                <Cell>{details}</Cell>
                 <Cell>
                     <Button color="green" basic onClick={this.onInsert}>Συμμετοχή</Button>
                 </Cell>
