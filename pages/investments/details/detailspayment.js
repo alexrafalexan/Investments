@@ -44,28 +44,15 @@ class DetailsActivities extends Component {
 
         return (
             <Layout>
-                <h3>Λεπτομέρειες Activity</h3>
-                <Link route={`/investments/${this.props.address}/requests/newactivity`}>
-                    <a>
-                        <Button primary>Προσθήκη Activity</Button>
-                    </a>
-                </Link>
-                <Button color={"red"} basic onClick={this.onSubmit}>Έλεγχος Activities</Button>
+                <h3>Λεπτομέρειες Πληρωμών</h3>
                 <Table>
                     <Header>
                         <Row>
                             <HeaderCell>ID</HeaderCell>
+                            <HeaderCell>Δραστηριότητα</HeaderCell>
+                            <HeaderCell>Ποσό Πληρωμής</HeaderCell>
                             <HeaderCell>Λεπτομέριες</HeaderCell>
-                            <HeaderCell>Ποσοστό Κάληψης Activity</HeaderCell>
-                            <HeaderCell>Συνολικό Ποσό Activity</HeaderCell>
-                            <HeaderCell>Διαθέσιμο Ποσό Activity</HeaderCell>
-                            <HeaderCell>Κατάσταση</HeaderCell>
-                            <HeaderCell>Έναρξη Activity (Χρον. Διάκεια)</HeaderCell>
-                            <HeaderCell>Λήξη Activity (Χρον. Διάκεια)</HeaderCell>
-                            <HeaderCell>Έναρξη Activity</HeaderCell>
-                            <HeaderCell>Λήξη Activity</HeaderCell>
-                            <HeaderCell>Διαμόρφοση Ποσοστού Κάλυψης</HeaderCell>
-                            <HeaderCell>Πραγματοποίησε Πληρωμή</HeaderCell>
+                            <HeaderCell>Πωλητής</HeaderCell>
                         </Row>
                     </Header>
                     <Body>
