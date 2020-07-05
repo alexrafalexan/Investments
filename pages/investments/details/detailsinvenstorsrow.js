@@ -5,7 +5,7 @@ import Investment from '../../../ethproject/investment';
 import web3 from "../../../ethproject/web3";
 
 
-class DetailsInvenstorsrowRow extends Component {
+class DetailsInvenstorsRow extends Component {
 
     render() {
 
@@ -20,4 +20,4 @@ class DetailsInvenstorsrowRow extends Component {
         );
     }
 }
-export default DetailsInvenstorsrowRow;
+export default DetailsInvenstorsRow;

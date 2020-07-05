@@ -93,7 +93,7 @@ class ShowInvestment extends Component{
                     header: '6. Επενδυτές',
                     meta:  (<Link route={`/investments/${this.props.address}/details/detailsinvenstors`}>
                         <a>
-                            {nowInvestorsAdded + '/' + numInvestors }
+                            {nowInvestorsAdded + '/' + numInvestors + '  -- Λεπτομέρειες'}
                         </a>
                     </Link>) ,
                     description: 'O αρθιμός των Επενδυτών που έχουν συμμετάσχει σε σχέση με αυτούς που πρέπει να συμμετάσχουν.'
