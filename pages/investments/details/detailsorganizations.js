@@ -50,9 +50,9 @@ class DetailsOrganizations extends Component {
         return (
             <Layout>
                 <h3>Requests</h3>
-                <Link route={`/investments/${this.props.address}/requests/new`}>
+                <Link route={`/investments/${this.props.address}/requests/neworganization`}>
                     <a>
-                        <Button primary>Add Request</Button>
+                        <Button primary>Προσθήκη Οργανισμού</Button>
                     </a>
                 </Link>
                 <Table>

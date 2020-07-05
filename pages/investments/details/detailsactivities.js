@@ -15,9 +15,6 @@ class DetailsActivities extends Component {
               return investment.methods.activitiesTable(index).call()
           })
         );
-
-        console.log(activitiesTableCount);
-
         return {address, activitiesTable, activitiesTableCount };
     }
 
@@ -37,10 +34,10 @@ class DetailsActivities extends Component {
 
         return (
             <Layout>
-                <h3>Requests</h3>
-                <Link route={`/investments/${this.props.address}/requests/new`}>
+                <h3>Λεπτομέρειες Activity</h3>
+                <Link route={`/investments/${this.props.address}/requests/newactivity`}>
                     <a>
-                        <Button primary>Add Request</Button>
+                        <Button primary>Προσθήκη Activity</Button>
                     </a>
                 </Link>
                 <Table>

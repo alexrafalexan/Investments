@@ -62,7 +62,17 @@ class ShowInvestment extends Component{
                     style: {overflowWrap: 'break-word'}
                 },
                 {
-                    header: '2. Οργανισμοί' ,
+                    header: '2. Συνεισφορά ανά Οργανισμού',
+                    meta: web3.utils.fromWei(contributionorganization,'ether'),
+                    description: 'Το ποσό σε ether που πρέπει να καταθέσει ο κάθε Οργανισμός σαν εγγύηση'
+                },
+                {
+                    header: '3. Συνεισφορά ανά Επένδυτή',
+                    meta: web3.utils.fromWei(contribution, 'ether'),
+                    description: 'Το ποσό σε ether που πρέπει να καταθέσει ο κάθε επενδυτής'
+                },
+                {
+                    header: '4. Οργανισμοί' ,
                     meta: (<Link route={`/investments/${this.props.address}/details/detailsorganizations`}>
                         <a>
                             {nowOrganizationsAdded + '/' + nowOrganizationsAddedDeclaireMaster + '/' + numOrganizations + '  -- Λεπτομέρειες'}
@@ -71,32 +81,22 @@ class ShowInvestment extends Component{
                     description: 'O αρθιμός των Οργανισμών που έχουν συμμετάσχει σε σχέση με αυτούς που πρέπει να συμμετάσχουν.'
                 },
                 {
-                    header: '3. Επενδυτές',
-                    meta:  (<Link route={`/investments/${this.props.address}/requests`}>
-                        <a>
-                            {nowInvestorsAdded + '/' + numInvestors }
-                        </a>
-                    </Link>) ,
-                    description: 'O αρθιμός των Επενδυτών που έχουν συμμετάσχει σε σχέση με αυτούς που πρέπει να συμμετάσχουν.'
-                },
-                {
-                    header: '4. Συνεισφορά ανά Επένδυτή',
-                    meta: web3.utils.fromWei(contribution, 'ether'),
-                    description: 'Το ποσό σε ether που πρέπει να καταθέσει ο κάθε επενδυτής'
-                },
-                {
-                    header: '5. Συνεισφορά ανά Οργανισμών',
-                    meta: web3.utils.fromWei(contributionorganization,'ether'),
-                    description: 'Το ποσό σε ether που πρέπει να καταθέσει ο κάθε Οργανισμός σαν εγγύηση'
-                },
-                {
-                    header: '6. Αριθμός Activities',
+                    header: '5. Αριθμός Activities',
                     meta: (<Link route={`/investments/${this.props.address}/details/detailsactivities`}>
                         <a>
                             {activitiesTable_length + '/' + activities + '  -- Λεπτομέρειες Activity'}
                         </a>
                     </Link>),
                     description: 'Ο αριθμός των Activities που θα αποτελείται η έρευνα'
+                },
+                {
+                    header: '6. Επενδυτές',
+                    meta:  (<Link route={`/investments/${this.props.address}/details/detailsinvenstors`}>
+                        <a>
+                            {nowInvestorsAdded + '/' + numInvestors }
+                        </a>
+                    </Link>) ,
+                    description: 'O αρθιμός των Επενδυτών που έχουν συμμετάσχει σε σχέση με αυτούς που πρέπει να συμμετάσχουν.'
                 },
                 {
                     header: '7. Κατάσταση Έρευνας',
@@ -115,33 +115,12 @@ class ShowInvestment extends Component{
                 <h3>Λεπτομέρειες</h3>
                 <Grid>
                     <GridRow>
-                        <Grid.Column width={10}>
+                        <Grid.Column>
                             {this.renderCards()}
-                        </Grid.Column>
-                        <Grid.Column width={5}><AddOrganizationsForm address={this.props.address}
-                                                                     nowOrganizationsAdded={this.props.nowOrganizationsAdded}
-                                                                     numOrganizations={this.props.numOrganizations}/>
-                                                                     <br></br>
-                            <AddActivityForm address={this.props.address}/>
                         </Grid.Column>
                     </GridRow>
                     <GridRow>
-                        <Grid.Column width={10}><OrganizationsPayment address={this.props.address}/>
-                            <br></br>
-                        </Grid.Column>
-                        <Grid.Column width={10}>
-                            <Link route={`/investments/${this.props.address}/requests`}>
-                                <a>
-                                    <Button primary>Προβολή Οργανισμών</Button>
-                                </a>
-                            </Link>
-                        </Grid.Column>
-                        <Grid.Column width={2}>
-                            <Link route={`/investments/${this.props.address}/requests`}>
-                                <a>
-                                    <Button primary>Λεπρομέριες Activity</Button>
-                                </a>
-                            </Link>
+                        <Grid.Column>
                         </Grid.Column>
                     </GridRow>
 

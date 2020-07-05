@@ -15,6 +15,7 @@ class AddOrganizationsForm extends Component {
     onSubmit = async event => {
         event.preventDefault();
 
+        // Τα παρακάτω στοιχεία τα έπαιρνε απο το showinvestment. Πρέπει να ξαναφτιαχτούν.
         console.log(this.props.numOrganizations);
         console.log(this.props.nowOrganizationsAdded);
 
