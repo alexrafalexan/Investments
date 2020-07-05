@@ -9,13 +9,12 @@ class DetailsOrganizationRow extends Component {
 
 
     onInsert = async () => {
-        const sdfsdf = this.props.organizationsaddressesbypaymentmapping.then(function (val) {
-            // console.log(val)
-            const temp = val;
-            // console.log(temp);
-            return {temp};
-        });
 
+
+        this.props.organizationsaddressesbypaymentmapping.then(function (val) {
+            console.log(val);
+        });
+        console.log(this.props.organizationsaddressesbypaymentmapping);
 
         const investment = Investment (this.props.address);
         const accounts = await web3.eth.getAccounts();
