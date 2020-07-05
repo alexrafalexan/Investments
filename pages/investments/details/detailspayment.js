@@ -42,6 +42,7 @@ class DetailsActivities extends Component {
                             <HeaderCell>Δραστηριότητα</HeaderCell>
                             <HeaderCell>Ποσό Πληρωμής(wei)</HeaderCell>
                             <HeaderCell>Λεπτομέριες</HeaderCell>
+                            <HeaderCell>Οργανισμός που πραγματοποίησε την πληρωμή</HeaderCell>
                             <HeaderCell>Πωλητής</HeaderCell>
                         </Row>
                     </Header>

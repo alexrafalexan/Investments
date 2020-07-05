@@ -15,6 +15,7 @@ class DetailsPaymentrowRow extends Component {
                 <Cell>{details.activityNumber}</Cell>
                 <Cell>{details.value}</Cell>
                 <Cell>{details.detail}</Cell>
+                <Cell>{details.organizationmakepayment}</Cell>
                 <Cell>{details.seller}</Cell>
             </Row>
         );

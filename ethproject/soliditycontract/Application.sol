@@ -74,6 +74,7 @@ contract Investment {
         uint value;
         string detail;
         address seller;
+        address organizationmakepayment;
     }
 
     modifier requireToBeContractHasAllContribution{
@@ -219,7 +220,7 @@ contract Investment {
         }
     }
 
-    function H_PaySeller (uint _activityNumber, uint _value, string _detail, address _seller) public requireToBeOrganization requireOrganizationAndInvestorsDonate returns(bool){
+    function H_PaySeller (uint _activityNumber, uint _value, string _detail, address _seller) public requireToBeOrganization requireOrganizationAndInvestorsDonate {
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
         require(_value <= detailActivity.available_ether_to_spent_per_organization[msg.sender]); // Η αξία της πληρωμής πρέπει να είναι μικρότερη από το ποσό το οποίο μπορεί να ξοδέψει ο Οργανισμός την συγκεκριμένη Activity
         if (statusOfResearch == State.Active && detailActivity.statusActivity == State.Active ) { // Για να πραγματοποιηθεί η συναλαγή θα πρέπει να είναι Active η Activity και η Έρευνα
@@ -227,15 +228,13 @@ contract Investment {
                 activityNumber: _activityNumber,
                 value: _value,
                 detail: _detail,
-                seller: _seller
+                seller: _seller,
+                organizationmakepayment: msg.sender
                 });
             detailPurchase.push(newDetailPurchase);
             _seller.transfer(_value);
             detailActivity.leftvalue = detailActivity.leftvalue - _value;
             detailActivity.available_ether_to_spent_per_organization[msg.sender] = (detailActivity.available_ether_to_spent_per_organization[msg.sender] - _value);
-            return true;
-        }else {
-            return false;
         }
     }
 
@@ -302,6 +301,7 @@ contract Investment {
     function getInventorsAddresses() public view returns (uint256){
         return investorsaddresses.length;
     }
+
 
     function getBalance() view public returns (uint) { // Take Balance off the Contract
         return address(this).balance;
