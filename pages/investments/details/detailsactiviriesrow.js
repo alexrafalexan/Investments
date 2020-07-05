@@ -34,6 +34,9 @@ class DetailsActivitiesRow extends Component {
           <Cell>{details.timeSecStopActivity}</Cell>
           <Cell>{details.timeStartActivity}</Cell>
           <Cell>{details.timeStopActivity}</Cell>
+          <Cell>
+              <Button>Λεπρομέριες</Button>
+          </Cell>
       </Row>
   );
  }

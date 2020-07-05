@@ -10,16 +10,16 @@ class DetailsOrganizations extends Component {
         const { address } = props.query;
         const investment = Investment(address);
         const investmentsummaryTemp = await investment.methods.getInvestmentSummary().call();
-        const organizationsΑddressesCount = await investment.methods.getOrganizationsAddressesByMaster().call();
-        const organizationsΑddresses = await Promise.all(
-          Array(parseInt(organizationsΑddressesCount)).fill().map((element,index)=>{
+        const organizationsAddressesCount = await investment.methods.getOrganizationsAddressesByMaster().call();
+        const organizationsAddresses = await Promise.all(
+          Array(parseInt(organizationsAddressesCount)).fill().map((element,index)=>{
               return investment.methods.organizationsaddressesdeclairemaster(index).call()
           })
         );
 
         return {address,
-            organizationsΑddresses,
-            organizationsΑddressesCount,
+            organizationsAddresses,
+            organizationsAddressesCount,
             contributionorganization: investmentsummaryTemp[4]
         };
     }
@@ -32,7 +32,7 @@ class DetailsOrganizations extends Component {
     }
 
     renderRows() {
-        return this.props.organizationsΑddresses.map((details, index) => {
+        return this.props.organizationsAddresses.map((details, index) => {
             return <DetailsOrganizationRow
             key={index}
             id = {index}

@@ -1,43 +1,55 @@
 import React, {Component} from "react";
-import {Button, Table} from 'semantic-ui-react';
-import {Link} from '../../../routes';
+import {Form, Table} from 'semantic-ui-react';
+import Button from "semantic-ui-react/dist/commonjs/elements/Button";
+import {Link, Router} from '../../../routes';
 import Layout from "../../../components/Layout";
 import Investment from "../../../ethproject/investment";
-import DetailsOrganizationRow from "./detailsorganizationrow";
+import DetailsInvenstorsrowRow from "./detailsactiviriesrow";
+import web3 from "../../../ethproject/web3";
 
 class DetailsInvenstors extends Component {
+    state = {
+        errMesag: '',
+        load: false
+    };
+
     static async getInitialProps(props){
         const { address } = props.query;
         const investment = Investment(address);
-        const organizationsΑddressesCount = await investment.methods.getOrganizationsAddressesByMaster().call();
-        const organizationsΑddresses = await Promise.all(
-            Array(parseInt(organizationsΑddressesCount)).fill().map((element,index)=>{
-                return investment.methods.organizationsaddressesdeclairemaster(index).call()
+        const investmentsummary = await investment.methods.getInvestmentSummary().call();
+        const investorsAddressesCount = await investment.methods.getInvestmentsAddresses().call();
+        const investorsAddresses = await Promise.all(
+            Array(parseInt(investorsAddressesCount)).fill().map((element,index)=>{
+                return investment.methods.investorsaddresses(index).call()
             })
         );
 
         return {address,
-            organizationsΑddresses,
-            organizationsΑddressesCount,
+            investorsAddresses,
+            investorsAddressesCount,
+            contribution: investmentsummary[7]
         };
     }
 
-    findOrganization = async (address) => {
+
+    onSubmit = async event => {
+        event.preventDefault();
         const investment = Investment(this.props.address);
-        const organizationsaddressesbypaymentmappingTemp = await investment.methods.getOrganizationsAddressesByPaymentMapping(address).call();
-        // console.log(organizationsaddressesbypaymentmappingTemp);
-        return organizationsaddressesbypaymentmappingTemp;
-    }
+        const account = await web3.eth.getAccounts();
+        await investment.methods.E_OrganizationsPayment().send({
+                from: account[0],
+                value: this.props.contribution
+        });
+
+    };
 
     renderRows() {
-        return this.props.organizationsΑddresses.map((details, index) => {
-            return <DetailsOrganizationRow
+        return this.props.investorsAddresses.map((details, index) => {
+            return <DetailsInvenstorsrowRow
                 key={index}
                 id = {index}
                 details={details}
                 address={this.props.address}
-                contributionorganization = {this.props.contributionorganization}
-                organizationsaddressesbypaymentmapping = {this.findOrganization(details)}
             />;
         })
     }
@@ -47,25 +59,18 @@ class DetailsInvenstors extends Component {
 
         return (
             <Layout>
-                <h3>Requests</h3>
-                <Link route={`/investments/${this.props.address}/requests/neworganization`}>
-                    <a>
-                        <Button primary>Προσθήκη Οργανισμού</Button>
-                    </a>
-                </Link>
+                <h3>Επενδυτές Έρευνας</h3>
                 <Table>
                     <Header>
                         <Row>
                             <HeaderCell>ID</HeaderCell>
-                            <HeaderCell>Δηλωμένος Οργανισμός από τον Master</HeaderCell>
-                            <HeaderCell>Συμμετοχή Οργανισμού</HeaderCell>
-                            <HeaderCell>Κουμπί συμμετοχής για τον Οργανισμό</HeaderCell>
                         </Row>
                     </Header>
                     <Body>
                         {this.renderRows()}
                     </Body>
                 </Table>
+                <Button color="green" basic primary onClick={this.onSubmit}>Γίνε Επενδυτής</Button>
             </Layout>
         );
     }

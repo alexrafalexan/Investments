@@ -298,6 +298,10 @@ contract Investment {
     }
 
 
+    function getInvestmentsAddresses() public view returns (uint256){
+        return investorsaddresses.length;
+    }
+
     function getBalance() view public returns (uint) { // Take Balance off the Contract
         return address(this).balance;
     }
