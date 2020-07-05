@@ -57,6 +57,13 @@ class DetailsActivitiesRow extends Component {
                   </a>
               </Link>
           </Cell>
+          <Cell>
+              <Link route={`/investments/${this.props.address}/${id}/requests/newpayment`}>
+                  <a>
+                      <Button color={"green"} basic>Πληρωμή</Button>
+                  </a>
+              </Link>
+          </Cell>
       </Row>
   );
  }

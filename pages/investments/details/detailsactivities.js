@@ -4,6 +4,7 @@ import {Link} from '../../../routes';
 import Layout from "../../../components/Layout";
 import Investment from "../../../ethproject/investment";
 import DetailsActivitiesRow from "./detailsactiviriesrow";
+import web3 from "../../../ethproject/web3";
 
 class DetailsActivities extends Component {
     static async getInitialProps(props){
@@ -17,6 +18,15 @@ class DetailsActivities extends Component {
         );
         return {address, activitiesTable, activitiesTableCount };
     }
+
+    onSubmit = async event => {
+        event.preventDefault();
+        const account = await web3.eth.getAccounts();
+        const investment = Investment(this.props.address)
+        await investment.methods.G_checkStatusOfActivities().send({
+            from: account[0],
+        });
+    };
 
     renderRows() {
         return this.props.activitiesTable.map((details, index) => {
@@ -40,6 +50,7 @@ class DetailsActivities extends Component {
                         <Button primary>Προσθήκη Activity</Button>
                     </a>
                 </Link>
+                <Button color={"red"} basic onClick={this.onSubmit}>Έλεγχος Activities</Button>
                 <Table>
                     <Header>
                         <Row>
@@ -54,6 +65,7 @@ class DetailsActivities extends Component {
                             <HeaderCell>Έναρξη Activity</HeaderCell>
                             <HeaderCell>Λήξη Activity</HeaderCell>
                             <HeaderCell>Διαμόρφοση Ποσοστού Κάλυψης</HeaderCell>
+                            <HeaderCell>Πραγματοποίησε Πληρωμή</HeaderCell>
                         </Row>
                     </Header>
                     <Body>

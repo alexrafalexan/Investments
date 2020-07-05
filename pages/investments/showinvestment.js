@@ -111,6 +111,15 @@ class ShowInvestment extends Component{
                     header: '7. Κατάσταση Έρευνας',
                     meta: statusOfResearchPrev,
                     description: ''
+                },
+                {
+                    header: '8. Πληροφορίες Πληρωμών',
+                    meta: (<Link route={`/investments/${this.props.address}/details/detailspayment`}>
+                        <a>
+                            {'Λεπτομέρειες'}
+                        </a>
+                    </Link>) ,
+                    description: ''
                 }
             ];
 
