@@ -13,7 +13,7 @@ class DetailsActivitiesRow extends Component {
 
 
      if (details.statusActivity == 0){
-         statusOfActivityPrev = 'Inactive';  //Προσθήκη Συνθηκών σε δεύτερο χρόνο
+         statusOfActivityPrev = 'Inactive';
      }else if (details.statusActivity == 1){
          statusOfActivityPrev = 'Active';
      }else if (details.statusActivity == 2){
@@ -34,8 +34,22 @@ class DetailsActivitiesRow extends Component {
           <Cell>{statusOfActivityPrev}</Cell>
           <Cell>{details.timeSecStartActivity}</Cell>
           <Cell>{details.timeSecStopActivity}</Cell>
-          <Cell>{details.timeStartActivity}</Cell>
-          <Cell>{details.timeStopActivity}</Cell>
+          <Cell>{Intl.DateTimeFormat('en-US',{
+              year: "numeric",
+              month: "short",
+              day: "2-digit",
+              hour: "numeric",
+              minute: "2-digit",
+              second: "2-digit"
+          }).format((details.timeStartActivity)*1000)}</Cell>
+          <Cell>{Intl.DateTimeFormat('en-US',{
+              year: "numeric",
+              month: "short",
+              day: "2-digit",
+              hour: "numeric",
+              minute: "2-digit",
+              second: "2-digit"
+          }).format((details.timeStopActivity)*1000)}</Cell>
           <Cell>
               <Link route={`/investments/${this.props.address}/${id}/requests/newperscentageinactivity`}>
                   <a>

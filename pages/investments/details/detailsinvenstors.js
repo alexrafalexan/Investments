@@ -17,7 +17,7 @@ class DetailsInvenstors extends Component {
         const { address } = props.query;
         const investment = Investment(address);
         const investmentsummaryTemp = await investment.methods.getInvestmentSummary().call();
-        const investorsAddressesCount = await investment.methods.getInvestmentsAddresses().call();
+        const investorsAddressesCount = await investment.methods.getInventorsAddresses().call();
         const investorsAddresses = await Promise.all(
             Array(parseInt(investorsAddressesCount)).fill().map((element,index)=>{
                 return investment.methods.investorsaddresses(index).call()

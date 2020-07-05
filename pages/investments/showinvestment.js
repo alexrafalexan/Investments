@@ -51,8 +51,17 @@ class ShowInvestment extends Component{
             let statusOfResearchPrev = this.props;
 
             if (statusOfResearch == 0){
-                statusOfResearchPrev = 'Inactive';  //Προσθήκη Συνθηκών σε δεύτερο χρόνο
+                statusOfResearchPrev = 'Inactive';
+            }else if (statusOfResearch == 1){
+                statusOfResearchPrev = 'Active';
+            }else if (statusOfResearch == 2){
+                statusOfResearchPrev = 'Pending';
+            }else if (statusOfResearch == 3){
+                statusOfResearchPrev = 'Cancelled';
+            }else if (statusOfResearch == 4){
+                statusOfResearchPrev = 'Completed';
             }
+
 
             const items = [
                 {

@@ -193,6 +193,7 @@ contract Investment {
             for(uint n=0; n<=activitiesTable.length-1; n++){
                 activitiesTable[n].timeStartActivity = block.timestamp + activitiesTable[n].timeSecStartActivity;
                 activitiesTable[n].timeStopActivity = block.timestamp + activitiesTable[n].timeSecStopActivity;
+                checkStatusOfActivity(n);
             }
         }
     }
@@ -298,7 +299,7 @@ contract Investment {
     }
 
 
-    function getInvestmentsAddresses() public view returns (uint256){
+    function getInventorsAddresses() public view returns (uint256){
         return investorsaddresses.length;
     }
 
