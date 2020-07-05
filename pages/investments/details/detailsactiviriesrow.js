@@ -1,6 +1,8 @@
 import React , { Component } from 'react';
 import {Table} from 'semantic-ui-react';
 import Button from "semantic-ui-react/dist/commonjs/elements/Button";
+import {Link} from "../../../routes";
+import Layout from "../../../components/Layout";
 
 class DetailsActivitiesRow extends Component {
  render() {
@@ -35,7 +37,11 @@ class DetailsActivitiesRow extends Component {
           <Cell>{details.timeStartActivity}</Cell>
           <Cell>{details.timeStopActivity}</Cell>
           <Cell>
-              <Button>Λεπρομέριες</Button>
+              <Link route={`/investments/${this.props.address}/${id}/requests/newperscentageinactivity`}>
+                  <a>
+                      <Button primary>Λεπτομέρειες</Button>
+                  </a>
+              </Link>
           </Cell>
       </Row>
   );
