@@ -4,7 +4,7 @@ import Button from "semantic-ui-react/dist/commonjs/elements/Button";
 import {Link, Router} from '../../../routes';
 import Layout from "../../../components/Layout";
 import Investment from "../../../ethproject/investment";
-import DetailsInvenstorsrowRow from "./detailsactiviriesrow";
+import DetailsInvenstorsRow from "./detailsinvenstorsrow";
 import web3 from "../../../ethproject/web3";
 
 class DetailsInvenstors extends Component {
@@ -16,7 +16,7 @@ class DetailsInvenstors extends Component {
     static async getInitialProps(props){
         const { address } = props.query;
         const investment = Investment(address);
-        const investmentsummary = await investment.methods.getInvestmentSummary().call();
+        const investmentsummaryTemp = await investment.methods.getInvestmentSummary().call();
         const investorsAddressesCount = await investment.methods.getInvestmentsAddresses().call();
         const investorsAddresses = await Promise.all(
             Array(parseInt(investorsAddressesCount)).fill().map((element,index)=>{
@@ -27,7 +27,7 @@ class DetailsInvenstors extends Component {
         return {address,
             investorsAddresses,
             investorsAddressesCount,
-            contribution: investmentsummary[7]
+            contribution: investmentsummaryTemp[7]
         };
     }
 
@@ -36,16 +36,18 @@ class DetailsInvenstors extends Component {
         event.preventDefault();
         const investment = Investment(this.props.address);
         const account = await web3.eth.getAccounts();
-        await investment.methods.E_OrganizationsPayment().send({
+        await investment.methods.F_MakeAppanage().send({
                 from: account[0],
                 value: this.props.contribution
         });
+
+        console.log(this.props.contribution);
 
     };
 
     renderRows() {
         return this.props.investorsAddresses.map((details, index) => {
-            return <DetailsInvenstorsrowRow
+            return <DetailsInvenstorsRow
                 key={index}
                 id = {index}
                 details={details}
@@ -64,6 +66,7 @@ class DetailsInvenstors extends Component {
                     <Header>
                         <Row>
                             <HeaderCell>ID</HeaderCell>
+                            <HeaderCell>Επενδυτής</HeaderCell>
                         </Row>
                     </Header>
                     <Body>
