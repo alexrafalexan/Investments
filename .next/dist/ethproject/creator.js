@@ -14,7 +14,7 @@ var _Application2 = _interopRequireDefault(_Application);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var inst = new _web2.default.eth.Contract(JSON.parse(_Application2.default.interface), '0x2f798E19ac9aF947eeD37005041f620DF77BCfe1');
+var inst = new _web2.default.eth.Contract(JSON.parse(_Application2.default.interface), '0x7f9F18745dF6E3e22125e7392C5135563024bdAC');
 
 exports.default = inst;
 //# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImV0aHByb2plY3RcXGNyZWF0b3IuanMiXSwibmFtZXMiOlsid2ViMyIsIkFwcGxpY2F0aW9uIiwiaW5zdCIsImV0aCIsIkNvbnRyYWN0IiwiSlNPTiIsInBhcnNlIiwiaW50ZXJmYWNlIl0sIm1hcHBpbmdzIjoiOzs7Ozs7QUFBQSxBQUFPLEFBQVAsQUFBaUIsQUFBakI7Ozs7QUFDQSxBQUFPLEFBQVAsQUFBd0IsQUFBeEI7Ozs7OztBQUVBLElBQU0sT0FBTyxJQUFJLGNBQUssQUFBTCxJQUFTLEFBQWIsU0FDVCxLQUFLLEFBQUwsTUFBVyxzQkFBWSxBQUF2QixBQURTLFlBRVQsQUFGUyxBQUFiLEFBS0E7O2tCQUFnQixBQUFoQiIsImZpbGUiOiJjcmVhdG9yLmpzIiwic291cmNlUm9vdCI6IkQ6L1VuaXBpL0dyYWR1YXRlL0ludmVzdG1lbnRzIn0=
