@@ -24,7 +24,7 @@ class PaySeller extends Component {
                 this.props.id,
                 this.state.value,
                 this.state.details,
-                this.state.address,
+                this.state.seller,
             ).send({
                 from: account[0]
             });

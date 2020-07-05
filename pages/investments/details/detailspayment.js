@@ -3,38 +3,28 @@ import {Button, Table} from 'semantic-ui-react';
 import {Link} from '../../../routes';
 import Layout from "../../../components/Layout";
 import Investment from "../../../ethproject/investment";
-import DetailsActivitiesRow from "./detailsactiviriesrow";
+import DetailsPaymentrowRow from "./detailspaymentrow";
 import web3 from "../../../ethproject/web3";
 
 class DetailsActivities extends Component {
     static async getInitialProps(props){
         const { address } = props.query;
         const investment = Investment(address)
-        const activitiesTableCount = await investment.methods.getActivitiesTableCount().call();
-        const activitiesTable = await Promise.all(
-            Array(parseInt(activitiesTableCount)).fill().map((element,index)=>{
-                return investment.methods.activitiesTable(index).call()
+        const purchaseTableCount = await investment.methods.getDetailPurchaseCount().call();
+        const purchaseTable = await Promise.all(
+            Array(parseInt(purchaseTableCount)).fill().map((element,index)=>{
+                return investment.methods.detailPurchase(index).call()
             })
         );
-        return {address, activitiesTable, activitiesTableCount };
+        return {address, purchaseTable, purchaseTableCount };
     }
 
-    onSubmit = async event => {
-        event.preventDefault();
-        const account = await web3.eth.getAccounts();
-        const investment = Investment(this.props.address)
-        await investment.methods.G_checkStatusOfActivities().send({
-            from: account[0],
-        });
-    };
-
     renderRows() {
-        return this.props.activitiesTable.map((details, index) => {
-            return <DetailsActivitiesRow
+        return this.props.purchaseTable.map((details, index) => {
+            return <DetailsPaymentrowRow
                 key={index}
                 id = {index}
                 details={details}
-                address={this.props.address}
             />;
         })
     }
@@ -50,7 +40,7 @@ class DetailsActivities extends Component {
                         <Row>
                             <HeaderCell>ID</HeaderCell>
                             <HeaderCell>Δραστηριότητα</HeaderCell>
-                            <HeaderCell>Ποσό Πληρωμής</HeaderCell>
+                            <HeaderCell>Ποσό Πληρωμής(wei)</HeaderCell>
                             <HeaderCell>Λεπτομέριες</HeaderCell>
                             <HeaderCell>Πωλητής</HeaderCell>
                         </Row>
