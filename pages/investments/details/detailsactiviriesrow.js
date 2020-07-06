@@ -64,6 +64,13 @@ class DetailsActivitiesRow extends Component {
                   </a>
               </Link>
           </Cell>
+          <Cell>
+              <Link route={`/investments/${this.props.address}/${id}/requests/changeactivitystatus`}>
+                  <a>
+                      <Button color={"red"} basic>Αλλαγή</Button>
+                  </a>
+              </Link>
+          </Cell>
       </Row>
   );
  }

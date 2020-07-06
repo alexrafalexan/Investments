@@ -15,7 +15,6 @@ class PaySeller extends Component {
 
     onSubmit = async event => {
         event.preventDefault();
-        console.log(this.props.id , this.state.address, this.state.percentage)
         this.setState({loading: true, errMessage: ''});
         try{
             const investment = Investment(this.props.address);

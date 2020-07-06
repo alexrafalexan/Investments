@@ -14,6 +14,7 @@ routes.add('/investments/:address/details/detailsorganizations','/investments/de
 routes.add('/investments/:address/details/detailsinvenstors','/investments/details/detailsinvenstors');
 routes.add('/investments/:address/details/detailspayment', '/investments/details/detailspayment');
 routes.add('/investments/:address/:id/details/detailspercentageinactivity', '/investments/details/detailspercentageinactivity');
+routes.add('/investments/:address/:id/requests/changeactivitystatus', '/investments/requests/changeactivitystatus');
 
 
 module.exports = routes;
