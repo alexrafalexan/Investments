@@ -205,18 +205,16 @@ contract Investment {
         }
     }
 
-    function checkStatusOfActivity (uint _activityNumber) public requireOrganizationAndInvestorsDonate returns (State){
+    function checkStatusOfActivity (uint _activityNumber) public requireOrganizationAndInvestorsDonate{
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
-        if ((statusOfResearch == State.Inactive) && detailActivity.timeStartActivity < block.timestamp // Case 1 Initial Start
+        if ((statusOfResearch == State.Inactive) && detailActivity.timeStartActivity <= block.timestamp // Case 1 Initial Start
             && (detailActivity.timeStartActivity+detailActivity.timeStopActivity) > block.timestamp ){
             statusOfResearch = State.Active;
             detailActivity.statusActivity = State.Active;
-            return detailActivity.statusActivity;
-        }else if (statusOfResearch == State.Active && detailActivity.timeStartActivity < block.timestamp // Case 2 But time is over
-            && detailActivity.timeStartActivity+detailActivity.timeStopActivity < block.timestamp ){
+        }else if (statusOfResearch == State.Active && detailActivity.timeStartActivity <= block.timestamp // Case 2 But time is over
+            && detailActivity.timeStopActivity < block.timestamp ){
             statusOfResearch = State.Pending;
             detailActivity.statusActivity = State.Pending;
-            return detailActivity.statusActivity;
         }
     }
 
