@@ -108,19 +108,23 @@ class ShowInvestment extends Component{
                     description: 'O αρθιμός των Επενδυτών που έχουν συμμετάσχει σε σχέση με αυτούς που πρέπει να συμμετάσχουν.'
                 },
                 {
-                    header: '7. Κατάσταση Έρευνας',
-                    meta: statusOfResearchPrev,
-                    description: ''
-                },
-                {
-                    header: '8. Πληροφορίες Πληρωμών',
+                    header: '7. Πληροφορίες Πληρωμών',
                     meta: (<Link route={`/investments/${this.props.address}/details/detailspayment`}>
                         <a>
                             {'Λεπτομέρειες'}
                         </a>
                     </Link>) ,
                     description: ''
-                }
+                },
+                {
+                    header: '8. Κατάσταση Έρευνας',
+                    meta:   (<Link route={`/investments/${this.props.address}/details/statusofresearch`}>
+                        <a>
+                            {statusOfResearchPrev + '  -- Ενέργειες'}
+                        </a>
+                    </Link>) ,
+                    description: ''
+                },
             ];
 
             return <Card.Group items={items}/>;

@@ -13,8 +13,10 @@ routes.add('/investments/:address/details/detailsactivities','/investments/detai
 routes.add('/investments/:address/details/detailsorganizations','/investments/details/detailsorganizations');
 routes.add('/investments/:address/details/detailsinvenstors','/investments/details/detailsinvenstors');
 routes.add('/investments/:address/details/detailspayment', '/investments/details/detailspayment');
+routes.add('/investments/:address/details/statusofresearch', '/investments/details/statusofresearch');
 routes.add('/investments/:address/:id/details/detailspercentageinactivity', '/investments/details/detailspercentageinactivity');
 routes.add('/investments/:address/:id/requests/changeactivitystatus', '/investments/requests/changeactivitystatus');
+
 
 
 module.exports = routes;
