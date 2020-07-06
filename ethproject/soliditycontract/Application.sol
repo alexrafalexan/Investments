@@ -47,6 +47,7 @@ contract Investment {
 
     mapping(address => bool) public investors;
     address[] public investorsaddresses;
+    bool public investorsaddresslength = false;
 
 
 
@@ -189,6 +190,7 @@ contract Investment {
         investorsaddresses.push(msg.sender);
         investors[msg.sender] = true;
         nowInvestorsAdded ++ ;
+        investorsaddresslength = true;
         if (nowInvestorsAdded == numInvestors) {
             maxTimesOfProject = block.timestamp + maxTimesOfProjectTemp;
             for(uint n=0; n<=activitiesTable.length-1; n++){
@@ -307,21 +309,28 @@ contract Investment {
 
     function returnMoney() public requireToBeMaster{
         require (!(statusOfResearch == State.Active));
+
         uint _valueReturnOrganization;
         uint _valueReturnInvestors;
 
+
         if (statusOfResearch == State.Cancelled){
             _valueReturnInvestors = address(this).balance / numInvestors;
-            for (uint i=0; i<=investorsaddresses.length-1; i++){
-                investorsaddresses[i].transfer(_valueReturnInvestors);
+            for (uint l=0; l<=investorsaddresses.length-1; l++){
+                investorsaddresses[l].transfer(_valueReturnInvestors);
             }
-        }else if (statusOfResearch == State.Inactive || statusOfResearch == State.Completed){
-            _valueReturnOrganization = (contributionorganization /organizationsaddresses.length);
-            for (uint k=0; k<=organizationsaddresses.length-1; k++){
+        }else if ((statusOfResearch == State.Inactive || statusOfResearch == State.Completed) && investorsaddresslength == false){
+            _valueReturnOrganization = (contributionorganization);
+            for (uint k=0; k<=(organizationsaddresses.length-1); k++){
                 organizationsaddresses[k].transfer(_valueReturnOrganization);
             }
-            _valueReturnInvestors = (availableetherforactivities/investorsaddresses.length);
-            for (uint j=0; j<=investorsaddresses.length-1; i++){
+        }else if ((statusOfResearch == State.Inactive || statusOfResearch == State.Completed) && investorsaddresslength == true){
+            _valueReturnOrganization = (contributionorganization);
+            for (uint m=0; m<=(organizationsaddresses.length-1); m++){
+                organizationsaddresses[m].transfer(_valueReturnOrganization);
+            }
+            _valueReturnInvestors = (address(this).balance/investorsaddresses.length);
+            for (uint j=0; j<=(investorsaddresses.length-1); j++){
                 investorsaddresses[j].transfer(_valueReturnInvestors);
             }
         }
