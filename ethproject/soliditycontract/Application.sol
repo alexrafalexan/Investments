@@ -42,6 +42,7 @@ contract Investment {
     address[] public organizationsaddressesdeclairemaster; // Λίστα με τις διευθύνσης των οργανισμών όπως έχει δηλωθεί από τoν master
     mapping(address => bool) public organizations; // Mapping με τις διευθύνσης των οργανισμών που έχουν συμμετάσχει στην έρευνα καταθέτοντας το ανάλογο ποσό
     address[] public organizationsaddresses; // Λίστα με τις διευθύνσης των οργανισμών που έχουν συμμετάσχει στην έρευνα καταθέτοντας το ανάλογο ποσό
+    bool public organizationsaddresseslength = false;
 
     mapping(uint => bool) public check_complete_activity;
 
@@ -320,7 +321,7 @@ contract Investment {
                 investorsaddresses[l].transfer(_valueReturnInvestors);
             }
             statusOfResearch = State.CancelledClosed;
-        }else if ((statusOfResearch == State.Inactive || statusOfResearch == State.Completed) && investorsaddresslength == false){
+        }else if ((statusOfResearch == State.Inactive || statusOfResearch == State.Completed) && (organizationsaddresseslength == false || investorsaddresslength == false)){
             _valueReturnOrganization = (contributionorganization);
             for (uint k=0; k<=(organizationsaddresses.length-1); k++){
                 organizationsaddresses[k].transfer(_valueReturnOrganization);
