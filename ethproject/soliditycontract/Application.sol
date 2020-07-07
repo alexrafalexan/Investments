@@ -51,7 +51,7 @@ contract Investment {
 
 
 
-    enum State {Inactive, Active, Pending, Cancelled, Completed}
+    enum State {Inactive, Active, Pending, Cancelled, Completed, InactiveClosed, CancelledClosed, CompletedClosed}
 
 
     DetailActivities[] public activitiesTable;
@@ -319,10 +319,16 @@ contract Investment {
             for (uint l=0; l<=investorsaddresses.length-1; l++){
                 investorsaddresses[l].transfer(_valueReturnInvestors);
             }
+            statusOfResearch = State.CancelledClosed;
         }else if ((statusOfResearch == State.Inactive || statusOfResearch == State.Completed) && investorsaddresslength == false){
             _valueReturnOrganization = (contributionorganization);
             for (uint k=0; k<=(organizationsaddresses.length-1); k++){
                 organizationsaddresses[k].transfer(_valueReturnOrganization);
+            }
+            if(statusOfResearch == State.Inactive){
+                statusOfResearch = State.InactiveClosed;
+            }else if(statusOfResearch == State.Completed){
+                statusOfResearch = State.CompletedClosed;
             }
         }else if ((statusOfResearch == State.Inactive || statusOfResearch == State.Completed) && investorsaddresslength == true){
             _valueReturnOrganization = (contributionorganization);
@@ -333,6 +339,12 @@ contract Investment {
             for (uint j=0; j<=(investorsaddresses.length-1); j++){
                 investorsaddresses[j].transfer(_valueReturnInvestors);
             }
+            if(statusOfResearch == State.Inactive){
+                statusOfResearch = State.InactiveClosed;
+            }else if(statusOfResearch == State.Completed){
+                statusOfResearch = State.CompletedClosed;
+            }
         }
+
     }
 }
