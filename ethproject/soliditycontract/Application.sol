@@ -109,6 +109,12 @@ contract Investment {
         require(investorsaddresses.length == numInvestors); // Θα πρέπει όλοι οι ερευνητές να έχουν πραγματοποιήσει την επένδηση
         _;
     }
+
+    modifier requireToBeInactiveTheInvestment{  // Απαιτείται η κατάσταση της Έρευνας να είναι Inactive, δηλαδή πριν ξεκινήσει η έρευνα αλλά δεν θα πρέπει να έχει ακυρωθεί
+        require(statusOfResearch == State.Inactive);
+        _;
+    }
+
     constructor (uint _numOrganizations, uint _numInvestors, uint _maxTimesOfProject,uint _contribution,uint _contributionorganizationpercentage, uint _activities, address _master) public {
         require(_numOrganizations > 0);
         require(_numInvestors > 0);
@@ -128,7 +134,7 @@ contract Investment {
         statusOfResearch = State.Inactive;
     }
 
-    function B_AddOrganizations (address _organizations) public requireToBeMaster{
+    function B_AddOrganizations (address _organizations) public requireToBeMaster requireToBeInactiveTheInvestment{
         require(!organizationsmaster[_organizations] == true);
         require(nowOrganizationsAddedDeclaireMaster < numOrganizations);
         organizationsmaster[_organizations] = true;
@@ -137,7 +143,7 @@ contract Investment {
         nowOrganizationsAddedDeclaireMaster ++ ;
     }
 
-    function C_AddActivity (uint _value, uint _timeStartActivity, uint _duration, string _detail) public requireToBeMaster{
+    function C_AddActivity (uint _value, uint _timeStartActivity, uint _duration, string _detail) public requireToBeMaster requireToBeInactiveTheInvestment{
         require(nowOrganizationsAddedDeclaireMaster == numOrganizations);
         //    require(nowInvestorsAdded == numInvestors);
         require(_value <= availableetherforactivities);
@@ -161,7 +167,7 @@ contract Investment {
         availableetherforactivities = availableetherforactivities - _value;
     }
 
-    function D_AddPercentageInActivity (uint _activityNumber, uint _organizationsaddresses, uint _perscentage) public requireToBeMaster{
+    function D_AddPercentageInActivity (uint _activityNumber, uint _organizationsaddresses, uint _perscentage) public requireToBeMaster requireToBeInactiveTheInvestment{
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
         require(activitiesTable.length == activities);
         require(nowOrganizationsAddedDeclaireMaster == numOrganizations);
@@ -173,7 +179,7 @@ contract Investment {
         detailActivity.perscentagecoverage = activitiesTable[_activityNumber].perscentagecoverage + _perscentage;
     }
 
-    function E_OrganizationsPayment () public payable requireToBeOrganizationDeclareMaster{
+    function E_OrganizationsPayment () public payable requireToBeOrganizationDeclareMaster requireToBeInactiveTheInvestment{
         require(activitiesTable.length == activities);  // Require activities create by master
         require(!organizations[msg.sender] == true);
         require(msg.value == contributionorganization);
