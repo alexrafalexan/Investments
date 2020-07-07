@@ -143,6 +143,20 @@ contract Investment {
         nowOrganizationsAddedDeclaireMaster ++ ;
     }
 
+    function B_DeleteOrganizations (uint _index, address _organizations) public requireToBeMaster requireToBeInactiveTheInvestment{
+        require(organizationsmaster[_organizations] == true);
+        organizationsmaster[_organizations] = false;
+        if(organizationsaddressesdeclairemaster.length == 1){
+            organizationsaddresseslength = false;
+        }
+        for (uint i = _index; i < organizationsaddressesdeclairemaster.length-1; i++){
+            organizationsaddressesdeclairemaster[i] = organizationsaddressesdeclairemaster[i+1];
+        }
+        delete organizationsaddressesdeclairemaster[organizationsaddressesdeclairemaster.length - 1];
+        organizationsaddressesdeclairemaster.length--;
+        nowOrganizationsAddedDeclaireMaster --;
+    }
+
     function C_AddActivity (uint _value, uint _timeStartActivity, uint _duration, string _detail) public requireToBeMaster requireToBeInactiveTheInvestment{
         require(nowOrganizationsAddedDeclaireMaster == numOrganizations);
         //    require(nowInvestorsAdded == numInvestors);
