@@ -144,7 +144,8 @@ contract Investment {
     }
 
     function B_DeleteOrganizations (uint _index, address _organizations) public requireToBeMaster requireToBeInactiveTheInvestment{
-        require(organizationsmaster[_organizations] == true);
+        require(organizationsaddresseslength == false); // Απαιτείται να μην έχει πραγματοποιήσει συμμετοχή κάποιος οργανισμός
+        require(organizationsmaster[_organizations] == true); // Απαιτείται ο οργανισμός να είναι δηλωμένος από τον master
         organizationsmaster[_organizations] = false;
         if(organizationsaddressesdeclairemaster.length == 1){
             organizationsaddresseslength = false;
