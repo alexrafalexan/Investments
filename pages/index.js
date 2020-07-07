@@ -33,11 +33,12 @@ class InvestmentIndex extends Component {
                     <Link route="/investments/newinvestment">
                         <a>
                     <Button
+                        color="red"
                         floated="right"
                         style={{marginTop: '10px'}}
                         content="Δημιουργία Έρευνας"
                         icon="add"
-                        primary
+                        basic
                     />
                         </a>
                     </Link>

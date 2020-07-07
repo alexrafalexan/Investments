@@ -36,7 +36,7 @@ class DetailsOrganizationRow extends Component {
                 <Cell>{details}</Cell>
                 <Cell>{details}</Cell>
                 <Cell>
-                    <Button color="red" basic onClick={this.onInsert}>Συμμετοχή</Button>
+                    <Button color="green" floated="right" basic onClick={this.onInsert}>Συμμετοχή</Button>
                 </Cell>
             </Row>
         );

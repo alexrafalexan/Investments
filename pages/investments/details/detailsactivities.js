@@ -47,10 +47,10 @@ class DetailsActivities extends Component {
                 <h3>Λεπτομέρειες Activity</h3>
                 <Link route={`/investments/${this.props.address}/requests/newactivity`}>
                     <a>
-                        <Button primary>Προσθήκη Activity</Button>
+                        <Button color={"red"} basic>Προσθήκη Activity</Button>
                     </a>
                 </Link>
-                <Button color={"red"} basic onClick={this.onSubmit}>Έλεγχος Activities</Button>
+                <Button primary onClick={this.onSubmit}>Έλεγχος Activities</Button>
                 <Table>
                     <Header>
                         <Row>

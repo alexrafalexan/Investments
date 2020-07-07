@@ -8,7 +8,6 @@ class DetailsActivitiesRow extends Component {
  render() {
   const { Row, Cell } = Table;
     const {id, details} = this.props; //209 -- 4:38
-
      let statusOfActivityPrev = this.props;
 
 
@@ -24,6 +23,33 @@ class DetailsActivitiesRow extends Component {
          statusOfActivityPrev = 'Completed';
      }
 
+     let timeStart = "Investment have not started yet";
+     let timeStop = "Investment have not started yet";
+
+     if(details.timeStartActivity == 0){
+         timeStart = 'Investment have not started yet';
+         timeStop = 'Investment have not started yet';
+     }else {
+         timeStart = Intl.DateTimeFormat('en-US',{
+             year: "numeric",
+             month: "short",
+             day: "2-digit",
+             hour: "numeric",
+             minute: "2-digit",
+             second: "2-digit"
+         }).format((details.timeStartActivity)*1000);
+         timeStop = Intl.DateTimeFormat('en-US',{
+             year: "numeric",
+             month: "short",
+             day: "2-digit",
+             hour: "numeric",
+             minute: "2-digit",
+             second: "2-digit"
+         }).format((details.timeStopActivity)*1000);
+     }
+
+
+
   return (
       <Row>
        <Cell>{id}</Cell>
@@ -34,26 +60,12 @@ class DetailsActivitiesRow extends Component {
           <Cell>{statusOfActivityPrev}</Cell>
           <Cell>{details.timeSecStartActivity}</Cell>
           <Cell>{details.timeSecStopActivity}</Cell>
-          <Cell>{Intl.DateTimeFormat('en-US',{
-              year: "numeric",
-              month: "short",
-              day: "2-digit",
-              hour: "numeric",
-              minute: "2-digit",
-              second: "2-digit"
-          }).format((details.timeStartActivity)*1000)}</Cell>
-          <Cell>{Intl.DateTimeFormat('en-US',{
-              year: "numeric",
-              month: "short",
-              day: "2-digit",
-              hour: "numeric",
-              minute: "2-digit",
-              second: "2-digit"
-          }).format((details.timeStopActivity)*1000)}</Cell>
+          <Cell>{timeStart}</Cell>
+          <Cell>{timeStop}</Cell>
           <Cell>
               <Link route={`/investments/${this.props.address}/${id}/requests/newperscentageinactivity`}>
                   <a>
-                      <Button primary>Λεπτομέρειες</Button>
+                      <Button color={"red"} basic>Λεπτομέρειες</Button>
                   </a>
               </Link>
           </Cell>

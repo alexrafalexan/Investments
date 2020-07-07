@@ -52,7 +52,7 @@ class DetailsOrganizations extends Component {
                 <h3>Requests</h3>
                 <Link route={`/investments/${this.props.address}/requests/neworganization`}>
                     <a>
-                        <Button primary>Προσθήκη Οργανισμού</Button>
+                        <Button color="red" basic >Προσθήκη Οργανισμού</Button>
                     </a>
                 </Link>
                 <Table>
