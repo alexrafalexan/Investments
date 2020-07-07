@@ -22,12 +22,6 @@ class DetailsActivitiesRow extends Component {
          statusOfActivityPrev = 'Cancelled';
      }else if (details.statusActivity == 4){
          statusOfActivityPrev = 'Completed';
-     }else if (details.statusActivity == 5){
-         statusOfActivityPrev = 'InactiveClosed';
-     }else if (details.statusActivity == 6){
-         statusOfActivityPrev = 'CancelledClosed';
-     }else if (details.statusActivity == 7){
-         statusOfActivityPrev = 'CompletedClosed';
      }
 
   return (

@@ -60,6 +60,12 @@ class ShowInvestment extends Component{
                 statusOfResearchPrev = 'Cancelled';
             }else if (statusOfResearch == 4){
                 statusOfResearchPrev = 'Completed';
+            }else if (statusOfResearch == 5){
+                statusOfResearchPrev = 'InactiveClosed';
+            }else if (statusOfResearch == 6){
+                statusOfResearchPrev = 'CancelledClosed';
+            }else if (statusOfResearch == 7){
+                statusOfResearchPrev = 'CompletedClosed';
             }
 
 
