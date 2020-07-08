@@ -1,6 +1,6 @@
 import React, {Component} from "react";
-import {Button, Table} from 'semantic-ui-react';
-import {Link} from '../../../routes';
+import {Button, Form, Table} from 'semantic-ui-react';
+import {Link, Router} from '../../../routes';
 import Layout from "../../../components/Layout";
 import Investment from "../../../ethproject/investment";
 import DetailsOrganizationRow from "./detailsorganizationrow";
@@ -8,8 +8,9 @@ import DetailsOrganizationRow from "./detailsorganizationrow";
 class DetailsOrganizations extends Component {
     static async getInitialProps(props){
         const { address } = props.query;
+        let buttondisable;
         const investment = Investment(address);
-        const investmentsummaryTemp = await investment.methods.getInvestmentSummary().call();
+        const investmentsummary = await investment.methods.getInvestmentSummary().call();
         const organizationsAddressesCount = await investment.methods.getOrganizationsAddressesByMaster().call();
         const organizationsAddresses = await Promise.all(
           Array(parseInt(organizationsAddressesCount)).fill().map((element,index)=>{
@@ -20,8 +21,23 @@ class DetailsOrganizations extends Component {
         return {address,
             organizationsAddresses,
             organizationsAddressesCount,
-            contributionorganization: investmentsummaryTemp[4]
+            numOrganizations :  investmentsummary[1],
+            nowOrganizationsAddedDeclaireMaster : investmentsummary[2],
+            contributionorganization: investmentsummary[4],
         };
+    }
+
+    componentWillMount() {
+        if(this.nowOrganizationsAddedDeclaireMaster === this.numOrganizations){
+            return this.buttondisable = true;
+        }else{
+            return this.buttondisable = false;
+        }
+    }
+
+    onSubmit =  async () => {
+        Router.replaceRoute(`/investments/${this.props.address}/requests/neworganization`)
+
     }
 
     findOrganization = async (address) => {
@@ -50,11 +66,9 @@ class DetailsOrganizations extends Component {
         return (
             <Layout>
                 <h3>Οργανισμοί</h3>
-                <Link route={`/investments/${this.props.address}/requests/neworganization`}>
-                    <a>
-                        <Button color="red" basic >Προσθήκη Οργανισμού</Button>
-                    </a>
-                </Link>
+                <Form onSubmit={this.onSubmit}>
+                        <Button color="red" basic disabled={this.buttondisable} onClick={this.onSubmit}>Προσθήκη Οργανισμού</Button>
+                </Form>
                 <Table>
                     <Header>
                         <Row>

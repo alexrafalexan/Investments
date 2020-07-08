@@ -268,7 +268,7 @@ contract Investment {
         detailActivity.available_ether_to_spent_per_organization[msg.sender] = (detailActivity.available_ether_to_spent_per_organization[msg.sender] - _value);
     }
 
-    function I_changeStatusOfActivity(uint _activityNumber, State _state) public{
+    function I_changeStatusOfActivity(uint _activityNumber, State _state) public requireToBeMaster{
         require(!(check_complete_activity[_activityNumber] == true)); // Απαιτείται να μην έχει γίνει ήδη Completed μια Activity
         require(_state == State.Completed || _state ==  State.Cancelled);
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
@@ -337,6 +337,7 @@ contract Investment {
     function getBalance() view public returns (uint) { // Take Balance off the Contract
         return address(this).balance;
     }
+
 
     function returnMoney() public requireToBeMaster{
         require (!(statusOfResearch == State.Active));

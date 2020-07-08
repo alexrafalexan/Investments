@@ -37,7 +37,7 @@ class AddOrganizationsForm extends Component {
             });
 
 
-            Router.replaceRoute(`/investments/${this.props.address}/`)
+            Router.replaceRoute(`/investments/${this.props.address}/details/detailsorganizations`)
 
         }catch(err){
             this.setState({errMessage: err.message});
