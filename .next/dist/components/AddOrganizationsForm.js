@@ -109,7 +109,7 @@ var AddOrganizationsForm = function (_Component) {
 
                             case 11:
 
-                                _routes.Router.replaceRoute('/investments/' + _this.props.address + '/');
+                                _routes.Router.replaceRoute('/investments/' + _this.props.address + '/details/detailsorganizations');
 
                                 _context.next = 17;
                                 break;

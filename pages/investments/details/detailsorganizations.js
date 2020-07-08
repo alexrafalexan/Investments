@@ -6,9 +6,12 @@ import Investment from "../../../ethproject/investment";
 import DetailsOrganizationRow from "./detailsorganizationrow";
 
 class DetailsOrganizations extends Component {
+    state = {
+        buttondisable : false
+    };
+
     static async getInitialProps(props){
         const { address } = props.query;
-        let buttondisable;
         const investment = Investment(address);
         const investmentsummary = await investment.methods.getInvestmentSummary().call();
         const organizationsAddressesCount = await investment.methods.getOrganizationsAddressesByMaster().call();
@@ -17,6 +20,8 @@ class DetailsOrganizations extends Component {
               return investment.methods.organizationsaddressesdeclairemaster(index).call()
           })
         );
+
+
 
         return {address,
             organizationsAddresses,
@@ -28,11 +33,12 @@ class DetailsOrganizations extends Component {
     }
 
     componentWillMount() {
-        if(this.nowOrganizationsAddedDeclaireMaster === this.numOrganizations){
+        if(this.props.numOrganizations === this.props.nowOrganizationsAddedDeclaireMaster){
             return this.buttondisable = true;
         }else{
             return this.buttondisable = false;
         }
+
     }
 
     onSubmit =  async () => {
