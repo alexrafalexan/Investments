@@ -135,6 +135,7 @@ contract Investment {
     }
 
     function B_AddOrganizations (address _organizations) public requireToBeMaster requireToBeInactiveTheInvestment{
+        require (!(_organizations == 0x0000000000000000000000000000000000000000));
         require(!organizationsmaster[_organizations] == true);
         require(nowOrganizationsAddedDeclaireMaster < numOrganizations);
         organizationsmaster[_organizations] = true;
@@ -182,7 +183,7 @@ contract Investment {
         availableetherforactivities = availableetherforactivities - _value;
     }
 
-    function D_AddPercentageInActivity (uint _activityNumber, uint _organizationsaddresses, uint _perscentage) public requireToBeMaster requireToBeInactiveTheInvestment{
+    function D_AddPercentageInActivity (uint _activityNumber, uint _organizationsaddresses, uint _perscentage) public requireToBeMaster{
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
         require(activitiesTable.length == activities);
         require(nowOrganizationsAddedDeclaireMaster == numOrganizations);
@@ -218,7 +219,7 @@ contract Investment {
             maxTimesOfProject = block.timestamp + maxTimesOfProjectTemp;
             for(uint n=0; n<=activitiesTable.length-1; n++){
                 activitiesTable[n].timeStartActivity = block.timestamp + activitiesTable[n].timeSecStartActivity;
-                activitiesTable[n].timeStopActivity = block.timestamp + activitiesTable[n].timeSecStopActivity;
+                activitiesTable[n].timeStopActivity = activitiesTable[n].timeStartActivity + activitiesTable[n].timeSecStopActivity;
                 checkStatusOfActivity(n);
             }
         }
@@ -232,9 +233,16 @@ contract Investment {
 
     function checkStatusOfActivity (uint _activityNumber) public requireOrganizationAndInvestorsDonate{
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
-        if ((statusOfResearch == State.Inactive) && detailActivity.timeStartActivity <= block.timestamp // Case 1 Initial Start
-            && (detailActivity.timeStartActivity+detailActivity.timeStopActivity) > block.timestamp ){
+        if(detailActivity.statusActivity == State.Completed) {
+            detailActivity.statusActivity = State.Completed;
+        }else if (detailActivity.statusActivity == State.Cancelled){
+            detailActivity.statusActivity = State.Cancelled;
+        }else if ((statusOfResearch == State.Inactive) && (detailActivity.timeStartActivity <= block.timestamp) // Case 1 Initial Start
+            && (detailActivity.timeStopActivity) > block.timestamp ){
             statusOfResearch = State.Active;
+            detailActivity.statusActivity = State.Active;
+        }else if ((statusOfResearch == State.Active) && (detailActivity.timeStartActivity <= block.timestamp) // Case 1 Initial Start
+            && (detailActivity.timeStopActivity) > block.timestamp ){
             detailActivity.statusActivity = State.Active;
         }else if (statusOfResearch == State.Active && detailActivity.timeStartActivity <= block.timestamp // Case 2 But time is over
             && detailActivity.timeStopActivity < block.timestamp ){
@@ -246,19 +254,18 @@ contract Investment {
     function H_PaySeller (uint _activityNumber, uint _value, string _detail, address _seller) public requireToBeOrganization requireOrganizationAndInvestorsDonate {
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
         require(_value <= detailActivity.available_ether_to_spent_per_organization[msg.sender]); // Η αξία της πληρωμής πρέπει να είναι μικρότερη από το ποσό το οποίο μπορεί να ξοδέψει ο Οργανισμός την συγκεκριμένη Activity
-        if (statusOfResearch == State.Active && detailActivity.statusActivity == State.Active ) { // Για να πραγματοποιηθεί η συναλαγή θα πρέπει να είναι Active η Activity και η Έρευνα
-            DetailPurchase memory newDetailPurchase = DetailPurchase({
-                activityNumber: _activityNumber,
-                value: _value,
-                detail: _detail,
-                seller: _seller,
-                organizationmakepayment: msg.sender
-                });
-            detailPurchase.push(newDetailPurchase);
-            _seller.transfer(_value);
-            detailActivity.leftvalue = detailActivity.leftvalue - _value;
-            detailActivity.available_ether_to_spent_per_organization[msg.sender] = (detailActivity.available_ether_to_spent_per_organization[msg.sender] - _value);
-        }
+        require(statusOfResearch == State.Active && detailActivity.statusActivity == State.Active); // Για να πραγματοποιηθεί η συναλαγή θα πρέπει να είναι Active η Activity και η Έρευνα
+        _seller.transfer(_value);
+        DetailPurchase memory newDetailPurchase = DetailPurchase({
+            activityNumber: _activityNumber,
+            value: _value,
+            detail: _detail,
+            seller: _seller,
+            organizationmakepayment: msg.sender
+            });
+        detailPurchase.push(newDetailPurchase);
+        detailActivity.leftvalue = detailActivity.leftvalue - _value;
+        detailActivity.available_ether_to_spent_per_organization[msg.sender] = (detailActivity.available_ether_to_spent_per_organization[msg.sender] - _value);
     }
 
     function I_changeStatusOfActivity(uint _activityNumber, State _state) public{
@@ -279,6 +286,7 @@ contract Investment {
             detailActivity.statusActivity = _state;
             statusOfResearch = _state;
         }
+        G_checkStatusOfActivities ();
     }
 
     function getInvestmentSummary() public view returns ( address, uint, uint, uint, uint, uint, uint, uint, uint, uint, State) {
