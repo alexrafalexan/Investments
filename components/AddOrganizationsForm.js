@@ -37,7 +37,7 @@ class AddOrganizationsForm extends Component {
             });
 
 
-            Router.replaceRoute(`/investments/${this.props.address}`)
+            Router.replaceRoute(`/investments/${this.props.address}/`)
 
         }catch(err){
             this.setState({errMessage: err.message});
@@ -65,7 +65,7 @@ class AddOrganizationsForm extends Component {
                     />
                 </Form.Field>
                 <Message error header="Opps!" content={this.state.errMessage}/>
-                <Button primary loading={this.state.loading} disabled={this.state.buttonenable}>
+                <Button primary loading={this.state.loading}>
                     Προσθήκη
                 </Button>
             </Form>

@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Form, Table} from 'semantic-ui-react';
+import {Form, Table, Message} from 'semantic-ui-react';
 import Button from "semantic-ui-react/dist/commonjs/elements/Button";
 import {Link, Router} from '../../../routes';
 import Layout from "../../../components/Layout";
@@ -9,40 +9,44 @@ import web3 from "../../../ethproject/web3";
 
 class DetailsInvenstors extends Component {
     state = {
-        errMesag: '',
+        errMessage: '',
         load: false
     };
 
     static async getInitialProps(props){
         const { address } = props.query;
-        const investment = Investment(address);
-        const investmentsummaryTemp = await investment.methods.getInvestmentSummary().call();
-        const investorsAddressesCount = await investment.methods.getInventorsAddresses().call();
-        const investorsAddresses = await Promise.all(
-            Array(parseInt(investorsAddressesCount)).fill().map((element,index)=>{
-                return investment.methods.investorsaddresses(index).call()
-            })
-        );
+            const investment = Investment(address);
+            const investmentsummaryTemp = await investment.methods.getInvestmentSummary().call();
+            const investorsAddressesCount = await investment.methods.getInventorsAddresses().call();
+            const investorsAddresses = await Promise.all(
+                Array(parseInt(investorsAddressesCount)).fill().map((element, index) => {
+                    return investment.methods.investorsaddresses(index).call()
+                })
+            );
 
-        return {address,
-            investorsAddresses,
-            investorsAddressesCount,
-            contribution: investmentsummaryTemp[7]
-        };
+            return {
+                address,
+                investorsAddresses,
+                investorsAddressesCount,
+                contribution: investmentsummaryTemp[7]
+            };
     }
 
 
     onSubmit = async event => {
         event.preventDefault();
+        this.setState({loading: true, errMessage: ''});
+        try {
         const investment = Investment(this.props.address);
         const account = await web3.eth.getAccounts();
         await investment.methods.F_MakeAppanage().send({
                 from: account[0],
                 value: this.props.contribution
         });
-
-        console.log(this.props.contribution);
-
+        }catch(err){
+            this.setState({errMessage: err.message});
+        }
+        this.setState({loading:false,value: ''})
     };
 
     renderRows() {
@@ -61,6 +65,7 @@ class DetailsInvenstors extends Component {
 
         return (
             <Layout>
+                <Form onSubmit={this.onSubmit} error={!!this.state.errMessage}>
                 <h3>Επενδυτές Έρευνας</h3>
                 <Table>
                     <Header>
@@ -73,7 +78,9 @@ class DetailsInvenstors extends Component {
                         {this.renderRows()}
                     </Body>
                 </Table>
-                <Button color="green" basic primary onClick={this.onSubmit}>Γίνε Επενδυτής</Button>
+                <Button color="blue" basic loading={this.state.loading}>Γίνε Επενδυτής</Button>
+                    <Message error header="Opps!" content={this.state.errMessage}/>
+                </Form>
             </Layout>
         );
     }

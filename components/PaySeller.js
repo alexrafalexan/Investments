@@ -21,19 +21,20 @@ class PaySeller extends Component {
             const account = await web3.eth.getAccounts();
             await investment.methods.H_PaySeller(
                 this.props.id,
-                this.state.value,
+                web3.utils.toWei(this.state.value,'ether'),
                 this.state.details,
                 this.state.seller,
             ).send({
                 from: account[0]
             });
+
+            Router.replaceRoute(`/investments/${this.props.address}/details/detailsactivities`)
+
         }catch(err){
             this.setState({errMessage: err.message});
         }
 
         this.setState({loading:false,value: ''})
-
-
     };
 
     render() {

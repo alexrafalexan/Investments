@@ -25,7 +25,8 @@ class ChangeStatusOfActivity extends Component {
                 from: account[0]
             });
 
-            Router.pushRoute(`/investments/${this.address}/details/detailsactivities`);
+            Router.pushRoute(`/investments/${this.props.address}/details/detailsactivities`);
+
         }catch(err){
             this.setState({errMessage: err.message});
         }
@@ -40,11 +41,11 @@ class ChangeStatusOfActivity extends Component {
             <Form onSubmit={this.onSubmit} error={!!this.state.errMessage}>
                 <Form.Field>
                     <label><h3>Αλλαγή κατάστασης για την Activity{this.props.id}</h3></label>
-                    <label>Αλλαγή Κατάστασης</label>
+                    <label>Για να "Ακυρώση" επίλεξε 3 για "Ολοκλήρωση" επίλεξε 4</label>
                     <Input
                         value ={this.state.stateactivity}
                         onChange={ event => this.setState({stateactivity: event.target.value})}
-                        label="number"
+                        label="3 or 4"
                         labelPosition={"right"}
                     />
                 </Form.Field>

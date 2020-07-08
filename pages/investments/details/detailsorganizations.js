@@ -49,7 +49,7 @@ class DetailsOrganizations extends Component {
 
         return (
             <Layout>
-                <h3>Requests</h3>
+                <h3>Οργανισμοί</h3>
                 <Link route={`/investments/${this.props.address}/requests/neworganization`}>
                     <a>
                         <Button color="red" basic >Προσθήκη Οργανισμού</Button>
@@ -62,6 +62,7 @@ class DetailsOrganizations extends Component {
                             <HeaderCell>Δηλωμένος Οργανισμός από τον Master</HeaderCell>
                             <HeaderCell>Συμμετοχή Οργανισμού</HeaderCell>
                             <HeaderCell>Κουμπί συμμετοχής για τον Οργανισμό</HeaderCell>
+                            <HeaderCell></HeaderCell>
                         </Row>
                     </Header>
                     <Body>

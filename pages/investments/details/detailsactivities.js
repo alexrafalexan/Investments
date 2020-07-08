@@ -1,12 +1,17 @@
 import React, {Component} from "react";
-import {Button, Table} from 'semantic-ui-react';
-import {Link} from '../../../routes';
+import {Button, Form, Message, Table} from 'semantic-ui-react';
+import {Link, Router} from '../../../routes';
 import Layout from "../../../components/Layout";
 import Investment from "../../../ethproject/investment";
 import DetailsActivitiesRow from "./detailsactiviriesrow";
 import web3 from "../../../ethproject/web3";
 
 class DetailsActivities extends Component {
+    state = {
+        errMessage: '',
+        loading: false
+    }
+
     static async getInitialProps(props){
         const { address } = props.query;
         const investment = Investment(address)
@@ -21,11 +26,22 @@ class DetailsActivities extends Component {
 
     onSubmit = async event => {
         event.preventDefault();
-        const account = await web3.eth.getAccounts();
-        const investment = Investment(this.props.address)
-        await investment.methods.G_checkStatusOfActivities().send({
-            from: account[0],
-        });
+        this.setState({loading: true, errMessage: ''});
+        try {
+            const account = await web3.eth.getAccounts();
+            const investment = Investment(this.props.address)
+            await investment.methods.G_checkStatusOfActivities().send({
+                from: account[0],
+            });
+
+            Router.replaceRoute(`/investments/${this.props.address}/details/detailsactivities`)
+
+        }catch(err){
+            this.setState({errMessage: err.message});
+        }
+
+        this.setState({loading:false,value: ''})
+
     };
 
     renderRows() {
@@ -44,13 +60,14 @@ class DetailsActivities extends Component {
 
         return (
             <Layout>
+                <Form onSubmit={this.onSubmit} error={!!this.state.errMessage}>
                 <h3>Λεπτομέρειες Activity</h3>
                 <Link route={`/investments/${this.props.address}/requests/newactivity`}>
                     <a>
                         <Button color={"red"} basic>Προσθήκη Activity</Button>
                     </a>
                 </Link>
-                <Button primary onClick={this.onSubmit}>Έλεγχος Activities</Button>
+                <Button primary loading={this.state.loading}>Έλεγχος Activities</Button>
                 <Table>
                     <Header>
                         <Row>
@@ -73,6 +90,8 @@ class DetailsActivities extends Component {
                         {this.renderRows()}
                     </Body>
                 </Table>
+                    <Message error header="Opps!" content={this.state.errMessage}/>
+                </Form>
             </Layout>
         );
     }

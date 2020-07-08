@@ -26,6 +26,9 @@ class AddPercentageInActivityForm extends Component {
             ).send({
                 from: account[0]
             });
+
+            Router.replaceRoute(`/investments/${this.props.address}/details/detailsactivities`)
+
         }catch(err){
             this.setState({errMessage: err.message});
         }
@@ -40,11 +43,11 @@ class AddPercentageInActivityForm extends Component {
             <Form onSubmit={this.onSubmit} error={!!this.state.errMessage}>
                 <Form.Field>
                     <label><h3>Προσθηκη Ποσοστού για την Activity {this.props.id}</h3></label>
-                    <label>Προσθήκη Διεύθυνσης Οργανισμού</label>
+                    <label>Προσθήκη ID Οργανισμού</label>
                     <Input
                         value ={this.state.address}
                         onChange={ event => this.setState({address: event.target.value})}
-                        label="address"
+                        label="ID"
                         labelPosition={"right"}
                     />
                     <label>Προσθήκη Ποσοστού</label>
