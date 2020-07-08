@@ -78,12 +78,12 @@ class ShowInvestment extends Component{
                 },
                 {
                     header: '2. Συνεισφορά ανά Οργανισμού',
-                    meta: web3.utils.fromWei(contributionorganization,'ether'),
+                    meta: web3.utils.fromWei(contributionorganization,'ether') + ' Ether',
                     description: 'Το ποσό σε ether που πρέπει να καταθέσει ο κάθε Οργανισμός σαν εγγύηση'
                 },
                 {
                     header: '3. Συνεισφορά ανά Επένδυτή',
-                    meta: web3.utils.fromWei(contribution, 'ether'),
+                    meta: web3.utils.fromWei(contribution, 'ether') + ' Ether',
                     description: 'Το ποσό σε ether που πρέπει να καταθέσει ο κάθε επενδυτής'
                 },
                 {

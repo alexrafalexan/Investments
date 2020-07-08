@@ -26,7 +26,7 @@ class InvestmentCreate extends Component {
             await creator.methods.createInvestment(this.state.NumResearchers,
                 this.state.NumInvestors,
                 this.state.MaxTimesOfProject,
-                this.state.Contribution,
+                web3.utils.toWei(this.state.Contribution,'ether'),
                 this.state.Contributionorganization,
                 this.state.Activities)
                 .send({from: accounts[0]});
@@ -67,7 +67,7 @@ class InvestmentCreate extends Component {
                         />
                         <label>Συνεισφορά Επενδυτών ανά Επενδυτή</label>
                         <Input
-                            label = "wei"
+                            label = "ether"
                             labelPosition = 'right'
                             value={this.state.Contribution}
                             onChange={event =>this.setState({Contribution:event.target.value})}

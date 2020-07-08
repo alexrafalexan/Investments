@@ -24,7 +24,7 @@ class AddActivityForm extends Component {
         try{
             const account = await web3.eth.getAccounts();
             await investment.methods. C_AddActivity(
-                this.state.value,
+                web3.utils.toWei(this.state.value,"ether"),
                 this.state.timeStartActivity,
                 this.state.duration,
                 this.state.detail
@@ -50,7 +50,7 @@ class AddActivityForm extends Component {
                     <Input
                         value ={this.state.value}
                         onChange={ event => this.setState({value: event.target.value})}
-                        label="wei"
+                        label="ether"
                         labelPosition={"right"}
                     />
                     <label>Χρονική Στιγμή 'Εναρξης Activity</label>

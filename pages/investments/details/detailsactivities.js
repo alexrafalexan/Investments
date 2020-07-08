@@ -64,9 +64,9 @@ class DetailsActivities extends Component {
                             <HeaderCell>Λήξη Activity (Χρον. Διάκεια)</HeaderCell>
                             <HeaderCell>Έναρξη Activity</HeaderCell>
                             <HeaderCell>Λήξη Activity</HeaderCell>
-                            <HeaderCell>Διαμόρφοση Ποσοστού Κάλυψης</HeaderCell>
-                            <HeaderCell>Πραγματοποίησε Πληρωμή</HeaderCell>
+                            <HeaderCell>Διαμόρφωση Ποσοστού Κάλυψης</HeaderCell>
                             <HeaderCell>Αλλαγή Κατάστασης</HeaderCell>
+                            <HeaderCell>Πραγματοποίησε Πληρωμή</HeaderCell>
                         </Row>
                     </Header>
                     <Body>

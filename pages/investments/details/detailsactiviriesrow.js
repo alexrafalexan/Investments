@@ -2,6 +2,7 @@ import React , { Component } from 'react';
 import {Table} from 'semantic-ui-react';
 import Button from "semantic-ui-react/dist/commonjs/elements/Button";
 import {Link} from "../../../routes";
+import web3 from '../../../ethproject/web3';
 import Layout from "../../../components/Layout";
 
 class DetailsActivitiesRow extends Component {
@@ -55,8 +56,8 @@ class DetailsActivitiesRow extends Component {
        <Cell>{id}</Cell>
           <Cell>{details.detail}</Cell>
           <Cell>{details.perscentagecoverage}</Cell>
-          <Cell>{details.value}</Cell>
-          <Cell>{details.leftvalue}</Cell>
+          <Cell>{web3.utils.fromWei(details.value, 'ether')}</Cell>
+          <Cell>{web3.utils.fromWei(details.leftvalue, 'ether')}</Cell>
           <Cell>{statusOfActivityPrev}</Cell>
           <Cell>{details.timeSecStartActivity}</Cell>
           <Cell>{details.timeSecStopActivity}</Cell>
@@ -65,14 +66,7 @@ class DetailsActivitiesRow extends Component {
           <Cell>
               <Link route={`/investments/${this.props.address}/${id}/requests/newperscentageinactivity`}>
                   <a>
-                      <Button color={"red"} basic>Λεπτομέρειες</Button>
-                  </a>
-              </Link>
-          </Cell>
-          <Cell>
-              <Link route={`/investments/${this.props.address}/${id}/requests/newpayment`}>
-                  <a>
-                      <Button color={"green"} basic>Πληρωμή</Button>
+                      <Button color={"red"} basic>Διαμόρφωση</Button>
                   </a>
               </Link>
           </Cell>
@@ -80,6 +74,13 @@ class DetailsActivitiesRow extends Component {
               <Link route={`/investments/${this.props.address}/${id}/requests/changeactivitystatus`}>
                   <a>
                       <Button color={"red"} basic>Αλλαγή</Button>
+                  </a>
+              </Link>
+          </Cell>
+          <Cell>
+              <Link route={`/investments/${this.props.address}/${id}/requests/newpayment`}>
+                  <a>
+                      <Button color={"green"} basic>Πληρωμή</Button>
                   </a>
               </Link>
           </Cell>

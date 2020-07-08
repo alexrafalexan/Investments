@@ -13,7 +13,7 @@ class DetailsPaymentrowRow extends Component {
             <Row>
                 <Cell>{id}</Cell>
                 <Cell>{details.activityNumber}</Cell>
-                <Cell>{details.value}</Cell>
+                <Cell>{web3.utils.fromWei(details.value, 'ether')}</Cell>
                 <Cell>{details.detail}</Cell>
                 <Cell>{details.organizationmakepayment}</Cell>
                 <Cell>{details.seller}</Cell>

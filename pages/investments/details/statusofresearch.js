@@ -36,7 +36,7 @@ class StatusOfResearch extends Component {
     render(){
         return (
             <Layout>
-                <h3>Το συνολικό ποσό της έρευνας είναι {this.props.contractBalance} wei</h3>
+                <h3>Το συνολικό ποσό της έρευνας είναι {web3.utils.fromWei(this.props.contractBalance, 'ether')} Ether</h3>
                 <Button color={"red"} basic onClick={this.onSubmit}>Αποπληρωμή</Button>
             </Layout>
         );
