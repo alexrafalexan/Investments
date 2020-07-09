@@ -43,6 +43,9 @@ class DetailsInvenstors extends Component {
                 from: account[0],
                 value: this.props.contribution
         });
+
+        Router.replaceRoute(`/investments/${this.props.address}/details/detailsinvenstors`)
+
         }catch(err){
             this.setState({errMessage: err.message});
         }

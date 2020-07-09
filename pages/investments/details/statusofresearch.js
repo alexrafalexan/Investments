@@ -32,9 +32,9 @@ class StatusOfResearch extends Component {
 
     componentWillMount() {
         if(this.props.statusOfResearch === 3 || this.props.statusOfResearch === 4){
-            return this.buttondisable = false;
-        }else{
             return this.buttondisable = true;
+        }else{
+            return this.buttondisable = false;
         }
 
     }
