@@ -29,7 +29,7 @@ class ShowInvestments extends Component {
         return (
             <Layout>
                 <div>
-                    <h3> Ενεργές Έρευνες</h3>
+                    <h3>Προβολή Ερευνών</h3>
                     <Link route="/investments/newinvestment">
                         <a>
                             <Button
