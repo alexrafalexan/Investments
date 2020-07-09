@@ -14,6 +14,7 @@ routes.add('/investments/:address/requests/neworganization','/investments/reques
 routes.add('/investments/:address/requests/newinvenstor','/investments/requests/newinvenstor');
 routes.add('/investments/:address/details/detailsactivities','/investments/details/detailsactivities');
 routes.add('/investments/:address/details/detailsorganizations','/investments/details/detailsorganizations');
+routes.add('/investments/:address/details/detailspercentageperorganization','/investments/details/detailspercentageperorganization');
 routes.add('/investments/:address/details/detailsinvenstors','/investments/details/detailsinvenstors');
 routes.add('/investments/:address/details/detailspayment', '/investments/details/detailspayment');
 routes.add('/investments/:address/details/statusofresearch', '/investments/details/statusofresearch');
