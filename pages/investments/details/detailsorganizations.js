@@ -56,12 +56,12 @@ class DetailsOrganizations extends Component {
 
     }
 
-    // findOrganization = async (address) => {
-    //     const investment = Investment(this.props.address);
-    //     const organizationsaddressesbypaymentmappingTemp = await investment.methods.getOrganizationsAddressesByPaymentMapping(address).call();
-    //  // console.log(organizationsaddressesbypaymentmappingTemp);
-    //     return organizationsaddressesbypaymentmappingTemp;
-    // }
+    findOrganization = async (address) => {
+        const investment = Investment(this.props.address);
+        const organizationsaddressesbypaymentmappingTemp = await investment.methods.getOrganizationsAddressesByPaymentMapping(address).call();
+     // console.log(organizationsaddressesbypaymentmappingTemp);
+        return organizationsaddressesbypaymentmappingTemp;
+    }
 
     renderRowsByMaster() {
         return this.props.organizationsAddressesByMaster.map((details, index) => {
@@ -71,20 +71,20 @@ class DetailsOrganizations extends Component {
                 details={details}
                 address={this.props.address}
                 contributionorganization = {this.props.contributionorganization}
-                // organizationsaddressesbypaymentmapping = {this.findOrganization(details)}
+                organizationsaddressesbypaymentmapping = {this.findOrganization(details)}
             />;
         })
     }
 
     renderRows() {
-        return this.props.organizationsAddressesByMaster.map((details, index) => {
+        return this.props.organizationsAddresses.map((details, index) => {
             return <DetailsOrganizationRow
                 key={index}
                 id = {index}
                 details={details}
                 address={this.props.address}
                 contributionorganization = {this.props.contributionorganization}
-                // organizationsaddressesbypaymentmapping = {this.findOrganization(details)}
+                organizationsaddressesbypaymentmapping = {this.findOrganization(details)}
             />;
         })
     }
