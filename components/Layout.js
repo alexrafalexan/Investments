@@ -1,5 +1,6 @@
 import React from 'react';
 import Header from "./Header";
+import Footer from "./Footer";
 import { Container } from "semantic-ui-react";
 import Head from 'next/head';
 
@@ -13,7 +14,7 @@ export  default (props) => {
 
              <Header />
              {props.children}
-             <h1>2020 © Copyright Πανεπιστήμιο Πειραιώς</h1>
+             <Footer />
          </Container>
      );
 };
