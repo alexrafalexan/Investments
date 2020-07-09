@@ -23,7 +23,7 @@ exports.default = function () {
         }
     }, _react2.default.createElement(_semanticUiReact.Menu.Item, {
         name: 'copyright',
-        position: 'center',
+        position: 'left',
         fitted: 'vertically', __source: {
             fileName: _jsxFileName,
             lineNumber: 9

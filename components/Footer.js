@@ -8,7 +8,7 @@ export default () => {
         <Menu stackable>
             <Menu.Item
                 name = 'copyright'
-                position='center'
+                position='left'
                 fitted='vertically'>
                 2020 © Copyright Πανεπιστήμιο Πειραιώς
             </Menu.Item>

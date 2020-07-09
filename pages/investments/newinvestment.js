@@ -31,7 +31,7 @@ class InvestmentCreate extends Component {
                 this.state.Activities)
                 .send({from: accounts[0]});
 
-            Router.pushRoute('/');
+            Router.pushRoute('/investments/showinvestments');
         }catch (err) {
             this.setState({errMesag: err.message})
         }

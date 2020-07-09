@@ -24,19 +24,15 @@ class StatusOfResearch extends Component {
                 return investment.methods.activitiesTable(index).call()
             })
         );
-
-        console.log(contractBalance);
-
         return {address, activitiesTable, activitiesTableCount, contractBalance,  statusOfResearch: investmentsummary[10] };
     }
 
     componentWillMount() {
-        if(this.props.statusOfResearch === 3 || this.props.statusOfResearch === 4){
-            return this.buttondisable = true;
-        }else{
+        if(this.props.statusOfResearch === '3' || this.props.statusOfResearch === '4'){
             return this.buttondisable = false;
+        }else {
+            return this.buttondisable = true;
         }
-
     }
 
     onSubmit = async event => {
