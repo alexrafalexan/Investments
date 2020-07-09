@@ -5,7 +5,7 @@ import {Link} from '../routes';
 
 export default () => {
     return (
-        <Menu stackable>
+        <Menu  style={{marginTop: '10px'}} stackable>
             <Menu.Item>
                 <img src='https://www.lifo.gr/uploads/image/559279/LOGO-THIREOS-PAN.jpg'/>
             </Menu.Item>
