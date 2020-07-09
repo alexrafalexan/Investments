@@ -13,7 +13,7 @@ export  default (props) => {
 
              <Header />
              {props.children}
-             <h1>2020 © Copyrights Πανεπιστήμιο Πειραιώς</h1>
+             <h1>2020 © Copyright Πανεπιστήμιο Πειραιώς</h1>
          </Container>
      );
 };

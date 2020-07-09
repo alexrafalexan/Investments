@@ -9,12 +9,14 @@ import web3 from "../../../ethproject/web3";
 class StatusOfResearch extends Component {
     state ={
         errMessage: '',
-        loading: false
+        loading: false,
+        buttondisable : false
     };
 
     static async getInitialProps(props){
         const { address } = props.query;
         const investment = Investment(address);
+        const investmentsummary = await investment.methods.getInvestmentSummary().call();
         const contractBalance =  await investment.methods.getBalance().call();
         const activitiesTableCount = await investment.methods.getActivitiesTableCount().call();
         const activitiesTable = await Promise.all(
@@ -25,7 +27,16 @@ class StatusOfResearch extends Component {
 
         console.log(contractBalance);
 
-        return {address, activitiesTable, activitiesTableCount, contractBalance };
+        return {address, activitiesTable, activitiesTableCount, contractBalance,  statusOfResearch: investmentsummary[10] };
+    }
+
+    componentWillMount() {
+        if(this.props.statusOfResearch === 3 || this.props.statusOfResearch === 4){
+            return this.buttondisable = false;
+        }else{
+            return this.buttondisable = true;
+        }
+
     }
 
     onSubmit = async event => {
@@ -51,7 +62,8 @@ class StatusOfResearch extends Component {
             <Layout>
                 <Form onSubmit={this.onSubmit} error={!!this.state.errMessage}>
                 <h3>Το συνολικό ποσό της έρευνας είναι {web3.utils.fromWei(this.props.contractBalance, 'ether')} Ether</h3>
-                <Button loading={this.state.loading} color={"red"} basic>Αποπληρωμή</Button>
+                    <p>Η Αποπληρωμή ενεργοποιείται μόνο στην κατάσταση Cancelled ή Completed</p>
+                <Button loading={this.state.loading} color={"red"} disabled={this.buttondisable} basic>Αποπληρωμή</Button>
                     <Message error header="Opps!" content={this.state.errMessage}/>
                 </Form>
             </Layout>

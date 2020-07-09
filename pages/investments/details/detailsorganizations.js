@@ -73,7 +73,7 @@ class DetailsOrganizations extends Component {
             <Layout>
                 <h3>Οργανισμοί</h3>
                 <Form onSubmit={this.onSubmit}>
-                        <Button color="red" basic disabled={this.buttondisable} onClick={this.onSubmit}>Προσθήκη Οργανισμού</Button>
+                        <Button color="red" basic disabled={this.buttondisable}>Προσθήκη Οργανισμού</Button>
                 </Form>
                 <Table>
                     <Header>
