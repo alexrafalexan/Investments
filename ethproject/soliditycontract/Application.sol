@@ -67,7 +67,7 @@ contract Investment {
         uint perscentagecoverage;
         State statusActivity;
         mapping(address => uint) available_ether_to_spent_per_organization;
-
+        mapping(address => uint) perscentage_per_organization;
     }
 
     DetailPurchase[] public detailPurchase;
@@ -191,6 +191,7 @@ contract Investment {
         require(detailActivity.perscentagecoverage < 100 && detailActivity.perscentagecoverage + _perscentage <= 100);
         /* Τα ποσοστά που έχουν εισαχθεί να μην ξεπερνούν το 100% ή να είναι μικρότερα
         ή ίσα με το 100% έπειτα απο το εισαχθέν ποσοστό.*/
+        detailActivity.perscentage_per_organization[organizationsaddressesdeclairemaster[_organizationsaddresses]] = detailActivity.perscentage_per_organization[organizationsaddressesdeclairemaster[_organizationsaddresses]] + _perscentage;
         detailActivity.available_ether_to_spent_per_organization[organizationsaddressesdeclairemaster[_organizationsaddresses]] = (_perscentage*detailActivity.value) / 100;
         detailActivity.perscentagecoverage = activitiesTable[_activityNumber].perscentagecoverage + _perscentage;
     }
@@ -306,9 +307,10 @@ contract Investment {
     }
 
 
-    function getAvailableEtherPerOrganizationPerActivity (uint _activityNumber, address _researcheraddresses) public view returns(uint) {
+    function getAvailableEtherPerOrganizationPerActivity (uint _activityNumber, address _researcheraddresses) public view returns(address, uint, uint) {
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
-        return detailActivity.available_ether_to_spent_per_organization[_researcheraddresses];
+        return (_researcheraddresses, detailActivity.available_ether_to_spent_per_organization[_researcheraddresses],
+        detailActivity.perscentage_per_organization[_researcheraddresses]);
     }
 
 
