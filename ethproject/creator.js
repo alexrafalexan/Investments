@@ -3,7 +3,7 @@ import Application from './build/Application.json';
 
 const inst = new web3.eth.Contract(
     JSON.parse(Application.interface),
-    '0xdaC1E9b70bDF5d8f87bb2C171B49167DF0c09BCC'
+    '0x0e1606AD0F0E780258C0412D1A84930dfd64ca8F'
 );
 
 export default  inst;

@@ -324,6 +324,11 @@ contract Investment {
         return organizationsaddressesdeclairemaster.length;
     }
 
+    function getOrganizationsAddresses() public view returns (uint256){
+        return organizationsaddresses.length;
+    }
+
+
     function getOrganizationsAddressesByPaymentMapping (address _organizations) public view returns (bool){
         return organizations[_organizations];
     }
@@ -340,7 +345,7 @@ contract Investment {
 
 
     function returnMoney() public requireToBeMaster{
-        require (!(statusOfResearch == State.Active));
+        require ((statusOfResearch == State.Cancelled) || ((statusOfResearch == State.Completed)) );
 
         uint _valueReturnOrganization;
         uint _valueReturnInvestors;
