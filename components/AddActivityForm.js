@@ -32,7 +32,7 @@ class AddActivityForm extends Component {
                 from: account[0]
             });
 
-            Router.replaceRoute(`/investments/${this.props.address}/details/detailsactivities`)
+            Router.replaceRoute(`/investments/${this.props.address}/details/detailsactivities`);
 
         }catch(err){
             this.setState({errMessage: err.message});
