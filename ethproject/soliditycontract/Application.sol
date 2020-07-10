@@ -253,6 +253,11 @@ contract Investment {
     }
 
     function H_PaySeller (uint _activityNumber, uint _value, string _detail, address _seller) public requireToBeOrganization requireOrganizationAndInvestorsDonate {
+        G_checkStatusOfActivities();
+        funcPaySeller(_activityNumber, _value, _detail, _seller);
+    }
+
+    function funcPaySeller (uint _activityNumber, uint _value, string _detail, address _seller) public requireToBeOrganization requireOrganizationAndInvestorsDonate {
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
         require(_value <= detailActivity.available_ether_to_spent_per_organization[msg.sender]); // Η αξία της πληρωμής πρέπει να είναι μικρότερη από το ποσό το οποίο μπορεί να ξοδέψει ο Οργανισμός την συγκεκριμένη Activity
         require(statusOfResearch == State.Active && detailActivity.statusActivity == State.Active); // Για να πραγματοποιηθεί η συναλαγή θα πρέπει να είναι Active η Activity και η Έρευνα
