@@ -66,7 +66,7 @@ class DetailsActivitiesRow extends Component {
           <Cell>
               <Link route={`/investments/${this.props.address}/${id}/requests/newperscentageinactivity`}>
                   <a>
-                      <Button color={"red"} basic>Διαμόρφωση</Button>
+                      <Button primary>Πληροφορίες</Button>
                   </a>
               </Link>
           </Cell>

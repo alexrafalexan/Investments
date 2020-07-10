@@ -65,7 +65,7 @@ class PaySeller extends Component {
                     />
                 </Form.Field>
                 <Message error header="Opps!" content={this.state.errMessage}/>
-                <Button primary loading={this.state.loading}>
+                <Button basic color='green' loading={this.state.loading}>
                     Πληρωμή
                 </Button>
             </Form>

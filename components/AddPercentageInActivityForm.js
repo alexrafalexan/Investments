@@ -59,7 +59,7 @@ class AddPercentageInActivityForm extends Component {
                     />
                 </Form.Field>
                 <Message error header="Opps!" content={this.state.errMessage}/>
-                <Button primary loading={this.state.loading}>
+                <Button basic color='red' loading={this.state.loading}>
                     Προσθήκη
                 </Button>
             </Form>

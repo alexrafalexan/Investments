@@ -15,7 +15,7 @@ class AddOrganizationPerscentage extends Component {
     render() {
         return (
             <Layout>
-                <h3>Ποσοστά Κάλυψης Activity</h3>
+                <h3>Ποσοστά Κάλυψης Activity {this.props.id}</h3>
                 <Grid>
                     <GridRow>
                         <Grid.Column>
