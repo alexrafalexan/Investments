@@ -3,8 +3,9 @@ import {Button, Grid, GridRow} from 'semantic-ui-react';
 import {Link} from '../../../routes';
 import Layout from "../../../components/Layout";
 import AddPercentageInActivityForm from '../../../components/AddPercentageInActivityForm'
+import RequestDetails from "../../../components/RequestDetails";
 
-class AddOrganization extends Component {
+class AddOrganizationPerscentage extends Component {
     static async getInitialProps(props){
         const { address } = props.query;
         const { id } = props.query;
@@ -18,6 +19,11 @@ class AddOrganization extends Component {
                 <Grid>
                     <GridRow>
                         <Grid.Column>
+                            <RequestDetails address= {this.props.address} id = {this.props.id}/>
+                        </Grid.Column>
+                    </GridRow>
+                        <GridRow>
+                        <Grid.Column>
                             <AddPercentageInActivityForm address= {this.props.address} id = {this.props.id}/>
                         </Grid.Column>
                     </GridRow>
@@ -27,4 +33,4 @@ class AddOrganization extends Component {
     }
 }
 
-export default AddOrganization;
+export default AddOrganizationPerscentage;
