@@ -3,6 +3,7 @@ import {Button, Grid, GridRow} from 'semantic-ui-react';
 import {Link} from '../../../routes';
 import Layout from "../../../components/Layout";
 import PaySeller from '../../../components/PaySeller'
+import RequestDetails from "../../../components/RequestDetails";
 
 class SellerPayment extends Component {
     static async getInitialProps(props){
@@ -16,6 +17,11 @@ class SellerPayment extends Component {
             <Layout>
                 <h3>Πληρωμή Πωλητή</h3>
                 <Grid>
+                    <GridRow>
+                        <Grid.Column>
+                            <RequestDetails address= {this.props.address} id = {this.props.id}/>
+                        </Grid.Column>
+                    </GridRow>
                     <GridRow>
                         <Grid.Column>
                             <PaySeller address= {this.props.address} id = {this.props.id}/>

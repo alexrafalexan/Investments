@@ -34,7 +34,7 @@ class RequestDetails extends Component {
         return (
             <Form success={!!this.state.successMessage} onSubmit={this.onSubmit} error={!!this.state.errMessage}>
                 <Form.Field>
-                    <label><h3>Εμφάνιση Ποσοστού για τον Οργανισμό</h3></label>
+                    <label><h3>Εμφάνιση Ποσοστού και Διαθέσιμου ποσού για τον Οργανισμό</h3></label>
                     <label>Υποβολή address Οργανισμού</label>
                     <Input
                         value={this.state.address}
