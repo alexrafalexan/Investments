@@ -192,7 +192,7 @@ contract Investment {
         /* Τα ποσοστά που έχουν εισαχθεί να μην ξεπερνούν το 100% ή να είναι μικρότερα
         ή ίσα με το 100% έπειτα απο το εισαχθέν ποσοστό.*/
         detailActivity.perscentage_per_organization[organizationsaddressesdeclairemaster[_organizationsaddresses]] = detailActivity.perscentage_per_organization[organizationsaddressesdeclairemaster[_organizationsaddresses]] + _perscentage;
-        detailActivity.available_ether_to_spent_per_organization[organizationsaddressesdeclairemaster[_organizationsaddresses]] = (_perscentage*detailActivity.value) / 100;
+        detailActivity.available_ether_to_spent_per_organization[organizationsaddressesdeclairemaster[_organizationsaddresses]] =detailActivity.available_ether_to_spent_per_organization[organizationsaddressesdeclairemaster[_organizationsaddresses]] + (_perscentage*detailActivity.value) / 100;
         detailActivity.perscentagecoverage = activitiesTable[_activityNumber].perscentagecoverage + _perscentage;
     }
 
