@@ -5,10 +5,12 @@ import Layout from "../../../components/Layout";
 import Investment from "../../../ethproject/investment";
 import DetailsOrganizationRow from "./detailsorganizationrow";
 import DetailsOrganizationRowByMaster from "./detailsorganizationrowbymaster";
+import web3 from "../../../ethproject/web3";
 
 class DetailsOrganizations extends Component {
     state = {
-        buttondisable : false
+        buttondisable : false,
+        orgbuttondisable: false
     };
 
     static async getInitialProps(props){
@@ -38,23 +40,45 @@ class DetailsOrganizations extends Component {
             organizationsAddresses : organizationsAddresses,
             numOrganizations :  investmentsummary[1],
             nowOrganizationsAddedDeclaireMaster : investmentsummary[2],
+            nowOrganizationsAdded:  investmentsummary[3],
             contributionorganization: investmentsummary[4],
         };
     }
 
     componentWillMount() {
-        if(this.props.numOrganizations === this.props.nowOrganizationsAddedDeclaireMaster){
-            return this.buttondisable = true;
+        if((this.props.numOrganizations === this.props.nowOrganizationsAddedDeclaireMaster) && (this.props.numOrganizations === this.props.nowOrganizationsAdded) ){
+            return (this.buttondisable = true , this.orgbuttondisable = true);
+        }else if ((this.props.numOrganizations === this.props.nowOrganizationsAddedDeclaireMaster) && !(this.props.numOrganizations === this.props.nowOrganizationsAdded)){
+            return (this.buttondisable = true , this.orgbuttondisable = false);
         }else{
-            return this.buttondisable = false;
+            (this.buttondisable = false , this.orgbuttondisable = false);
         }
-
     }
 
     onSubmit =  async () => {
         Router.replaceRoute(`/investments/${this.props.address}/requests/neworganization`)
 
     }
+
+    onInsert = async () => {
+        this.setState({loading: true, errMessage: ''});
+        try {
+            const investment = Investment(this.props.address);
+            const accounts = await web3.eth.getAccounts();
+            await investment.methods.E_OrganizationsPayment().send({
+                from: accounts[0],
+                value: web3.utils.toWei(this.props.contributionorganization, 'wei')
+            });
+
+            Router.replaceRoute(`/investments/${this.props.address}/details/detailsorganizations`)
+
+        } catch (err) {
+            this.setState({errMessage: err.message});
+        }
+
+        this.setState({loading: false, value: ''})
+    };
+
 
     findOrganization = async (address) => {
         const investment = Investment(this.props.address);
@@ -95,34 +119,37 @@ class DetailsOrganizations extends Component {
         return (
             <Layout>
                 <h3>Οργανισμοί</h3>
-                <Form onSubmit={this.onSubmit}>
-                        <Button color="red" basic disabled={this.buttondisable}>Προσθήκη Οργανισμού</Button>
+                <div>
+                <Form onSubmit={this.onInsert} error={!!this.state.errMessage}>
+                    <Button color="green" floated="left" basic disabled={this.orgbuttondisable} loading={this.state.loading}>Συμμετοχή Οργανισμού</Button>
                 </Form>
-                <Table>
-                    <Header>
-                        <Row>
-                            <HeaderCell>ID</HeaderCell>
-                            <HeaderCell>Δηλωμένοι Οργανισμοί από τον Master</HeaderCell>
-                            <HeaderCell>Κουμπί συμμετοχής για τον Οργανισμό</HeaderCell>
-                            <HeaderCell></HeaderCell>
-                        </Row>
-                    </Header>
-                    <Body>
-                        {this.renderRowsByMaster()}
-                    </Body>
-                </Table>
+                    </div> <br></br><br></br>
                 <Table>
                     <Header>
                         <Row>
                             <HeaderCell>ID</HeaderCell>
                             <HeaderCell>Συμμετέχοντες Οργανισμοί</HeaderCell>
-                            <HeaderCell></HeaderCell>
                         </Row>
                     </Header>
                     <Body>
                         {this.renderRows()}
                     </Body>
                 </Table>
+                <Table>
+                    <Header>
+                        <Row>
+                            <HeaderCell>ID</HeaderCell>
+                            <HeaderCell>Δηλωμένοι Οργανισμοί από τον Master</HeaderCell>
+                        </Row>
+                    </Header>
+                    <Body>
+                        {this.renderRowsByMaster()}
+                    </Body>
+                </Table>
+                <div><Form onSubmit={this.onSubmit}>
+                    <Button color="red" basic disabled={this.buttondisable}>Προσθήκη Οργανισμού</Button>
+                </Form>
+                </div>
             </Layout>
         );
     }
