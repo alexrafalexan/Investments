@@ -38,7 +38,7 @@ class DetailsActivities extends Component {
                 <Table>
                     <Header>
                         <Row>
-                            <HeaderCell>ID</HeaderCell>
+                            <HeaderCell>Συναλλαγή</HeaderCell>
                             <HeaderCell>Activity ID</HeaderCell>
                             <HeaderCell>Ποσό Πληρωμής(wei)</HeaderCell>
                             <HeaderCell>Λεπτομέριες</HeaderCell>
