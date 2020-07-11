@@ -1,5 +1,6 @@
 import React , { Component } from 'react';
 import {Table} from 'semantic-ui-react';
+import web3 from "../../../ethproject/web3";
 import Button from "semantic-ui-react/dist/commonjs/elements/Button";
 import {Link} from "../../../routes";
 import Layout from "../../../components/Layout";
