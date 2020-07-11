@@ -139,7 +139,7 @@ class DetailsOrganizations extends Component {
                     <Header>
                         <Row>
                             <HeaderCell>ID</HeaderCell>
-                            <HeaderCell>Δηλωμένοι Οργανισμοί από τον Master</HeaderCell>
+                            <HeaderCell>Δηλωμένοι Οργανισμοί από τον Επόπτη</HeaderCell>
                         </Row>
                     </Header>
                     <Body>

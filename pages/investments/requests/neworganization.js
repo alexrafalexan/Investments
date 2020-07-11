@@ -13,7 +13,7 @@ class AddOrganization extends Component {
     render() {
         return (
             <Layout>
-                <h3>Προσθήκη Οργανισμού απο τον Master</h3>
+                <h3>Προσθήκη Οργανισμού απο τον Επόπτη</h3>
                 <Grid>
                     <GridRow>
                         <Grid.Column>

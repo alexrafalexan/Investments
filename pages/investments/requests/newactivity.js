@@ -14,7 +14,7 @@ class CreateActivity extends Component {
     render() {
         return (
             <Layout>
-                <h3>Δημιουργία Activity από τον Master</h3>
+                <h3>Δημιουργία Activity από τον Επόπτη</h3>
                 <Grid>
                     <GridRow>
                         <Grid.Column>
