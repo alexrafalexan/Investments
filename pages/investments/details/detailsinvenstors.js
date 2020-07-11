@@ -9,6 +9,7 @@ import web3 from "../../../ethproject/web3";
 
 class DetailsInvenstors extends Component {
     state = {
+        buttondisable: '',
         errMessage: '',
         load: false
     };
@@ -28,8 +29,18 @@ class DetailsInvenstors extends Component {
                 address,
                 investorsAddresses,
                 investorsAddressesCount,
+                numInvestors: investmentsummaryTemp[5],
+                nowInvestorsAdded: investmentsummaryTemp[6],
                 contribution: investmentsummaryTemp[7]
             };
+    }
+
+    componentWillMount() {
+        if(this.props.numInvestors === this.props.nowInvestorsAdded){
+            return (this.buttondisable = true);
+        }else{
+            (this.buttondisable = false);
+        }
     }
 
 
@@ -81,7 +92,7 @@ class DetailsInvenstors extends Component {
                         {this.renderRows()}
                     </Body>
                 </Table>
-                <Button color="blue" basic loading={this.state.loading}>Γίνε Επενδυτής</Button>
+                <Button color="blue" basic disabled={this.buttondisable} loading={this.state.loading}>Γίνε Επενδυτής</Button>
                     <Message error header="Opps!" content={this.state.errMessage}/>
                 </Form>
             </Layout>
