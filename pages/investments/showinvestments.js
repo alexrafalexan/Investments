@@ -16,7 +16,7 @@ class ShowInvestments extends Component {
             return {
                 header: address,
                 description: (<Link route={`/investments/${address}`}>
-                    <a>Λεπτομέριες Έρευνας</a>
+                    <a>Λεπτομέρειες Έρευνας</a>
                 </Link>),
                 fluid: true
             };

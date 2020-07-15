@@ -352,7 +352,7 @@ contract Investment {
 
 
     function returnMoney() public requireToBeMaster{
-        require ((statusOfResearch == State.Cancelled) || ((statusOfResearch == State.Completed)) );
+        require ( (statusOfResearch == State.Inactive) || (statusOfResearch == State.Cancelled) || ((statusOfResearch == State.Completed)) );
 
         uint _valueReturnOrganization;
         uint _valueReturnInvestors;

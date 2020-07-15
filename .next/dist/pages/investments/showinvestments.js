@@ -77,7 +77,7 @@ var ShowInvestments = function (_Component) {
                             fileName: _jsxFileName,
                             lineNumber: 19
                         }
-                    }, '\u039B\u03B5\u03C0\u03C4\u03BF\u03BC\u03AD\u03C1\u03B9\u03B5\u03C2 \u0388\u03C1\u03B5\u03C5\u03BD\u03B1\u03C2')),
+                    }, '\u039B\u03B5\u03C0\u03C4\u03BF\u03BC\u03AD\u03C1\u03B5\u03B9\u03B5\u03C2 \u0388\u03C1\u03B5\u03C5\u03BD\u03B1\u03C2')),
                     fluid: true
                 };
             });

@@ -26,7 +26,7 @@ export default () => {
             </Menu.Item>
                 <Menu.Item name='investmentcreate'>
                     <Link route={`/investments/newinvestment`}>
-                        <a>Λεπτομέριες Έρευνας</a>
+                        <a>Λεπτομέρειες Έρευνας</a>
                     </Link>
             </Menu.Item>
             <Menu.Item position='right' name='about'>
