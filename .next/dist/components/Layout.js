@@ -24,7 +24,7 @@ var _head2 = _interopRequireDefault(_head);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var _jsxFileName = "D:\\Unipi\\Graduate\\Investments\\components\\Layout.js";
+var _jsxFileName = "E:\\MyFiles\\Papei\\Investments\\components\\Layout.js";
 
 exports.default = function (props) {
              return _react2.default.createElement(_semanticUiReact.Container, {
@@ -39,18 +39,23 @@ exports.default = function (props) {
                           }
              }, _react2.default.createElement("link", { rel: "stylesheet", href: "//cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css", __source: {
                                        fileName: _jsxFileName,
-                                       lineNumber: 12
+                                       lineNumber: 13
                           }
              })), _react2.default.createElement(_Header2.default, {
                           __source: {
                                        fileName: _jsxFileName,
-                                       lineNumber: 15
+                                       lineNumber: 18
                           }
-             }), props.children, _react2.default.createElement(_Footer2.default, {
+             }), _react2.default.createElement(_semanticUiReact.Segment, {
                           __source: {
                                        fileName: _jsxFileName,
-                                       lineNumber: 17
+                                       lineNumber: 19
+                          }
+             }, props.children), _react2.default.createElement(_Footer2.default, {
+                          __source: {
+                                       fileName: _jsxFileName,
+                                       lineNumber: 22
                           }
              }));
 };
-//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImNvbXBvbmVudHNcXExheW91dC5qcyJdLCJuYW1lcyI6WyJSZWFjdCIsIkhlYWRlciIsIkZvb3RlciIsIkNvbnRhaW5lciIsIkhlYWQiLCJwcm9wcyIsImNoaWxkcmVuIl0sIm1hcHBpbmdzIjoiOzs7Ozs7QUFBQSxBQUFPOzs7O0FBQ1AsQUFBTyxBQUFZOzs7O0FBQ25CLEFBQU8sQUFBWTs7OztBQUNuQixBQUFTOztBQUNULEFBQU8sQUFFUDs7Ozs7Ozs7a0JBQWdCLFVBQUEsQUFBQyxPQUFVLEFBQ3RCO29DQUNJLEFBQUM7O2lEQUFEO21EQUFBLEFBRUk7QUFGSjtBQUFBLGNBQUEsa0JBRUksQUFBQzs7aURBQUQ7bURBQUEsQUFDQTtBQURBO0FBQUEsd0RBQ00sS0FBTixBQUFVLGNBQWEsTUFBdkIsQUFBNEI7aURBQTVCO21EQUhKLEFBRUksQUFDQSxBQUdBO0FBSEE7a0NBR0EsQUFBQzs7aURBQUQ7bURBTkosQUFNSSxBQUNDO0FBREQ7QUFBQSx1QkFOSixBQU9XLEFBQ1AsMEJBQUEsQUFBQzs7aURBQUQ7bURBVFIsQUFDSSxBQVFJLEFBR1o7QUFIWTtBQUFBO0FBVmIiLCJmaWxlIjoiTGF5b3V0LmpzIiwic291cmNlUm9vdCI6IkQ6L1VuaXBpL0dyYWR1YXRlL0ludmVzdG1lbnRzIn0=
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImNvbXBvbmVudHNcXExheW91dC5qcyJdLCJuYW1lcyI6WyJSZWFjdCIsIkhlYWRlciIsIkZvb3RlciIsIkNvbnRhaW5lciIsIlNlZ21lbnQiLCJIZWFkIiwicHJvcHMiLCJjaGlsZHJlbiJdLCJtYXBwaW5ncyI6Ijs7Ozs7O0FBQUEsQUFBTzs7OztBQUNQLEFBQU8sQUFBWTs7OztBQUNuQixBQUFPLEFBQVk7Ozs7QUFDbkIsQUFBUyxBQUFXOztBQUNwQixBQUFPLEFBRVA7Ozs7Ozs7O2tCQUFnQixVQUFBLEFBQUMsT0FBVSxBQUN0QjtvQ0FDSSxBQUFDOztpREFBRDttREFBQSxBQUVJO0FBRko7QUFBQSxjQUFBLGtCQUVJLEFBQUM7O2lEQUFEO21EQUFBLEFBRUE7QUFGQTtBQUFBLHdEQUVNLEtBQU4sQUFBVSxjQUFhLE1BQXZCLEFBQTRCO2lEQUE1QjttREFKSixBQUVJLEFBRUEsQUFLQTtBQUxBO2tDQUtBLEFBQUM7O2lEQUFEO21EQVRKLEFBU0ksQUFDRztBQURIO0FBQUEsaUNBQ0csQUFBQzs7aURBQUQ7bURBQUEsQUFDSztBQURMO0FBQUEsc0JBVlAsQUFVTyxBQUNXLEFBRWQsMkJBQUEsQUFBQzs7aURBQUQ7bURBZFIsQUFDSSxBQWFJLEFBR1o7QUFIWTtBQUFBO0FBZmIiLCJmaWxlIjoiTGF5b3V0LmpzIiwic291cmNlUm9vdCI6IkU6L015RmlsZXMvUGFwZWkvSW52ZXN0bWVudHMifQ==

@@ -93,18 +93,18 @@ class DetailsActivities extends Component {
                         <Header>
                             <Row>
                                 <HeaderCell>ID</HeaderCell>
-                                <HeaderCell>Λεπτομέριες</HeaderCell>
+                                <HeaderCell>Λεπτο μέριες</HeaderCell>
                                 <HeaderCell>Ποσοστό Κάληψης Activity</HeaderCell>
                                 <HeaderCell>Συνολικό Ποσό Activity</HeaderCell>
                                 <HeaderCell>Διαθέσιμο Ποσό Activity</HeaderCell>
-                                <HeaderCell>Κατάσταση</HeaderCell>
+                                <HeaderCell>Κατά σταση</HeaderCell>
                                 <HeaderCell>Έναρξη Activity (Χρον. Διάκεια)</HeaderCell>
                                 <HeaderCell>Λήξη Activity (Χρον. Διάκεια)</HeaderCell>
                                 <HeaderCell>Έναρξη Activity</HeaderCell>
                                 <HeaderCell>Λήξη Activity</HeaderCell>
-                                <HeaderCell>Ποσοστού Κάλυψης - Διαθέσιμο Ποσό</HeaderCell>
+                                <HeaderCell>Ποσοστού Κάλυψης Διαθέσιμο Ποσό</HeaderCell>
                                 <HeaderCell>Αλλαγή Κατάστασης</HeaderCell>
-                                <HeaderCell>Πραγματοποίησε Πληρωμή</HeaderCell>
+                                <HeaderCell>Πληρωμή</HeaderCell>
                             </Row>
                         </Header>
                         <Body>
