@@ -16,27 +16,27 @@ contract Application {
 
 
 contract Investment {
-    address public master;
+    address master;
 
-    uint public numOrganizations;
-    uint public numInvestors;
+    uint numOrganizations;
+    uint numInvestors;
 
-    uint public contribution;
-    uint public contributionorganization;
-    uint public availableetherforactivities;
+    uint contribution;
+    uint contributionorganization;
+    uint availableetherforactivities;
 
 
-    uint public nowOrganizationsAddedDeclaireMaster;
-    uint public nowOrganizationsAdded;
-    uint public nowInvestorsAdded;
+    uint nowOrganizationsAddedDeclaireMaster;
+    uint nowOrganizationsAdded;
+    uint nowInvestorsAdded;
 
-    uint public activities;
+    uint activities;
 
-    uint public maxTimesOfProject = 0;
-    uint public maxTimesOfProjectTemp;
+    uint maxTimesOfProject = 0;
+    uint maxTimesOfProjectTemp;
 
-    State public statusOfResearch;
-    uint public numberOfCompletedActivities = 0;
+    State statusOfResearch;
+    uint numberOfCompletedActivities = 0;
 
     mapping(address => bool) public organizationsmaster; // Mapping με τις διευθύνσης των οργανισμών όπως έχει δηλωθεί από τoν master
     address[] public organizationsaddressesdeclairemaster; // Λίστα με τις διευθύνσης των οργανισμών όπως έχει δηλωθεί από τoν master
@@ -144,21 +144,6 @@ contract Investment {
         nowOrganizationsAddedDeclaireMaster ++ ;
     }
 
-    function B_DeleteOrganizations (uint _index, address _organizations) public requireToBeMaster requireToBeInactiveTheInvestment{
-        require(organizationsaddresseslength == false); // Απαιτείται να μην έχει πραγματοποιήσει συμμετοχή κάποιος οργανισμός
-        require(organizationsmaster[_organizations] == true); // Απαιτείται ο οργανισμός να είναι δηλωμένος από τον master
-        organizationsmaster[_organizations] = false;
-        if(organizationsaddressesdeclairemaster.length == 1){
-            organizationsaddresseslength = false;
-        }
-        for (uint i = _index; i < organizationsaddressesdeclairemaster.length-1; i++){
-            organizationsaddressesdeclairemaster[i] = organizationsaddressesdeclairemaster[i+1];
-        }
-        delete organizationsaddressesdeclairemaster[organizationsaddressesdeclairemaster.length - 1];
-        organizationsaddressesdeclairemaster.length--;
-        nowOrganizationsAddedDeclaireMaster --;
-    }
-
     function C_AddActivity (uint _value, uint _timeStartActivity, uint _duration, string _detail) public requireToBeMaster requireToBeInactiveTheInvestment{
         require(nowOrganizationsAddedDeclaireMaster == numOrganizations);
         //    require(nowInvestorsAdded == numInvestors);
@@ -257,7 +242,7 @@ contract Investment {
         funcPaySeller(_activityNumber, _value, _detail, _seller);
     }
 
-    function funcPaySeller (uint _activityNumber, uint _value, string _detail, address _seller) public requireToBeOrganization requireOrganizationAndInvestorsDonate {
+    function funcPaySeller (uint _activityNumber, uint _value, string _detail, address _seller) requireToBeOrganization requireOrganizationAndInvestorsDonate {
         DetailActivities storage detailActivity = activitiesTable[_activityNumber];
         require(_value <= detailActivity.available_ether_to_spent_per_organization[msg.sender]); // Η αξία της πληρωμής πρέπει να είναι μικρότερη από το ποσό το οποίο μπορεί να ξοδέψει ο Οργανισμός την συγκεκριμένη Activity
         require(statusOfResearch == State.Active && detailActivity.statusActivity == State.Active); // Για να πραγματοποιηθεί η συναλαγή θα πρέπει να είναι Active η Activity και η Έρευνα

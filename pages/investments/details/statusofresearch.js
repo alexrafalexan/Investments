@@ -58,7 +58,7 @@ class StatusOfResearch extends Component {
             <Layout>
                 <Form onSubmit={this.onSubmit} error={!!this.state.errMessage}>
                 <h3>Το συνολικό ποσό της έρευνας είναι {web3.utils.fromWei(this.props.contractBalance, 'ether')} Ether</h3>
-                    <p>Η Αποπληρωμή ενεργοποιείται μόνο στην κατάσταση Cancelled ή Completed</p>
+                    <p>Η Αποπληρωμή ενεργοποιείται μόνο στην κατάσταση InActive ή Cancelled ή Completed</p>
                 <Button loading={this.state.loading} color={"red"} disabled={this.buttondisable} basic>Αποπληρωμή</Button>
                     <Message error header="Opps!" content={this.state.errMessage}/>
                 </Form>
