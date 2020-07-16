@@ -9,7 +9,7 @@ class InvestmentIndex extends Component {
     render() {
         return (
             <Layout>
-                    <Image src='https://linkinternational.eu/wp-content/uploads/2019/03/1200-blockchain-healthcare.jpg' fluid />
+                <Image src='https://i.ibb.co/BggrkJ4/home.jpg' fluid />
             </Layout>
         );
     }
